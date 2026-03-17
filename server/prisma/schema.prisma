@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum DumpsterStatus {
+  AVAILABLE
+  RESERVED
+  ACTIVE
+  MAINTENANCE
+}
+
+enum BookingStatus {
+  QUOTE
+  SCHEDULED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  DEPOSIT_PAID
+  PAID
+  REFUNDED
+}
+
+enum ServiceType {
+  DUMPSTER_RENTAL
+  JUNK_REMOVAL
+  DEMOLITION
+}
+
+model Dumpster {
+  id           String          @id @default(cuid())
+  label        String
+  size         Int
+  sizeLabel    String
+  serialNumber String?         @unique
+  color        String?
+  status       DumpsterStatus  @default(AVAILABLE)
+  notes        String?
+
+  bookings     Booking[]
+
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([size])
+  @@index([status])
+}
+
+model Booking {
+  id             String         @id @default(cuid())
+
+  // Dumpster assignment
+  dumpsterId     String?
+  dumpster       Dumpster?      @relation(fields: [dumpsterId], references: [id], onDelete: SetNull)
+
+  dumpsterSize   Int
+  dumpsterLabel  String?
+
+  // Service
+  serviceType    ServiceType    @default(DUMPSTER_RENTAL)
+  projectType    String?
+
+  // Customer
+  customerName   String
+  customerPhone  String
+  customerEmail  String?
+
+  // Address / job site
+  address1       String
+  address2       String?
+  city           String
+  state          String
+  zip            String
+  placement      String?
+  instructions   String?
+
+  // Schedule
+  deliveryDate   DateTime
+  pickupDate     DateTime
+  rentalDays     Int
+
+  // Statuses
+  bookingStatus  BookingStatus  @default(QUOTE)
+  paymentStatus  PaymentStatus  @default(UNPAID)
+
+  // Pricing
+  basePrice      Decimal        @db.Decimal(10, 2)
+  deliveryFee    Decimal        @default(0) @db.Decimal(10, 2)
+  mileageFee     Decimal        @default(0) @db.Decimal(10, 2)
+  extraDaysFee   Decimal        @default(0) @db.Decimal(10, 2)
+  overageFee     Decimal        @default(0) @db.Decimal(10, 2)
+  total          Decimal        @db.Decimal(10, 2)
+
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([dumpsterId])
+  @@index([bookingStatus])
+  @@index([paymentStatus])
+  @@index([deliveryDate])
+  @@index([pickupDate])
+  @@index([serviceType])
+}
