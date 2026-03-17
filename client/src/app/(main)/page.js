@@ -12,7 +12,7 @@ import GallerySection from "@/components/gallery-slide-section/gallery-slide-sec
 import LocalBusinessJsonLd from "@/components/seo/LocalBusinessJsonLd";
 
 import METADATA from "@/data/data";
-import DumpsterSection from "../components/dumpter-section/dumpter-section.component";
+import DumpsterSection from "@/components/dumpter-section/dumpter-section.component";
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);

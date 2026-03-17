@@ -1,6 +1,6 @@
 import Hero from "@/components/hero/hero.component";
-import DumpsterEstimateSection from "../../components/dumpster-estimate-section/dumpster-estimate-section.component";
-import GetAQuoteTodaySection from "../../components/get-a-quote-today-section/get-a-quote-today-section.component";
+import DumpsterEstimateSection from "@/components/dumpster-estimate-section/dumpster-estimate-section.component";
+import GetAQuoteTodaySection from "@/components/get-a-quote-today-section/get-a-quote-today-section.component";
 
 export default function DumpsterWeightCalculator() {
   return (
