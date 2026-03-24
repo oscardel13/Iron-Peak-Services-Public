@@ -144,6 +144,35 @@ const METADATA = {
 
   services: [
     {
+      slug: "dumpster-rental",
+      title: "Dumpster Rental",
+      name: "Dumpster Rental",
+      shortDescription:
+        "Reliable dumpster rental for home cleanouts, remodels, construction debris, and job sites.",
+      longDescription:
+        "Our dumpster rental service makes it easy to handle debris, junk, and construction waste from residential and commercial projects. We deliver the dumpster, place it safely, and return for pickup when your cleanup is complete.",
+      image: "/assets/services/dumpster-rental.jpg",
+      metaTitle: "Dumpster Rental",
+      metaDescription:
+        "Affordable dumpster rental for home cleanouts, remodeling projects, and construction debris with reliable delivery and pickup.",
+      heroTagline:
+        "Convenient dumpster rentals for projects of all sizes.",
+      h1: "Dumpster Rental",
+      intro:
+        "Whether you're cleaning out a home, tackling a renovation, or managing debris from a job site, our dumpster rental service provides a simple and reliable way to handle waste. We deliver the dumpster directly to your location and pick it up when the job is done.",
+      paragraphs: [
+        "Dumpster rentals are ideal for home cleanouts, remodeling projects, roofing jobs, yard cleanups, and construction debris. With multiple dumpster sizes available, you can choose the option that fits your project without paying for more capacity than you need.",
+        "Our team handles delivery, placement, and pickup to make the process straightforward. We communicate clearly about scheduling and placement so the dumpster is positioned safely and conveniently for your project.",
+        "If your project requires additional help, we can also provide junk removal or demolition services to make the entire cleanup process easier.",
+      ],
+      highlights: [
+        "Dumpster delivery and pickup",
+        "Multiple dumpster sizes for different project needs",
+        "Home cleanouts, renovations, and construction debris",
+        "Flexible rental periods and reliable scheduling",
+      ],
+    },
+    {
       slug: "junk-removal",
       title: "Junk Removal",
       name: "Junk Removal",
