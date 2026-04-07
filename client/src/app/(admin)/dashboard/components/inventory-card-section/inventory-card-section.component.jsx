@@ -1,15 +1,15 @@
 "use client";
 
 import { DUMPSTER_STATUSES } from "@/data/inventory";
-import { formatCurrency, formatDate, formatDateTime } from "@/utils/helpers";
+import { formatDateTime } from "@/utils/helpers";
 
 function getStatusClasses(status) {
   const map = {
-    available: "bg-green-100 text-green-700",
-    reserved: "bg-blue-100 text-blue-700",
-    in_use: "bg-amber-100 text-amber-700",
-    maintenance: "bg-orange-100 text-orange-700",
-    out_of_service: "bg-red-100 text-red-700",
+    AVAILABLE: "bg-green-100 text-green-700",
+    RESERVED: "bg-blue-100 text-blue-700",
+    IN_USE: "bg-amber-100 text-amber-700",
+    MAINTENANCE: "bg-orange-100 text-orange-700",
+    OUT_OF_SERVICE: "bg-red-100 text-red-700",
   };
 
   return map[status] || "bg-slate-100 text-slate-700";
@@ -88,11 +88,21 @@ export default function InventoryCardSection({
             >
               {inventoryToRender.status.replaceAll("_", " ")}
             </span>
+
+            <span
+              className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                inventoryToRender.isActive
+                  ? "bg-emerald-100 text-emerald-700"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              {inventoryToRender.isActive ? "ACTIVE" : "INACTIVE"}
+            </span>
           </div>
 
           <p className="mt-1 text-sm text-gray-500">{inventoryToRender.id}</p>
           <p className="mt-2 text-sm text-gray-600">
-            {inventoryToRender.size} Yard · {inventoryToRender.yardLocation}
+            {inventoryToRender.sizeLabel || `${inventoryToRender.size} Yard`}
           </p>
         </div>
 
@@ -135,7 +145,7 @@ export default function InventoryCardSection({
               <div className="md:col-span-2">
                 <Label>Label</Label>
                 <Input
-                  value={inventoryToRender.label}
+                  value={inventoryToRender.label || ""}
                   disabled={!isEditing}
                   onChange={(e) => updateDraft("label", e.target.value)}
                 />
@@ -145,16 +155,25 @@ export default function InventoryCardSection({
                 <Label>Size</Label>
                 <Input
                   type="number"
-                  value={inventoryToRender.size}
+                  value={inventoryToRender.size ?? ""}
                   disabled={!isEditing}
                   onChange={(e) => updateDraft("size", Number(e.target.value))}
                 />
               </div>
 
               <div>
+                <Label>Size Label</Label>
+                <Input
+                  value={inventoryToRender.sizeLabel || ""}
+                  disabled={!isEditing}
+                  onChange={(e) => updateDraft("sizeLabel", e.target.value)}
+                />
+              </div>
+
+              <div>
                 <Label>Status</Label>
                 <Select
-                  value={inventoryToRender.status}
+                  value={inventoryToRender.status || "AVAILABLE"}
                   disabled={!isEditing}
                   onChange={(e) => updateDraft("status", e.target.value)}
                 >
@@ -167,126 +186,35 @@ export default function InventoryCardSection({
               </div>
 
               <div>
-                <Label>Yard Location</Label>
-                <Input
-                  value={inventoryToRender.yardLocation}
-                  disabled={!isEditing}
-                  onChange={(e) => updateDraft("yardLocation", e.target.value)}
-                />
-              </div>
-
-              <div>
                 <Label>Serial Number</Label>
                 <Input
-                  value={inventoryToRender.serialNumber}
+                  value={inventoryToRender.serialNumber || ""}
                   disabled={!isEditing}
                   onChange={(e) => updateDraft("serialNumber", e.target.value)}
                 />
               </div>
 
               <div>
-                <Label>Material</Label>
-                <Input
-                  value={inventoryToRender.material}
-                  disabled={!isEditing}
-                  onChange={(e) => updateDraft("material", e.target.value)}
-                />
-              </div>
-
-              <div>
                 <Label>Color</Label>
                 <Input
-                  value={inventoryToRender.color}
+                  value={inventoryToRender.color || ""}
                   disabled={!isEditing}
                   onChange={(e) => updateDraft("color", e.target.value)}
                 />
               </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-gray-200 p-4">
-            <h3 className="mb-4 text-base font-semibold text-gray-900">
-              Pricing + Service
-            </h3>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <Label>Base Rate</Label>
-                <Input
-                  type="number"
-                  value={inventoryToRender.baseRate}
-                  disabled={!isEditing}
-                  onChange={(e) => updateDraft("baseRate", Number(e.target.value))}
-                />
-              </div>
 
               <div>
-                <Label>Delivery Fee</Label>
-                <Input
-                  type="number"
-                  value={inventoryToRender.deliveryFee}
+                <Label>Record Active</Label>
+                <Select
+                  value={inventoryToRender.isActive ? "true" : "false"}
                   disabled={!isEditing}
                   onChange={(e) =>
-                    updateDraft("deliveryFee", Number(e.target.value))
+                    updateDraft("isActive", e.target.value === "true")
                   }
-                />
-              </div>
-
-              <div>
-                <Label>Mileage Fee</Label>
-                <Input
-                  type="number"
-                  value={inventoryToRender.mileageFee}
-                  disabled={!isEditing}
-                  onChange={(e) =>
-                    updateDraft("mileageFee", Number(e.target.value))
-                  }
-                />
-              </div>
-
-              <div>
-                <Label>Estimated Dispatch Total</Label>
-                <div className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800">
-                  {formatCurrency(
-                    (inventoryToRender.baseRate || 0) +
-                      (inventoryToRender.deliveryFee || 0) +
-                      (inventoryToRender.mileageFee || 0)
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid gap-6 xl:grid-cols-2">
-          <div className="rounded-2xl border border-gray-200 p-4">
-            <h3 className="mb-4 text-base font-semibold text-gray-900">
-              Maintenance
-            </h3>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <Label>Last Inspection</Label>
-                <Input
-                  type="date"
-                  value={inventoryToRender.lastInspectionDate}
-                  disabled={!isEditing}
-                  onChange={(e) =>
-                    updateDraft("lastInspectionDate", e.target.value)
-                  }
-                />
-              </div>
-
-              <div>
-                <Label>Next Maintenance</Label>
-                <Input
-                  type="date"
-                  value={inventoryToRender.nextMaintenanceDate}
-                  disabled={!isEditing}
-                  onChange={(e) =>
-                    updateDraft("nextMaintenanceDate", e.target.value)
-                  }
-                />
+                >
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </Select>
               </div>
             </div>
           </div>
@@ -297,8 +225,8 @@ export default function InventoryCardSection({
             </h3>
 
             <Textarea
-              rows={5}
-              value={inventoryToRender.notes}
+              rows={10}
+              value={inventoryToRender.notes || ""}
               disabled={!isEditing}
               onChange={(e) => updateDraft("notes", e.target.value)}
             />
@@ -326,26 +254,6 @@ export default function InventoryCardSection({
               </p>
               <p className="mt-1 text-sm font-medium text-gray-900">
                 {formatDateTime(inventoryToRender.updatedAt)}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl bg-gray-50 p-3">
-              <p className="text-xs uppercase tracking-wide text-gray-500">
-                Last Inspection Date
-              </p>
-              <p className="mt-1 text-sm font-medium text-gray-900">
-                {formatDate(inventoryToRender.lastInspectionDate)}
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-gray-50 p-3">
-              <p className="text-xs uppercase tracking-wide text-gray-500">
-                Next Maintenance Date
-              </p>
-              <p className="mt-1 text-sm font-medium text-gray-900">
-                {formatDate(inventoryToRender.nextMaintenanceDate)}
               </p>
             </div>
           </div>

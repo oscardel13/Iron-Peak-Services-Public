@@ -14,6 +14,8 @@ import {
   calculateBookingTotal,
   calculateExtraDaysFee,
   calculateRentalDays,
+  getMaterialSurcharge,
+  productSupportsMaterial,
 } from "./utils/booking-helpers";
 
 const BOOKING_STEPS = [
@@ -74,6 +76,7 @@ const INITIAL_BOOKING_FORM = {
   },
   pricing: {
     basePrice: 0,
+    materialSurcharge: 0,
     drivewayProtectionFee: 0,
     priorityDeliveryFee: 0,
     extraDaysFee: 0,
@@ -110,6 +113,12 @@ export default function BookPage() {
       }
 
       current[keys[keys.length - 1]] = value;
+
+      if (path === "dumpster.material") {
+        next.pricing.materialSurcharge = getMaterialSurcharge(value);
+        next.pricing.total = calculateBookingTotal(next);
+      }
+
       return next;
     });
   }
@@ -117,6 +126,7 @@ export default function BookPage() {
   function setSelectedProduct(product) {
     setBookingForm((prev) => {
       const next = structuredClone(prev);
+      const materialSurcharge = getMaterialSurcharge(next.dumpster.material);
 
       next.dumpster.productId = product.id;
       next.dumpster.productLabel = product.label;
@@ -125,6 +135,7 @@ export default function BookPage() {
       next.dumpster.includedWeightText = product.includedWeightText;
 
       next.pricing.basePrice = product.basePrice;
+      next.pricing.materialSurcharge = materialSurcharge;
       next.pricing.total = calculateBookingTotal(next);
 
       return next;
@@ -188,31 +199,11 @@ export default function BookPage() {
     });
   }
 
-  const availableSizes = useMemo(() => {
-    const sizes = DUMPSTER_PRODUCTS
-      .filter((item) =>
-        bookingForm.dumpster.material
-          ? item.material === bookingForm.dumpster.material
-          : true
-      )
-      .map((item) => item.size);
-
-    return [...new Set(sizes)].sort((a, b) => a - b);
-  }, [bookingForm.dumpster.material]);
-
   const availableProducts = useMemo(() => {
-    return DUMPSTER_PRODUCTS.filter((item) => {
-      const materialMatch = bookingForm.dumpster.material
-        ? item.material === bookingForm.dumpster.material
-        : true;
-
-      const sizeMatch = bookingForm.dumpster.size
-        ? item.size === Number(bookingForm.dumpster.size)
-        : true;
-
-      return materialMatch && sizeMatch;
-    });
-  }, [bookingForm.dumpster.material, bookingForm.dumpster.size]);
+    return DUMPSTER_PRODUCTS.filter((product) =>
+      productSupportsMaterial(product, bookingForm.dumpster.material)
+    );
+  }, [bookingForm.dumpster.material]);
 
   function renderStep() {
     switch (currentStep) {
@@ -224,6 +215,7 @@ export default function BookPage() {
             goToNextStep={goToNextStep}
           />
         );
+
       case 2:
         return (
           <StepDumpsterDetails
@@ -231,12 +223,12 @@ export default function BookPage() {
             updateBookingForm={updateBookingForm}
             setSelectedProduct={setSelectedProduct}
             toggleAddon={toggleAddon}
-            availableSizes={availableSizes}
             availableProducts={availableProducts}
             goToNextStep={goToNextStep}
             goToPreviousStep={goToPreviousStep}
           />
         );
+
       case 3:
         return (
           <StepSchedule
@@ -246,6 +238,7 @@ export default function BookPage() {
             goToPreviousStep={goToPreviousStep}
           />
         );
+
       case 4:
         return (
           <StepVerifyLocation
@@ -255,6 +248,7 @@ export default function BookPage() {
             goToPreviousStep={goToPreviousStep}
           />
         );
+
       case 5:
         return (
           <StepCustomerPayment
@@ -264,6 +258,7 @@ export default function BookPage() {
             goToPreviousStep={goToPreviousStep}
           />
         );
+
       case 6:
         return (
           <StepReviewSubmit
@@ -272,6 +267,7 @@ export default function BookPage() {
             goToStep={goToStep}
           />
         );
+
       default:
         return null;
     }

@@ -1,18 +1,14 @@
 "use client";
 
 import { MATERIAL_OPTIONS } from "../../utils/booking-data";
+import {
+  getMaterialLabel,
+  getMaterialSurcharge,
+} from "../../utils/booking-helpers";
 import StepShell from "../step-shell/step-shell.component";
 
 function SectionTitle({ children }) {
   return <h3 className="text-lg font-semibold text-gray-900">{children}</h3>;
-}
-
-function formatMaterial(material) {
-  if (!material) return "";
-  return material
-    .split("-")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
 }
 
 export default function StepDumpsterDetails({
@@ -20,15 +16,16 @@ export default function StepDumpsterDetails({
   updateBookingForm,
   setSelectedProduct,
   toggleAddon,
-  availableSizes,
   availableProducts,
   goToNextStep,
   goToPreviousStep,
 }) {
+  const concreteSurcharge = getMaterialSurcharge(bookingForm.dumpster.material);
+
   return (
     <StepShell
       title="Choose your dumpster"
-      description="Pick material first so we only show compatible sizes and containers."
+      description="Pick the material first, then choose from the dumpsters that support it."
       onNext={goToNextStep}
       onBack={goToPreviousStep}
     >
@@ -46,12 +43,10 @@ export default function StepDumpsterDetails({
                   type="button"
                   onClick={() => {
                     updateBookingForm("dumpster.material", option.value);
-                    updateBookingForm("dumpster.size", "");
                     updateBookingForm("dumpster.productId", "");
                     updateBookingForm("dumpster.productLabel", "");
+                    updateBookingForm("dumpster.size", "");
                     updateBookingForm("dumpster.includedWeightText", "");
-                    updateBookingForm("pricing.basePrice", 0);
-                    updateBookingForm("pricing.total", 0);
                   }}
                   className={`rounded-2xl border px-4 py-4 text-left transition ${
                     isSelected
@@ -64,52 +59,32 @@ export default function StepDumpsterDetails({
               );
             })}
           </div>
-        </div>
 
-        <div className="space-y-4">
-          <SectionTitle>Container size</SectionTitle>
-
-          {availableSizes.length === 0 ? (
-            <p className="text-sm text-gray-500">
-              Choose a material first to see available sizes.
-            </p>
-          ) : (
-            <div className="grid gap-3 sm:grid-cols-3">
-              {availableSizes.map((size) => {
-                const isSelected = Number(bookingForm.dumpster.size) === size;
-
-                return (
-                  <button
-                    key={size}
-                    type="button"
-                    onClick={() => {
-                      updateBookingForm("dumpster.size", size);
-                      updateBookingForm("dumpster.productId", "");
-                      updateBookingForm("dumpster.productLabel", "");
-                      updateBookingForm("dumpster.includedWeightText", "");
-                      updateBookingForm("pricing.basePrice", 0);
-                      updateBookingForm("pricing.total", 0);
-                    }}
-                    className={`rounded-2xl border px-4 py-4 text-left transition ${
-                      isSelected
-                        ? "border-indigo-600 bg-indigo-50 text-indigo-700"
-                        : "border-gray-200 bg-white hover:bg-gray-50"
-                    }`}
-                  >
-                    <p className="text-lg font-semibold">{size} yd</p>
-                  </button>
-                );
-              })}
+          {bookingForm.dumpster.material === "concrete" && (
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+              <p className="font-semibold text-amber-800">
+                Concrete disposal surcharge applies
+              </p>
+              <p className="mt-1 text-sm text-amber-700">
+                Concrete costs more to dump, so a frontend surcharge of $
+                {concreteSurcharge.toFixed(2)} has been added for now. Final
+                pricing will be confirmed by the backend.
+              </p>
             </div>
           )}
         </div>
 
         <div className="space-y-4">
-          <SectionTitle>Dumpster</SectionTitle>
+          <SectionTitle>Available dumpsters</SectionTitle>
 
-          {availableProducts.length === 0 ? (
+          {!bookingForm.dumpster.material ? (
             <p className="text-sm text-gray-500">
-              Choose material and size to see matching dumpsters.
+              Choose a material first to see available dumpsters.
+            </p>
+          ) : availableProducts.length === 0 ? (
+            <p className="text-sm text-gray-500">
+              No dumpsters currently support{" "}
+              {getMaterialLabel(bookingForm.dumpster.material, MATERIAL_OPTIONS)}.
             </p>
           ) : (
             <div className="grid gap-4">
@@ -133,7 +108,7 @@ export default function StepDumpsterDetails({
                           {product.label}
                         </p>
                         <p className="mt-1 text-sm text-gray-500">
-                          Material: {formatMaterial(product.material)}
+                          Size: {product.size} yd
                         </p>
                         <p className="mt-1 text-sm text-gray-500">
                           Included: {product.includedWeightText}
@@ -147,6 +122,11 @@ export default function StepDumpsterDetails({
                         <p className="text-xl font-semibold text-gray-900">
                           ${product.basePrice.toFixed(2)}
                         </p>
+                        {bookingForm.dumpster.material === "concrete" && (
+                          <p className="mt-1 text-sm text-amber-700">
+                            + ${concreteSurcharge.toFixed(2)} concrete fee
+                          </p>
+                        )}
                       </div>
                     </div>
                   </button>

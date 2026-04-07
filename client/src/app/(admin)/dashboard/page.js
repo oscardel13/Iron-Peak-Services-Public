@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MOCK_BOOKINGS } from "@/data/mock-bookings";
 import { MOCK_INVENTORY } from "@/data/inventory";
 
@@ -11,55 +11,72 @@ import DashboardAttentionSection from "./components/dashboard-attention-section/
 import DashboardRecentBookings from "./components/dashboard-recent-bookings/dashboard-recent-bookings.component";
 
 export default function DashboardPage() {
+  const [bookings, setBookings] = useState(MOCK_BOOKINGS);
+
+  // useEffect(() => {
+  //     const fetchBookings = async () => {
+  //       try{
+  //         console.log("Fetching bookings...");
+  //         const response = await getAPI("/bookings");
+  //         console.log("Fetched bookings:", response.data);
+  //         setBookings(response.data);
+  //       }
+  //       catch(error){
+  //         console.error("Failed to fetch bookings:", error);
+  //       }
+  //     };
+  //     fetchBookings();
+  //   }, []);
+  
   const dashboardData = useMemo(() => {
     const today = new Date();
     const todayKey = today.toISOString().slice(0, 10);
 
-    const activeBookings = MOCK_BOOKINGS.filter(
-      (booking) => booking.bookingStatus === "active"
+    const activeBookings = bookings.filter(
+      (booking) => booking.bookingStatus === "ACTIVE"
     );
 
-    const scheduledBookings = MOCK_BOOKINGS.filter(
-      (booking) => booking.bookingStatus === "scheduled"
+    const scheduledBookings = bookings.filter(
+      (booking) => booking.bookingStatus === "SCHEDULED"
     );
 
-    const unpaidBookings = MOCK_BOOKINGS.filter(
+    const unpaidBookings = bookings.filter(
       (booking) =>
-        booking.paymentStatus === "unpaid" ||
-        booking.paymentStatus === "deposit_paid"
+        booking.paymentStatus === "UNPAID" ||
+        booking.paymentStatus === "DEPOSIT_PAID"
     );
 
-    const deliveriesToday = MOCK_BOOKINGS.filter(
-      (booking) => booking.schedule.deliveryDate === todayKey
+    const deliveriesToday = bookings.filter(
+      (booking) => booking.deliveryDate === todayKey
     );
 
-    const pickupsToday = MOCK_BOOKINGS.filter(
-      (booking) => booking.schedule.pickupDate === todayKey
+    const pickupsToday = bookings.filter(
+      (booking) => booking.pickupDate === todayKey
     );
 
     const availableInventory = MOCK_INVENTORY.filter(
-      (item) => item.status === "available"
+      (item) => item.status === "AVAILABLE"
     );
 
     const maintenanceInventory = MOCK_INVENTORY.filter(
       (item) =>
-        item.status === "maintenance" || item.status === "out_of_service"
+        item.status === "MAINTENANCE" || item.status === "OUT_OF_SERVICE"
     );
 
     const reservedInventory = MOCK_INVENTORY.filter(
-      (item) => item.status === "reserved"
+      (item) => item.status === "RESERVED"
     );
 
-    const recentBookings = [...MOCK_BOOKINGS]
+    const recentBookings = [...bookings]
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 5);
 
-    const urgentPaymentBookings = [...MOCK_BOOKINGS]
-      .filter((booking) => booking.paymentStatus === "unpaid")
+    const urgentPaymentBookings = [...bookings]
+      .filter((booking) => booking.paymentStatus === "UNPAID")
       .slice(0, 4);
 
-    const quotesNeedingFollowUp = [...MOCK_BOOKINGS]
-      .filter((booking) => booking.bookingStatus === "quote")
+    const quotesNeedingFollowUp = [...bookings]
+      .filter((booking) => booking.bookingStatus === "QUOTE")
       .slice(0, 4);
 
     return {
@@ -75,7 +92,7 @@ export default function DashboardPage() {
       urgentPaymentBookings,
       quotesNeedingFollowUp,
     };
-  }, []);
+  }, [bookings]);
 
   return (
     <div className="space-y-6">

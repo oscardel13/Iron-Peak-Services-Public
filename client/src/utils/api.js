@@ -1,26 +1,68 @@
-const API_URL = "https://kf987i9u90.execute-api.us-east-1.amazonaws.com/prod";
+import axios from 'axios';
 
-// TODO update API_URL for production also for to Iron Peak Services apis
-export const getAPI = async (path, body) => {
-  const response = await fetch(`${API_URL}${path}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Origin: "https://iron-peak-services.com", // TODO CHANGE THIS TO CORRECT DOMAIN
-    },
-    body: JSON.stringify(body),
+const API = axios.create({
+    // withCredentials: true,
   });
-  return await response;
-};
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.iron-peak-services.com";
+// const API_URL = process.env.REACT_APP_API_URL || "http://192.168.86.44:8000";
+
+
+export const getAPI = async (path, params) => {
+    const response = await API.get(`${API_URL}${path}`, {
+        params: params,
+    })
+    return response
+}
 
 export const postAPI = async (path, body) => {
-  const response = await fetch(`${API_URL}${path}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Origin: "https://iron-peak-services.com", // TODO CHANGE THIS TO CORRECT DOMAIN
-    },
-    body: JSON.stringify(body),
-  });
-  return await response;
-};
+    const response = await API.post(`${API_URL}${path}`,JSON.stringify(body),{
+        headers: {
+            'Content-Type': "application/json"
+        }
+    })
+    return response
+}
+
+export const putAPI = async (path, body) => {
+    const response = await API.put(`${API_URL}${path}`,JSON.stringify(body),{
+        headers: {
+            'Content-Type': "application/json"
+        }
+    })
+    return response
+}
+
+export const patchAPI = async(path, body) => {
+    const response = await API.patch(`${API_URL}${path}`, JSON.stringify(body),{
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    return response
+}
+
+export const deleteAPI = async (path, body) => {
+    const response = await API.delete(`${API_URL}${path}`,JSON.stringify(body),{
+        headers: {
+            'Content-Type': "application/json"
+        }
+    })
+    return response
+}
+
+export const postAPIMultipart = async (path, body) => {
+    const response = await API.post(`${API_URL}${path}`, body, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }})
+    return response
+}
+
+export const putAPIMultipart = async (path, body) => {
+    const response = await API.put(`${API_URL}${path}`, body, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }})
+    return response
+}

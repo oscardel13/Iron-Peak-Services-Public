@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums.ts"
+import type * as Prisma from "../internal/prismaNamespace.ts"
 
 /**
  * Model Booking
@@ -28,31 +28,36 @@ export type AggregateBooking = {
 
 export type BookingAvgAggregateOutputType = {
   dumpsterSize: number | null
-  rentalDays: number | null
+  rentalDaysIncluded: number | null
   basePrice: runtime.Decimal | null
   deliveryFee: runtime.Decimal | null
   mileageFee: runtime.Decimal | null
   extraDaysFee: runtime.Decimal | null
   overageFee: runtime.Decimal | null
+  addonsTotal: runtime.Decimal | null
   total: runtime.Decimal | null
 }
 
 export type BookingSumAggregateOutputType = {
   dumpsterSize: number | null
-  rentalDays: number | null
+  rentalDaysIncluded: number | null
   basePrice: runtime.Decimal | null
   deliveryFee: runtime.Decimal | null
   mileageFee: runtime.Decimal | null
   extraDaysFee: runtime.Decimal | null
   overageFee: runtime.Decimal | null
+  addonsTotal: runtime.Decimal | null
   total: runtime.Decimal | null
 }
 
 export type BookingMinAggregateOutputType = {
   id: string | null
+  bookingNumber: string | null
   dumpsterId: string | null
   dumpsterSize: number | null
   dumpsterLabel: string | null
+  material: string | null
+  productCode: string | null
   serviceType: $Enums.ServiceType | null
   projectType: string | null
   customerName: string | null
@@ -65,9 +70,13 @@ export type BookingMinAggregateOutputType = {
   zip: string | null
   placement: string | null
   instructions: string | null
+  customerNotes: string | null
+  locationVerified: boolean | null
+  locationVerificationNote: string | null
   deliveryDate: Date | null
   pickupDate: Date | null
-  rentalDays: number | null
+  pickupDateUnknown: boolean | null
+  rentalDaysIncluded: number | null
   bookingStatus: $Enums.BookingStatus | null
   paymentStatus: $Enums.PaymentStatus | null
   basePrice: runtime.Decimal | null
@@ -75,16 +84,26 @@ export type BookingMinAggregateOutputType = {
   mileageFee: runtime.Decimal | null
   extraDaysFee: runtime.Decimal | null
   overageFee: runtime.Decimal | null
+  addonsTotal: runtime.Decimal | null
   total: runtime.Decimal | null
+  quotedAt: Date | null
+  scheduledAt: Date | null
+  deliveredAt: Date | null
+  pickedUpAt: Date | null
+  cancelledAt: Date | null
+  completedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type BookingMaxAggregateOutputType = {
   id: string | null
+  bookingNumber: string | null
   dumpsterId: string | null
   dumpsterSize: number | null
   dumpsterLabel: string | null
+  material: string | null
+  productCode: string | null
   serviceType: $Enums.ServiceType | null
   projectType: string | null
   customerName: string | null
@@ -97,9 +116,13 @@ export type BookingMaxAggregateOutputType = {
   zip: string | null
   placement: string | null
   instructions: string | null
+  customerNotes: string | null
+  locationVerified: boolean | null
+  locationVerificationNote: string | null
   deliveryDate: Date | null
   pickupDate: Date | null
-  rentalDays: number | null
+  pickupDateUnknown: boolean | null
+  rentalDaysIncluded: number | null
   bookingStatus: $Enums.BookingStatus | null
   paymentStatus: $Enums.PaymentStatus | null
   basePrice: runtime.Decimal | null
@@ -107,16 +130,26 @@ export type BookingMaxAggregateOutputType = {
   mileageFee: runtime.Decimal | null
   extraDaysFee: runtime.Decimal | null
   overageFee: runtime.Decimal | null
+  addonsTotal: runtime.Decimal | null
   total: runtime.Decimal | null
+  quotedAt: Date | null
+  scheduledAt: Date | null
+  deliveredAt: Date | null
+  pickedUpAt: Date | null
+  cancelledAt: Date | null
+  completedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type BookingCountAggregateOutputType = {
   id: number
+  bookingNumber: number
   dumpsterId: number
   dumpsterSize: number
   dumpsterLabel: number
+  material: number
+  productCode: number
   serviceType: number
   projectType: number
   customerName: number
@@ -129,9 +162,13 @@ export type BookingCountAggregateOutputType = {
   zip: number
   placement: number
   instructions: number
+  customerNotes: number
+  locationVerified: number
+  locationVerificationNote: number
   deliveryDate: number
   pickupDate: number
-  rentalDays: number
+  pickupDateUnknown: number
+  rentalDaysIncluded: number
   bookingStatus: number
   paymentStatus: number
   basePrice: number
@@ -139,7 +176,14 @@ export type BookingCountAggregateOutputType = {
   mileageFee: number
   extraDaysFee: number
   overageFee: number
+  addonsTotal: number
   total: number
+  quotedAt: number
+  scheduledAt: number
+  deliveredAt: number
+  pickedUpAt: number
+  cancelledAt: number
+  completedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -148,31 +192,36 @@ export type BookingCountAggregateOutputType = {
 
 export type BookingAvgAggregateInputType = {
   dumpsterSize?: true
-  rentalDays?: true
+  rentalDaysIncluded?: true
   basePrice?: true
   deliveryFee?: true
   mileageFee?: true
   extraDaysFee?: true
   overageFee?: true
+  addonsTotal?: true
   total?: true
 }
 
 export type BookingSumAggregateInputType = {
   dumpsterSize?: true
-  rentalDays?: true
+  rentalDaysIncluded?: true
   basePrice?: true
   deliveryFee?: true
   mileageFee?: true
   extraDaysFee?: true
   overageFee?: true
+  addonsTotal?: true
   total?: true
 }
 
 export type BookingMinAggregateInputType = {
   id?: true
+  bookingNumber?: true
   dumpsterId?: true
   dumpsterSize?: true
   dumpsterLabel?: true
+  material?: true
+  productCode?: true
   serviceType?: true
   projectType?: true
   customerName?: true
@@ -185,9 +234,13 @@ export type BookingMinAggregateInputType = {
   zip?: true
   placement?: true
   instructions?: true
+  customerNotes?: true
+  locationVerified?: true
+  locationVerificationNote?: true
   deliveryDate?: true
   pickupDate?: true
-  rentalDays?: true
+  pickupDateUnknown?: true
+  rentalDaysIncluded?: true
   bookingStatus?: true
   paymentStatus?: true
   basePrice?: true
@@ -195,16 +248,26 @@ export type BookingMinAggregateInputType = {
   mileageFee?: true
   extraDaysFee?: true
   overageFee?: true
+  addonsTotal?: true
   total?: true
+  quotedAt?: true
+  scheduledAt?: true
+  deliveredAt?: true
+  pickedUpAt?: true
+  cancelledAt?: true
+  completedAt?: true
   createdAt?: true
   updatedAt?: true
 }
 
 export type BookingMaxAggregateInputType = {
   id?: true
+  bookingNumber?: true
   dumpsterId?: true
   dumpsterSize?: true
   dumpsterLabel?: true
+  material?: true
+  productCode?: true
   serviceType?: true
   projectType?: true
   customerName?: true
@@ -217,9 +280,13 @@ export type BookingMaxAggregateInputType = {
   zip?: true
   placement?: true
   instructions?: true
+  customerNotes?: true
+  locationVerified?: true
+  locationVerificationNote?: true
   deliveryDate?: true
   pickupDate?: true
-  rentalDays?: true
+  pickupDateUnknown?: true
+  rentalDaysIncluded?: true
   bookingStatus?: true
   paymentStatus?: true
   basePrice?: true
@@ -227,16 +294,26 @@ export type BookingMaxAggregateInputType = {
   mileageFee?: true
   extraDaysFee?: true
   overageFee?: true
+  addonsTotal?: true
   total?: true
+  quotedAt?: true
+  scheduledAt?: true
+  deliveredAt?: true
+  pickedUpAt?: true
+  cancelledAt?: true
+  completedAt?: true
   createdAt?: true
   updatedAt?: true
 }
 
 export type BookingCountAggregateInputType = {
   id?: true
+  bookingNumber?: true
   dumpsterId?: true
   dumpsterSize?: true
   dumpsterLabel?: true
+  material?: true
+  productCode?: true
   serviceType?: true
   projectType?: true
   customerName?: true
@@ -249,9 +326,13 @@ export type BookingCountAggregateInputType = {
   zip?: true
   placement?: true
   instructions?: true
+  customerNotes?: true
+  locationVerified?: true
+  locationVerificationNote?: true
   deliveryDate?: true
   pickupDate?: true
-  rentalDays?: true
+  pickupDateUnknown?: true
+  rentalDaysIncluded?: true
   bookingStatus?: true
   paymentStatus?: true
   basePrice?: true
@@ -259,7 +340,14 @@ export type BookingCountAggregateInputType = {
   mileageFee?: true
   extraDaysFee?: true
   overageFee?: true
+  addonsTotal?: true
   total?: true
+  quotedAt?: true
+  scheduledAt?: true
+  deliveredAt?: true
+  pickedUpAt?: true
+  cancelledAt?: true
+  completedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -353,9 +441,12 @@ export type BookingGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type BookingGroupByOutputType = {
   id: string
+  bookingNumber: string
   dumpsterId: string | null
   dumpsterSize: number
   dumpsterLabel: string | null
+  material: string | null
+  productCode: string | null
   serviceType: $Enums.ServiceType
   projectType: string | null
   customerName: string
@@ -368,9 +459,13 @@ export type BookingGroupByOutputType = {
   zip: string
   placement: string | null
   instructions: string | null
+  customerNotes: string | null
+  locationVerified: boolean
+  locationVerificationNote: string | null
   deliveryDate: Date
-  pickupDate: Date
-  rentalDays: number
+  pickupDate: Date | null
+  pickupDateUnknown: boolean
+  rentalDaysIncluded: number
   bookingStatus: $Enums.BookingStatus
   paymentStatus: $Enums.PaymentStatus
   basePrice: runtime.Decimal
@@ -378,7 +473,14 @@ export type BookingGroupByOutputType = {
   mileageFee: runtime.Decimal
   extraDaysFee: runtime.Decimal
   overageFee: runtime.Decimal
+  addonsTotal: runtime.Decimal
   total: runtime.Decimal
+  quotedAt: Date | null
+  scheduledAt: Date | null
+  deliveredAt: Date | null
+  pickedUpAt: Date | null
+  cancelledAt: Date | null
+  completedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: BookingCountAggregateOutputType | null
@@ -388,7 +490,7 @@ export type BookingGroupByOutputType = {
   _max: BookingMaxAggregateOutputType | null
 }
 
-type GetBookingGroupByPayload<T extends BookingGroupByArgs> = Prisma.PrismaPromise<
+export type GetBookingGroupByPayload<T extends BookingGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<BookingGroupByOutputType, T['by']> &
       {
@@ -408,9 +510,12 @@ export type BookingWhereInput = {
   OR?: Prisma.BookingWhereInput[]
   NOT?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   id?: Prisma.StringFilter<"Booking"> | string
+  bookingNumber?: Prisma.StringFilter<"Booking"> | string
   dumpsterId?: Prisma.StringNullableFilter<"Booking"> | string | null
   dumpsterSize?: Prisma.IntFilter<"Booking"> | number
   dumpsterLabel?: Prisma.StringNullableFilter<"Booking"> | string | null
+  material?: Prisma.StringNullableFilter<"Booking"> | string | null
+  productCode?: Prisma.StringNullableFilter<"Booking"> | string | null
   serviceType?: Prisma.EnumServiceTypeFilter<"Booking"> | $Enums.ServiceType
   projectType?: Prisma.StringNullableFilter<"Booking"> | string | null
   customerName?: Prisma.StringFilter<"Booking"> | string
@@ -423,9 +528,13 @@ export type BookingWhereInput = {
   zip?: Prisma.StringFilter<"Booking"> | string
   placement?: Prisma.StringNullableFilter<"Booking"> | string | null
   instructions?: Prisma.StringNullableFilter<"Booking"> | string | null
+  customerNotes?: Prisma.StringNullableFilter<"Booking"> | string | null
+  locationVerified?: Prisma.BoolFilter<"Booking"> | boolean
+  locationVerificationNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   deliveryDate?: Prisma.DateTimeFilter<"Booking"> | Date | string
-  pickupDate?: Prisma.DateTimeFilter<"Booking"> | Date | string
-  rentalDays?: Prisma.IntFilter<"Booking"> | number
+  pickupDate?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFilter<"Booking"> | boolean
+  rentalDaysIncluded?: Prisma.IntFilter<"Booking"> | number
   bookingStatus?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Booking"> | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -433,17 +542,31 @@ export type BookingWhereInput = {
   mileageFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  scheduledAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  pickedUpAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  cancelledAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   dumpster?: Prisma.XOR<Prisma.DumpsterNullableScalarRelationFilter, Prisma.DumpsterWhereInput> | null
+  addons?: Prisma.BookingAddonListRelationFilter
+  notes?: Prisma.BookingNoteListRelationFilter
+  history?: Prisma.BookingHistoryListRelationFilter
+  accessTokens?: Prisma.CustomerAccessTokenListRelationFilter
 }
 
 export type BookingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  bookingNumber?: Prisma.SortOrder
   dumpsterId?: Prisma.SortOrderInput | Prisma.SortOrder
   dumpsterSize?: Prisma.SortOrder
   dumpsterLabel?: Prisma.SortOrderInput | Prisma.SortOrder
+  material?: Prisma.SortOrderInput | Prisma.SortOrder
+  productCode?: Prisma.SortOrderInput | Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   projectType?: Prisma.SortOrderInput | Prisma.SortOrder
   customerName?: Prisma.SortOrder
@@ -456,9 +579,13 @@ export type BookingOrderByWithRelationInput = {
   zip?: Prisma.SortOrder
   placement?: Prisma.SortOrderInput | Prisma.SortOrder
   instructions?: Prisma.SortOrderInput | Prisma.SortOrder
+  customerNotes?: Prisma.SortOrderInput | Prisma.SortOrder
+  locationVerified?: Prisma.SortOrder
+  locationVerificationNote?: Prisma.SortOrderInput | Prisma.SortOrder
   deliveryDate?: Prisma.SortOrder
-  pickupDate?: Prisma.SortOrder
-  rentalDays?: Prisma.SortOrder
+  pickupDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  pickupDateUnknown?: Prisma.SortOrder
+  rentalDaysIncluded?: Prisma.SortOrder
   bookingStatus?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
@@ -466,20 +593,34 @@ export type BookingOrderByWithRelationInput = {
   mileageFee?: Prisma.SortOrder
   extraDaysFee?: Prisma.SortOrder
   overageFee?: Prisma.SortOrder
+  addonsTotal?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  quotedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  pickedUpAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   dumpster?: Prisma.DumpsterOrderByWithRelationInput
+  addons?: Prisma.BookingAddonOrderByRelationAggregateInput
+  notes?: Prisma.BookingNoteOrderByRelationAggregateInput
+  history?: Prisma.BookingHistoryOrderByRelationAggregateInput
+  accessTokens?: Prisma.CustomerAccessTokenOrderByRelationAggregateInput
 }
 
 export type BookingWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  bookingNumber?: string
   AND?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   OR?: Prisma.BookingWhereInput[]
   NOT?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   dumpsterId?: Prisma.StringNullableFilter<"Booking"> | string | null
   dumpsterSize?: Prisma.IntFilter<"Booking"> | number
   dumpsterLabel?: Prisma.StringNullableFilter<"Booking"> | string | null
+  material?: Prisma.StringNullableFilter<"Booking"> | string | null
+  productCode?: Prisma.StringNullableFilter<"Booking"> | string | null
   serviceType?: Prisma.EnumServiceTypeFilter<"Booking"> | $Enums.ServiceType
   projectType?: Prisma.StringNullableFilter<"Booking"> | string | null
   customerName?: Prisma.StringFilter<"Booking"> | string
@@ -492,9 +633,13 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   zip?: Prisma.StringFilter<"Booking"> | string
   placement?: Prisma.StringNullableFilter<"Booking"> | string | null
   instructions?: Prisma.StringNullableFilter<"Booking"> | string | null
+  customerNotes?: Prisma.StringNullableFilter<"Booking"> | string | null
+  locationVerified?: Prisma.BoolFilter<"Booking"> | boolean
+  locationVerificationNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   deliveryDate?: Prisma.DateTimeFilter<"Booking"> | Date | string
-  pickupDate?: Prisma.DateTimeFilter<"Booking"> | Date | string
-  rentalDays?: Prisma.IntFilter<"Booking"> | number
+  pickupDate?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFilter<"Booking"> | boolean
+  rentalDaysIncluded?: Prisma.IntFilter<"Booking"> | number
   bookingStatus?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Booking"> | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -502,17 +647,31 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   mileageFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  scheduledAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  pickedUpAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  cancelledAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   dumpster?: Prisma.XOR<Prisma.DumpsterNullableScalarRelationFilter, Prisma.DumpsterWhereInput> | null
-}, "id">
+  addons?: Prisma.BookingAddonListRelationFilter
+  notes?: Prisma.BookingNoteListRelationFilter
+  history?: Prisma.BookingHistoryListRelationFilter
+  accessTokens?: Prisma.CustomerAccessTokenListRelationFilter
+}, "id" | "bookingNumber">
 
 export type BookingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  bookingNumber?: Prisma.SortOrder
   dumpsterId?: Prisma.SortOrderInput | Prisma.SortOrder
   dumpsterSize?: Prisma.SortOrder
   dumpsterLabel?: Prisma.SortOrderInput | Prisma.SortOrder
+  material?: Prisma.SortOrderInput | Prisma.SortOrder
+  productCode?: Prisma.SortOrderInput | Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   projectType?: Prisma.SortOrderInput | Prisma.SortOrder
   customerName?: Prisma.SortOrder
@@ -525,9 +684,13 @@ export type BookingOrderByWithAggregationInput = {
   zip?: Prisma.SortOrder
   placement?: Prisma.SortOrderInput | Prisma.SortOrder
   instructions?: Prisma.SortOrderInput | Prisma.SortOrder
+  customerNotes?: Prisma.SortOrderInput | Prisma.SortOrder
+  locationVerified?: Prisma.SortOrder
+  locationVerificationNote?: Prisma.SortOrderInput | Prisma.SortOrder
   deliveryDate?: Prisma.SortOrder
-  pickupDate?: Prisma.SortOrder
-  rentalDays?: Prisma.SortOrder
+  pickupDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  pickupDateUnknown?: Prisma.SortOrder
+  rentalDaysIncluded?: Prisma.SortOrder
   bookingStatus?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
@@ -535,7 +698,14 @@ export type BookingOrderByWithAggregationInput = {
   mileageFee?: Prisma.SortOrder
   extraDaysFee?: Prisma.SortOrder
   overageFee?: Prisma.SortOrder
+  addonsTotal?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  quotedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  pickedUpAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.BookingCountOrderByAggregateInput
@@ -550,9 +720,12 @@ export type BookingScalarWhereWithAggregatesInput = {
   OR?: Prisma.BookingScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BookingScalarWhereWithAggregatesInput | Prisma.BookingScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Booking"> | string
+  bookingNumber?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   dumpsterId?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   dumpsterSize?: Prisma.IntWithAggregatesFilter<"Booking"> | number
   dumpsterLabel?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  material?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  productCode?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   serviceType?: Prisma.EnumServiceTypeWithAggregatesFilter<"Booking"> | $Enums.ServiceType
   projectType?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   customerName?: Prisma.StringWithAggregatesFilter<"Booking"> | string
@@ -565,9 +738,13 @@ export type BookingScalarWhereWithAggregatesInput = {
   zip?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   placement?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   instructions?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  customerNotes?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  locationVerified?: Prisma.BoolWithAggregatesFilter<"Booking"> | boolean
+  locationVerificationNote?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   deliveryDate?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
-  pickupDate?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
-  rentalDays?: Prisma.IntWithAggregatesFilter<"Booking"> | number
+  pickupDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  pickupDateUnknown?: Prisma.BoolWithAggregatesFilter<"Booking"> | boolean
+  rentalDaysIncluded?: Prisma.IntWithAggregatesFilter<"Booking"> | number
   bookingStatus?: Prisma.EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Booking"> | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -575,15 +752,25 @@ export type BookingScalarWhereWithAggregatesInput = {
   mileageFee?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  scheduledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  pickedUpAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  cancelledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
 }
 
 export type BookingCreateInput = {
   id?: string
+  bookingNumber: string
   dumpsterSize: number
   dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -596,9 +783,13 @@ export type BookingCreateInput = {
   zip: string
   placement?: string | null
   instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
   deliveryDate: Date | string
-  pickupDate: Date | string
-  rentalDays: number
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -606,17 +797,31 @@ export type BookingCreateInput = {
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   dumpster?: Prisma.DumpsterCreateNestedOneWithoutBookingsInput
+  addons?: Prisma.BookingAddonCreateNestedManyWithoutBookingInput
+  notes?: Prisma.BookingNoteCreateNestedManyWithoutBookingInput
+  history?: Prisma.BookingHistoryCreateNestedManyWithoutBookingInput
+  accessTokens?: Prisma.CustomerAccessTokenCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateInput = {
   id?: string
+  bookingNumber: string
   dumpsterId?: string | null
   dumpsterSize: number
   dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -629,9 +834,13 @@ export type BookingUncheckedCreateInput = {
   zip: string
   placement?: string | null
   instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
   deliveryDate: Date | string
-  pickupDate: Date | string
-  rentalDays: number
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -639,15 +848,29 @@ export type BookingUncheckedCreateInput = {
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  addons?: Prisma.BookingAddonUncheckedCreateNestedManyWithoutBookingInput
+  notes?: Prisma.BookingNoteUncheckedCreateNestedManyWithoutBookingInput
+  history?: Prisma.BookingHistoryUncheckedCreateNestedManyWithoutBookingInput
+  accessTokens?: Prisma.CustomerAccessTokenUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -660,9 +883,13 @@ export type BookingUpdateInput = {
   zip?: Prisma.StringFieldUpdateOperationsInput | string
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pickupDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rentalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -670,17 +897,31 @@ export type BookingUpdateInput = {
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dumpster?: Prisma.DumpsterUpdateOneWithoutBookingsNestedInput
+  addons?: Prisma.BookingAddonUpdateManyWithoutBookingNestedInput
+  notes?: Prisma.BookingNoteUpdateManyWithoutBookingNestedInput
+  history?: Prisma.BookingHistoryUpdateManyWithoutBookingNestedInput
+  accessTokens?: Prisma.CustomerAccessTokenUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
   dumpsterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -693,9 +934,13 @@ export type BookingUncheckedUpdateInput = {
   zip?: Prisma.StringFieldUpdateOperationsInput | string
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pickupDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rentalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -703,16 +948,30 @@ export type BookingUncheckedUpdateInput = {
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  addons?: Prisma.BookingAddonUncheckedUpdateManyWithoutBookingNestedInput
+  notes?: Prisma.BookingNoteUncheckedUpdateManyWithoutBookingNestedInput
+  history?: Prisma.BookingHistoryUncheckedUpdateManyWithoutBookingNestedInput
+  accessTokens?: Prisma.CustomerAccessTokenUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingCreateManyInput = {
   id?: string
+  bookingNumber: string
   dumpsterId?: string | null
   dumpsterSize: number
   dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -725,9 +984,13 @@ export type BookingCreateManyInput = {
   zip: string
   placement?: string | null
   instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
   deliveryDate: Date | string
-  pickupDate: Date | string
-  rentalDays: number
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -735,15 +998,25 @@ export type BookingCreateManyInput = {
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type BookingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -756,9 +1029,13 @@ export type BookingUpdateManyMutationInput = {
   zip?: Prisma.StringFieldUpdateOperationsInput | string
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pickupDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rentalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -766,16 +1043,26 @@ export type BookingUpdateManyMutationInput = {
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BookingUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
   dumpsterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -788,9 +1075,13 @@ export type BookingUncheckedUpdateManyInput = {
   zip?: Prisma.StringFieldUpdateOperationsInput | string
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pickupDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rentalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -798,7 +1089,14 @@ export type BookingUncheckedUpdateManyInput = {
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -815,9 +1113,12 @@ export type BookingOrderByRelationAggregateInput = {
 
 export type BookingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  bookingNumber?: Prisma.SortOrder
   dumpsterId?: Prisma.SortOrder
   dumpsterSize?: Prisma.SortOrder
   dumpsterLabel?: Prisma.SortOrder
+  material?: Prisma.SortOrder
+  productCode?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   projectType?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
@@ -830,9 +1131,13 @@ export type BookingCountOrderByAggregateInput = {
   zip?: Prisma.SortOrder
   placement?: Prisma.SortOrder
   instructions?: Prisma.SortOrder
+  customerNotes?: Prisma.SortOrder
+  locationVerified?: Prisma.SortOrder
+  locationVerificationNote?: Prisma.SortOrder
   deliveryDate?: Prisma.SortOrder
   pickupDate?: Prisma.SortOrder
-  rentalDays?: Prisma.SortOrder
+  pickupDateUnknown?: Prisma.SortOrder
+  rentalDaysIncluded?: Prisma.SortOrder
   bookingStatus?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
@@ -840,27 +1145,38 @@ export type BookingCountOrderByAggregateInput = {
   mileageFee?: Prisma.SortOrder
   extraDaysFee?: Prisma.SortOrder
   overageFee?: Prisma.SortOrder
+  addonsTotal?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  quotedAt?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
+  pickedUpAt?: Prisma.SortOrder
+  cancelledAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type BookingAvgOrderByAggregateInput = {
   dumpsterSize?: Prisma.SortOrder
-  rentalDays?: Prisma.SortOrder
+  rentalDaysIncluded?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
   deliveryFee?: Prisma.SortOrder
   mileageFee?: Prisma.SortOrder
   extraDaysFee?: Prisma.SortOrder
   overageFee?: Prisma.SortOrder
+  addonsTotal?: Prisma.SortOrder
   total?: Prisma.SortOrder
 }
 
 export type BookingMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  bookingNumber?: Prisma.SortOrder
   dumpsterId?: Prisma.SortOrder
   dumpsterSize?: Prisma.SortOrder
   dumpsterLabel?: Prisma.SortOrder
+  material?: Prisma.SortOrder
+  productCode?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   projectType?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
@@ -873,9 +1189,13 @@ export type BookingMaxOrderByAggregateInput = {
   zip?: Prisma.SortOrder
   placement?: Prisma.SortOrder
   instructions?: Prisma.SortOrder
+  customerNotes?: Prisma.SortOrder
+  locationVerified?: Prisma.SortOrder
+  locationVerificationNote?: Prisma.SortOrder
   deliveryDate?: Prisma.SortOrder
   pickupDate?: Prisma.SortOrder
-  rentalDays?: Prisma.SortOrder
+  pickupDateUnknown?: Prisma.SortOrder
+  rentalDaysIncluded?: Prisma.SortOrder
   bookingStatus?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
@@ -883,16 +1203,26 @@ export type BookingMaxOrderByAggregateInput = {
   mileageFee?: Prisma.SortOrder
   extraDaysFee?: Prisma.SortOrder
   overageFee?: Prisma.SortOrder
+  addonsTotal?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  quotedAt?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
+  pickedUpAt?: Prisma.SortOrder
+  cancelledAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type BookingMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  bookingNumber?: Prisma.SortOrder
   dumpsterId?: Prisma.SortOrder
   dumpsterSize?: Prisma.SortOrder
   dumpsterLabel?: Prisma.SortOrder
+  material?: Prisma.SortOrder
+  productCode?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   projectType?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
@@ -905,9 +1235,13 @@ export type BookingMinOrderByAggregateInput = {
   zip?: Prisma.SortOrder
   placement?: Prisma.SortOrder
   instructions?: Prisma.SortOrder
+  customerNotes?: Prisma.SortOrder
+  locationVerified?: Prisma.SortOrder
+  locationVerificationNote?: Prisma.SortOrder
   deliveryDate?: Prisma.SortOrder
   pickupDate?: Prisma.SortOrder
-  rentalDays?: Prisma.SortOrder
+  pickupDateUnknown?: Prisma.SortOrder
+  rentalDaysIncluded?: Prisma.SortOrder
   bookingStatus?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
@@ -915,20 +1249,33 @@ export type BookingMinOrderByAggregateInput = {
   mileageFee?: Prisma.SortOrder
   extraDaysFee?: Prisma.SortOrder
   overageFee?: Prisma.SortOrder
+  addonsTotal?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  quotedAt?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
+  pickedUpAt?: Prisma.SortOrder
+  cancelledAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type BookingSumOrderByAggregateInput = {
   dumpsterSize?: Prisma.SortOrder
-  rentalDays?: Prisma.SortOrder
+  rentalDaysIncluded?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
   deliveryFee?: Prisma.SortOrder
   mileageFee?: Prisma.SortOrder
   extraDaysFee?: Prisma.SortOrder
   overageFee?: Prisma.SortOrder
+  addonsTotal?: Prisma.SortOrder
   total?: Prisma.SortOrder
+}
+
+export type BookingScalarRelationFilter = {
+  is?: Prisma.BookingWhereInput
+  isNot?: Prisma.BookingWhereInput
 }
 
 export type BookingCreateNestedManyWithoutDumpsterInput = {
@@ -977,6 +1324,10 @@ export type EnumServiceTypeFieldUpdateOperationsInput = {
   set?: $Enums.ServiceType
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type EnumBookingStatusFieldUpdateOperationsInput = {
   set?: $Enums.BookingStatus
 }
@@ -993,10 +1344,69 @@ export type DecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
+export type BookingCreateNestedOneWithoutAddonsInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutAddonsInput, Prisma.BookingUncheckedCreateWithoutAddonsInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutAddonsInput
+  connect?: Prisma.BookingWhereUniqueInput
+}
+
+export type BookingUpdateOneRequiredWithoutAddonsNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutAddonsInput, Prisma.BookingUncheckedCreateWithoutAddonsInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutAddonsInput
+  upsert?: Prisma.BookingUpsertWithoutAddonsInput
+  connect?: Prisma.BookingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutAddonsInput, Prisma.BookingUpdateWithoutAddonsInput>, Prisma.BookingUncheckedUpdateWithoutAddonsInput>
+}
+
+export type BookingCreateNestedOneWithoutNotesInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutNotesInput, Prisma.BookingUncheckedCreateWithoutNotesInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutNotesInput
+  connect?: Prisma.BookingWhereUniqueInput
+}
+
+export type BookingUpdateOneRequiredWithoutNotesNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutNotesInput, Prisma.BookingUncheckedCreateWithoutNotesInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutNotesInput
+  upsert?: Prisma.BookingUpsertWithoutNotesInput
+  connect?: Prisma.BookingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutNotesInput, Prisma.BookingUpdateWithoutNotesInput>, Prisma.BookingUncheckedUpdateWithoutNotesInput>
+}
+
+export type BookingCreateNestedOneWithoutHistoryInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutHistoryInput, Prisma.BookingUncheckedCreateWithoutHistoryInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutHistoryInput
+  connect?: Prisma.BookingWhereUniqueInput
+}
+
+export type BookingUpdateOneRequiredWithoutHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutHistoryInput, Prisma.BookingUncheckedCreateWithoutHistoryInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutHistoryInput
+  upsert?: Prisma.BookingUpsertWithoutHistoryInput
+  connect?: Prisma.BookingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutHistoryInput, Prisma.BookingUpdateWithoutHistoryInput>, Prisma.BookingUncheckedUpdateWithoutHistoryInput>
+}
+
+export type BookingCreateNestedOneWithoutAccessTokensInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutAccessTokensInput, Prisma.BookingUncheckedCreateWithoutAccessTokensInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutAccessTokensInput
+  connect?: Prisma.BookingWhereUniqueInput
+}
+
+export type BookingUpdateOneRequiredWithoutAccessTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutAccessTokensInput, Prisma.BookingUncheckedCreateWithoutAccessTokensInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutAccessTokensInput
+  upsert?: Prisma.BookingUpsertWithoutAccessTokensInput
+  connect?: Prisma.BookingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutAccessTokensInput, Prisma.BookingUpdateWithoutAccessTokensInput>, Prisma.BookingUncheckedUpdateWithoutAccessTokensInput>
+}
+
 export type BookingCreateWithoutDumpsterInput = {
   id?: string
+  bookingNumber: string
   dumpsterSize: number
   dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -1009,9 +1419,13 @@ export type BookingCreateWithoutDumpsterInput = {
   zip: string
   placement?: string | null
   instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
   deliveryDate: Date | string
-  pickupDate: Date | string
-  rentalDays: number
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1019,15 +1433,29 @@ export type BookingCreateWithoutDumpsterInput = {
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  addons?: Prisma.BookingAddonCreateNestedManyWithoutBookingInput
+  notes?: Prisma.BookingNoteCreateNestedManyWithoutBookingInput
+  history?: Prisma.BookingHistoryCreateNestedManyWithoutBookingInput
+  accessTokens?: Prisma.CustomerAccessTokenCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutDumpsterInput = {
   id?: string
+  bookingNumber: string
   dumpsterSize: number
   dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -1040,9 +1468,13 @@ export type BookingUncheckedCreateWithoutDumpsterInput = {
   zip: string
   placement?: string | null
   instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
   deliveryDate: Date | string
-  pickupDate: Date | string
-  rentalDays: number
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1050,9 +1482,20 @@ export type BookingUncheckedCreateWithoutDumpsterInput = {
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  addons?: Prisma.BookingAddonUncheckedCreateNestedManyWithoutBookingInput
+  notes?: Prisma.BookingNoteUncheckedCreateNestedManyWithoutBookingInput
+  history?: Prisma.BookingHistoryUncheckedCreateNestedManyWithoutBookingInput
+  accessTokens?: Prisma.CustomerAccessTokenUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutDumpsterInput = {
@@ -1086,9 +1529,12 @@ export type BookingScalarWhereInput = {
   OR?: Prisma.BookingScalarWhereInput[]
   NOT?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
   id?: Prisma.StringFilter<"Booking"> | string
+  bookingNumber?: Prisma.StringFilter<"Booking"> | string
   dumpsterId?: Prisma.StringNullableFilter<"Booking"> | string | null
   dumpsterSize?: Prisma.IntFilter<"Booking"> | number
   dumpsterLabel?: Prisma.StringNullableFilter<"Booking"> | string | null
+  material?: Prisma.StringNullableFilter<"Booking"> | string | null
+  productCode?: Prisma.StringNullableFilter<"Booking"> | string | null
   serviceType?: Prisma.EnumServiceTypeFilter<"Booking"> | $Enums.ServiceType
   projectType?: Prisma.StringNullableFilter<"Booking"> | string | null
   customerName?: Prisma.StringFilter<"Booking"> | string
@@ -1101,9 +1547,13 @@ export type BookingScalarWhereInput = {
   zip?: Prisma.StringFilter<"Booking"> | string
   placement?: Prisma.StringNullableFilter<"Booking"> | string | null
   instructions?: Prisma.StringNullableFilter<"Booking"> | string | null
+  customerNotes?: Prisma.StringNullableFilter<"Booking"> | string | null
+  locationVerified?: Prisma.BoolFilter<"Booking"> | boolean
+  locationVerificationNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   deliveryDate?: Prisma.DateTimeFilter<"Booking"> | Date | string
-  pickupDate?: Prisma.DateTimeFilter<"Booking"> | Date | string
-  rentalDays?: Prisma.IntFilter<"Booking"> | number
+  pickupDate?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFilter<"Booking"> | boolean
+  rentalDaysIncluded?: Prisma.IntFilter<"Booking"> | number
   bookingStatus?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Booking"> | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1111,15 +1561,25 @@ export type BookingScalarWhereInput = {
   mileageFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  scheduledAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  pickedUpAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  cancelledAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
 }
 
-export type BookingCreateManyDumpsterInput = {
+export type BookingCreateWithoutAddonsInput = {
   id?: string
+  bookingNumber: string
   dumpsterSize: number
   dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -1132,9 +1592,13 @@ export type BookingCreateManyDumpsterInput = {
   zip: string
   placement?: string | null
   instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
   deliveryDate: Date | string
-  pickupDate: Date | string
-  rentalDays: number
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1142,15 +1606,873 @@ export type BookingCreateManyDumpsterInput = {
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dumpster?: Prisma.DumpsterCreateNestedOneWithoutBookingsInput
+  notes?: Prisma.BookingNoteCreateNestedManyWithoutBookingInput
+  history?: Prisma.BookingHistoryCreateNestedManyWithoutBookingInput
+  accessTokens?: Prisma.CustomerAccessTokenCreateNestedManyWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutAddonsInput = {
+  id?: string
+  bookingNumber: string
+  dumpsterId?: string | null
+  dumpsterSize: number
+  dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
+  serviceType?: $Enums.ServiceType
+  projectType?: string | null
+  customerName: string
+  customerPhone: string
+  customerEmail?: string | null
+  address1: string
+  address2?: string | null
+  city: string
+  state: string
+  zip: string
+  placement?: string | null
+  instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
+  deliveryDate: Date | string
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
+  bookingStatus?: $Enums.BookingStatus
+  paymentStatus?: $Enums.PaymentStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: Prisma.BookingNoteUncheckedCreateNestedManyWithoutBookingInput
+  history?: Prisma.BookingHistoryUncheckedCreateNestedManyWithoutBookingInput
+  accessTokens?: Prisma.CustomerAccessTokenUncheckedCreateNestedManyWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutAddonsInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutAddonsInput, Prisma.BookingUncheckedCreateWithoutAddonsInput>
+}
+
+export type BookingUpsertWithoutAddonsInput = {
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutAddonsInput, Prisma.BookingUncheckedUpdateWithoutAddonsInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutAddonsInput, Prisma.BookingUncheckedCreateWithoutAddonsInput>
+  where?: Prisma.BookingWhereInput
+}
+
+export type BookingUpdateToOneWithWhereWithoutAddonsInput = {
+  where?: Prisma.BookingWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutAddonsInput, Prisma.BookingUncheckedUpdateWithoutAddonsInput>
+}
+
+export type BookingUpdateWithoutAddonsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
+  dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
+  customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  zip?: Prisma.StringFieldUpdateOperationsInput | string
+  placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
+  bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dumpster?: Prisma.DumpsterUpdateOneWithoutBookingsNestedInput
+  notes?: Prisma.BookingNoteUpdateManyWithoutBookingNestedInput
+  history?: Prisma.BookingHistoryUpdateManyWithoutBookingNestedInput
+  accessTokens?: Prisma.CustomerAccessTokenUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutAddonsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  dumpsterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
+  dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
+  customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  zip?: Prisma.StringFieldUpdateOperationsInput | string
+  placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
+  bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.BookingNoteUncheckedUpdateManyWithoutBookingNestedInput
+  history?: Prisma.BookingHistoryUncheckedUpdateManyWithoutBookingNestedInput
+  accessTokens?: Prisma.CustomerAccessTokenUncheckedUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingCreateWithoutNotesInput = {
+  id?: string
+  bookingNumber: string
+  dumpsterSize: number
+  dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
+  serviceType?: $Enums.ServiceType
+  projectType?: string | null
+  customerName: string
+  customerPhone: string
+  customerEmail?: string | null
+  address1: string
+  address2?: string | null
+  city: string
+  state: string
+  zip: string
+  placement?: string | null
+  instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
+  deliveryDate: Date | string
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
+  bookingStatus?: $Enums.BookingStatus
+  paymentStatus?: $Enums.PaymentStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dumpster?: Prisma.DumpsterCreateNestedOneWithoutBookingsInput
+  addons?: Prisma.BookingAddonCreateNestedManyWithoutBookingInput
+  history?: Prisma.BookingHistoryCreateNestedManyWithoutBookingInput
+  accessTokens?: Prisma.CustomerAccessTokenCreateNestedManyWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutNotesInput = {
+  id?: string
+  bookingNumber: string
+  dumpsterId?: string | null
+  dumpsterSize: number
+  dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
+  serviceType?: $Enums.ServiceType
+  projectType?: string | null
+  customerName: string
+  customerPhone: string
+  customerEmail?: string | null
+  address1: string
+  address2?: string | null
+  city: string
+  state: string
+  zip: string
+  placement?: string | null
+  instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
+  deliveryDate: Date | string
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
+  bookingStatus?: $Enums.BookingStatus
+  paymentStatus?: $Enums.PaymentStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  addons?: Prisma.BookingAddonUncheckedCreateNestedManyWithoutBookingInput
+  history?: Prisma.BookingHistoryUncheckedCreateNestedManyWithoutBookingInput
+  accessTokens?: Prisma.CustomerAccessTokenUncheckedCreateNestedManyWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutNotesInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutNotesInput, Prisma.BookingUncheckedCreateWithoutNotesInput>
+}
+
+export type BookingUpsertWithoutNotesInput = {
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutNotesInput, Prisma.BookingUncheckedUpdateWithoutNotesInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutNotesInput, Prisma.BookingUncheckedCreateWithoutNotesInput>
+  where?: Prisma.BookingWhereInput
+}
+
+export type BookingUpdateToOneWithWhereWithoutNotesInput = {
+  where?: Prisma.BookingWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutNotesInput, Prisma.BookingUncheckedUpdateWithoutNotesInput>
+}
+
+export type BookingUpdateWithoutNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
+  dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
+  customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  zip?: Prisma.StringFieldUpdateOperationsInput | string
+  placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
+  bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dumpster?: Prisma.DumpsterUpdateOneWithoutBookingsNestedInput
+  addons?: Prisma.BookingAddonUpdateManyWithoutBookingNestedInput
+  history?: Prisma.BookingHistoryUpdateManyWithoutBookingNestedInput
+  accessTokens?: Prisma.CustomerAccessTokenUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutNotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  dumpsterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
+  dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
+  customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  zip?: Prisma.StringFieldUpdateOperationsInput | string
+  placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
+  bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  addons?: Prisma.BookingAddonUncheckedUpdateManyWithoutBookingNestedInput
+  history?: Prisma.BookingHistoryUncheckedUpdateManyWithoutBookingNestedInput
+  accessTokens?: Prisma.CustomerAccessTokenUncheckedUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingCreateWithoutHistoryInput = {
+  id?: string
+  bookingNumber: string
+  dumpsterSize: number
+  dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
+  serviceType?: $Enums.ServiceType
+  projectType?: string | null
+  customerName: string
+  customerPhone: string
+  customerEmail?: string | null
+  address1: string
+  address2?: string | null
+  city: string
+  state: string
+  zip: string
+  placement?: string | null
+  instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
+  deliveryDate: Date | string
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
+  bookingStatus?: $Enums.BookingStatus
+  paymentStatus?: $Enums.PaymentStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dumpster?: Prisma.DumpsterCreateNestedOneWithoutBookingsInput
+  addons?: Prisma.BookingAddonCreateNestedManyWithoutBookingInput
+  notes?: Prisma.BookingNoteCreateNestedManyWithoutBookingInput
+  accessTokens?: Prisma.CustomerAccessTokenCreateNestedManyWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutHistoryInput = {
+  id?: string
+  bookingNumber: string
+  dumpsterId?: string | null
+  dumpsterSize: number
+  dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
+  serviceType?: $Enums.ServiceType
+  projectType?: string | null
+  customerName: string
+  customerPhone: string
+  customerEmail?: string | null
+  address1: string
+  address2?: string | null
+  city: string
+  state: string
+  zip: string
+  placement?: string | null
+  instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
+  deliveryDate: Date | string
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
+  bookingStatus?: $Enums.BookingStatus
+  paymentStatus?: $Enums.PaymentStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  addons?: Prisma.BookingAddonUncheckedCreateNestedManyWithoutBookingInput
+  notes?: Prisma.BookingNoteUncheckedCreateNestedManyWithoutBookingInput
+  accessTokens?: Prisma.CustomerAccessTokenUncheckedCreateNestedManyWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutHistoryInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutHistoryInput, Prisma.BookingUncheckedCreateWithoutHistoryInput>
+}
+
+export type BookingUpsertWithoutHistoryInput = {
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutHistoryInput, Prisma.BookingUncheckedUpdateWithoutHistoryInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutHistoryInput, Prisma.BookingUncheckedCreateWithoutHistoryInput>
+  where?: Prisma.BookingWhereInput
+}
+
+export type BookingUpdateToOneWithWhereWithoutHistoryInput = {
+  where?: Prisma.BookingWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutHistoryInput, Prisma.BookingUncheckedUpdateWithoutHistoryInput>
+}
+
+export type BookingUpdateWithoutHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
+  dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
+  customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  zip?: Prisma.StringFieldUpdateOperationsInput | string
+  placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
+  bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dumpster?: Prisma.DumpsterUpdateOneWithoutBookingsNestedInput
+  addons?: Prisma.BookingAddonUpdateManyWithoutBookingNestedInput
+  notes?: Prisma.BookingNoteUpdateManyWithoutBookingNestedInput
+  accessTokens?: Prisma.CustomerAccessTokenUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  dumpsterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
+  dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
+  customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  zip?: Prisma.StringFieldUpdateOperationsInput | string
+  placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
+  bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  addons?: Prisma.BookingAddonUncheckedUpdateManyWithoutBookingNestedInput
+  notes?: Prisma.BookingNoteUncheckedUpdateManyWithoutBookingNestedInput
+  accessTokens?: Prisma.CustomerAccessTokenUncheckedUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingCreateWithoutAccessTokensInput = {
+  id?: string
+  bookingNumber: string
+  dumpsterSize: number
+  dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
+  serviceType?: $Enums.ServiceType
+  projectType?: string | null
+  customerName: string
+  customerPhone: string
+  customerEmail?: string | null
+  address1: string
+  address2?: string | null
+  city: string
+  state: string
+  zip: string
+  placement?: string | null
+  instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
+  deliveryDate: Date | string
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
+  bookingStatus?: $Enums.BookingStatus
+  paymentStatus?: $Enums.PaymentStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dumpster?: Prisma.DumpsterCreateNestedOneWithoutBookingsInput
+  addons?: Prisma.BookingAddonCreateNestedManyWithoutBookingInput
+  notes?: Prisma.BookingNoteCreateNestedManyWithoutBookingInput
+  history?: Prisma.BookingHistoryCreateNestedManyWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutAccessTokensInput = {
+  id?: string
+  bookingNumber: string
+  dumpsterId?: string | null
+  dumpsterSize: number
+  dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
+  serviceType?: $Enums.ServiceType
+  projectType?: string | null
+  customerName: string
+  customerPhone: string
+  customerEmail?: string | null
+  address1: string
+  address2?: string | null
+  city: string
+  state: string
+  zip: string
+  placement?: string | null
+  instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
+  deliveryDate: Date | string
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
+  bookingStatus?: $Enums.BookingStatus
+  paymentStatus?: $Enums.PaymentStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  addons?: Prisma.BookingAddonUncheckedCreateNestedManyWithoutBookingInput
+  notes?: Prisma.BookingNoteUncheckedCreateNestedManyWithoutBookingInput
+  history?: Prisma.BookingHistoryUncheckedCreateNestedManyWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutAccessTokensInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutAccessTokensInput, Prisma.BookingUncheckedCreateWithoutAccessTokensInput>
+}
+
+export type BookingUpsertWithoutAccessTokensInput = {
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutAccessTokensInput, Prisma.BookingUncheckedUpdateWithoutAccessTokensInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutAccessTokensInput, Prisma.BookingUncheckedCreateWithoutAccessTokensInput>
+  where?: Prisma.BookingWhereInput
+}
+
+export type BookingUpdateToOneWithWhereWithoutAccessTokensInput = {
+  where?: Prisma.BookingWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutAccessTokensInput, Prisma.BookingUncheckedUpdateWithoutAccessTokensInput>
+}
+
+export type BookingUpdateWithoutAccessTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
+  dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
+  customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  zip?: Prisma.StringFieldUpdateOperationsInput | string
+  placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
+  bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dumpster?: Prisma.DumpsterUpdateOneWithoutBookingsNestedInput
+  addons?: Prisma.BookingAddonUpdateManyWithoutBookingNestedInput
+  notes?: Prisma.BookingNoteUpdateManyWithoutBookingNestedInput
+  history?: Prisma.BookingHistoryUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutAccessTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  dumpsterId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
+  dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
+  projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerName?: Prisma.StringFieldUpdateOperationsInput | string
+  customerPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address1?: Prisma.StringFieldUpdateOperationsInput | string
+  address2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  zip?: Prisma.StringFieldUpdateOperationsInput | string
+  placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
+  bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  addons?: Prisma.BookingAddonUncheckedUpdateManyWithoutBookingNestedInput
+  notes?: Prisma.BookingNoteUncheckedUpdateManyWithoutBookingNestedInput
+  history?: Prisma.BookingHistoryUncheckedUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingCreateManyDumpsterInput = {
+  id?: string
+  bookingNumber: string
+  dumpsterSize: number
+  dumpsterLabel?: string | null
+  material?: string | null
+  productCode?: string | null
+  serviceType?: $Enums.ServiceType
+  projectType?: string | null
+  customerName: string
+  customerPhone: string
+  customerEmail?: string | null
+  address1: string
+  address2?: string | null
+  city: string
+  state: string
+  zip: string
+  placement?: string | null
+  instructions?: string | null
+  customerNotes?: string | null
+  locationVerified?: boolean
+  locationVerificationNote?: string | null
+  deliveryDate: Date | string
+  pickupDate?: Date | string | null
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: number
+  bookingStatus?: $Enums.BookingStatus
+  paymentStatus?: $Enums.PaymentStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  extraDaysFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  overageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Date | string | null
+  scheduledAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  pickedUpAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type BookingUpdateWithoutDumpsterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1163,9 +2485,13 @@ export type BookingUpdateWithoutDumpsterInput = {
   zip?: Prisma.StringFieldUpdateOperationsInput | string
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pickupDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rentalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1173,15 +2499,29 @@ export type BookingUpdateWithoutDumpsterInput = {
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  addons?: Prisma.BookingAddonUpdateManyWithoutBookingNestedInput
+  notes?: Prisma.BookingNoteUpdateManyWithoutBookingNestedInput
+  history?: Prisma.BookingHistoryUpdateManyWithoutBookingNestedInput
+  accessTokens?: Prisma.CustomerAccessTokenUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutDumpsterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1194,9 +2534,13 @@ export type BookingUncheckedUpdateWithoutDumpsterInput = {
   zip?: Prisma.StringFieldUpdateOperationsInput | string
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pickupDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rentalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1204,15 +2548,29 @@ export type BookingUncheckedUpdateWithoutDumpsterInput = {
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  addons?: Prisma.BookingAddonUncheckedUpdateManyWithoutBookingNestedInput
+  notes?: Prisma.BookingNoteUncheckedUpdateManyWithoutBookingNestedInput
+  history?: Prisma.BookingHistoryUncheckedUpdateManyWithoutBookingNestedInput
+  accessTokens?: Prisma.CustomerAccessTokenUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutDumpsterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingNumber?: Prisma.StringFieldUpdateOperationsInput | string
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1225,9 +2583,13 @@ export type BookingUncheckedUpdateManyWithoutDumpsterInput = {
   zip?: Prisma.StringFieldUpdateOperationsInput | string
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  locationVerificationNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pickupDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rentalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  pickupDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickupDateUnknown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rentalDaysIncluded?: Prisma.IntFieldUpdateOperationsInput | number
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1235,18 +2597,84 @@ export type BookingUncheckedUpdateManyWithoutDumpsterInput = {
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   extraDaysFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   overageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  addonsTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quotedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pickedUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
+/**
+ * Count Type BookingCountOutputType
+ */
+
+export type BookingCountOutputType = {
+  addons: number
+  notes: number
+  history: number
+  accessTokens: number
+}
+
+export type BookingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  addons?: boolean | BookingCountOutputTypeCountAddonsArgs
+  notes?: boolean | BookingCountOutputTypeCountNotesArgs
+  history?: boolean | BookingCountOutputTypeCountHistoryArgs
+  accessTokens?: boolean | BookingCountOutputTypeCountAccessTokensArgs
+}
+
+/**
+ * BookingCountOutputType without action
+ */
+export type BookingCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BookingCountOutputType
+   */
+  select?: Prisma.BookingCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * BookingCountOutputType without action
+ */
+export type BookingCountOutputTypeCountAddonsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingAddonWhereInput
+}
+
+/**
+ * BookingCountOutputType without action
+ */
+export type BookingCountOutputTypeCountNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingNoteWhereInput
+}
+
+/**
+ * BookingCountOutputType without action
+ */
+export type BookingCountOutputTypeCountHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingHistoryWhereInput
+}
+
+/**
+ * BookingCountOutputType without action
+ */
+export type BookingCountOutputTypeCountAccessTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CustomerAccessTokenWhereInput
+}
+
 
 export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  bookingNumber?: boolean
   dumpsterId?: boolean
   dumpsterSize?: boolean
   dumpsterLabel?: boolean
+  material?: boolean
+  productCode?: boolean
   serviceType?: boolean
   projectType?: boolean
   customerName?: boolean
@@ -1259,9 +2687,13 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   zip?: boolean
   placement?: boolean
   instructions?: boolean
+  customerNotes?: boolean
+  locationVerified?: boolean
+  locationVerificationNote?: boolean
   deliveryDate?: boolean
   pickupDate?: boolean
-  rentalDays?: boolean
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: boolean
   bookingStatus?: boolean
   paymentStatus?: boolean
   basePrice?: boolean
@@ -1269,17 +2701,32 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   mileageFee?: boolean
   extraDaysFee?: boolean
   overageFee?: boolean
+  addonsTotal?: boolean
   total?: boolean
+  quotedAt?: boolean
+  scheduledAt?: boolean
+  deliveredAt?: boolean
+  pickedUpAt?: boolean
+  cancelledAt?: boolean
+  completedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   dumpster?: boolean | Prisma.Booking$dumpsterArgs<ExtArgs>
+  addons?: boolean | Prisma.Booking$addonsArgs<ExtArgs>
+  notes?: boolean | Prisma.Booking$notesArgs<ExtArgs>
+  history?: boolean | Prisma.Booking$historyArgs<ExtArgs>
+  accessTokens?: boolean | Prisma.Booking$accessTokensArgs<ExtArgs>
+  _count?: boolean | Prisma.BookingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
 export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  bookingNumber?: boolean
   dumpsterId?: boolean
   dumpsterSize?: boolean
   dumpsterLabel?: boolean
+  material?: boolean
+  productCode?: boolean
   serviceType?: boolean
   projectType?: boolean
   customerName?: boolean
@@ -1292,9 +2739,13 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   zip?: boolean
   placement?: boolean
   instructions?: boolean
+  customerNotes?: boolean
+  locationVerified?: boolean
+  locationVerificationNote?: boolean
   deliveryDate?: boolean
   pickupDate?: boolean
-  rentalDays?: boolean
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: boolean
   bookingStatus?: boolean
   paymentStatus?: boolean
   basePrice?: boolean
@@ -1302,7 +2753,14 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   mileageFee?: boolean
   extraDaysFee?: boolean
   overageFee?: boolean
+  addonsTotal?: boolean
   total?: boolean
+  quotedAt?: boolean
+  scheduledAt?: boolean
+  deliveredAt?: boolean
+  pickedUpAt?: boolean
+  cancelledAt?: boolean
+  completedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   dumpster?: boolean | Prisma.Booking$dumpsterArgs<ExtArgs>
@@ -1310,9 +2768,12 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  bookingNumber?: boolean
   dumpsterId?: boolean
   dumpsterSize?: boolean
   dumpsterLabel?: boolean
+  material?: boolean
+  productCode?: boolean
   serviceType?: boolean
   projectType?: boolean
   customerName?: boolean
@@ -1325,9 +2786,13 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   zip?: boolean
   placement?: boolean
   instructions?: boolean
+  customerNotes?: boolean
+  locationVerified?: boolean
+  locationVerificationNote?: boolean
   deliveryDate?: boolean
   pickupDate?: boolean
-  rentalDays?: boolean
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: boolean
   bookingStatus?: boolean
   paymentStatus?: boolean
   basePrice?: boolean
@@ -1335,7 +2800,14 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   mileageFee?: boolean
   extraDaysFee?: boolean
   overageFee?: boolean
+  addonsTotal?: boolean
   total?: boolean
+  quotedAt?: boolean
+  scheduledAt?: boolean
+  deliveredAt?: boolean
+  pickedUpAt?: boolean
+  cancelledAt?: boolean
+  completedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   dumpster?: boolean | Prisma.Booking$dumpsterArgs<ExtArgs>
@@ -1343,9 +2815,12 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type BookingSelectScalar = {
   id?: boolean
+  bookingNumber?: boolean
   dumpsterId?: boolean
   dumpsterSize?: boolean
   dumpsterLabel?: boolean
+  material?: boolean
+  productCode?: boolean
   serviceType?: boolean
   projectType?: boolean
   customerName?: boolean
@@ -1358,9 +2833,13 @@ export type BookingSelectScalar = {
   zip?: boolean
   placement?: boolean
   instructions?: boolean
+  customerNotes?: boolean
+  locationVerified?: boolean
+  locationVerificationNote?: boolean
   deliveryDate?: boolean
   pickupDate?: boolean
-  rentalDays?: boolean
+  pickupDateUnknown?: boolean
+  rentalDaysIncluded?: boolean
   bookingStatus?: boolean
   paymentStatus?: boolean
   basePrice?: boolean
@@ -1368,14 +2847,26 @@ export type BookingSelectScalar = {
   mileageFee?: boolean
   extraDaysFee?: boolean
   overageFee?: boolean
+  addonsTotal?: boolean
   total?: boolean
+  quotedAt?: boolean
+  scheduledAt?: boolean
+  deliveredAt?: boolean
+  pickedUpAt?: boolean
+  cancelledAt?: boolean
+  completedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "dumpsterId" | "dumpsterSize" | "dumpsterLabel" | "serviceType" | "projectType" | "customerName" | "customerPhone" | "customerEmail" | "address1" | "address2" | "city" | "state" | "zip" | "placement" | "instructions" | "deliveryDate" | "pickupDate" | "rentalDays" | "bookingStatus" | "paymentStatus" | "basePrice" | "deliveryFee" | "mileageFee" | "extraDaysFee" | "overageFee" | "total" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bookingNumber" | "dumpsterId" | "dumpsterSize" | "dumpsterLabel" | "material" | "productCode" | "serviceType" | "projectType" | "customerName" | "customerPhone" | "customerEmail" | "address1" | "address2" | "city" | "state" | "zip" | "placement" | "instructions" | "customerNotes" | "locationVerified" | "locationVerificationNote" | "deliveryDate" | "pickupDate" | "pickupDateUnknown" | "rentalDaysIncluded" | "bookingStatus" | "paymentStatus" | "basePrice" | "deliveryFee" | "mileageFee" | "extraDaysFee" | "overageFee" | "addonsTotal" | "total" | "quotedAt" | "scheduledAt" | "deliveredAt" | "pickedUpAt" | "cancelledAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   dumpster?: boolean | Prisma.Booking$dumpsterArgs<ExtArgs>
+  addons?: boolean | Prisma.Booking$addonsArgs<ExtArgs>
+  notes?: boolean | Prisma.Booking$notesArgs<ExtArgs>
+  history?: boolean | Prisma.Booking$historyArgs<ExtArgs>
+  accessTokens?: boolean | Prisma.Booking$accessTokensArgs<ExtArgs>
+  _count?: boolean | Prisma.BookingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BookingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   dumpster?: boolean | Prisma.Booking$dumpsterArgs<ExtArgs>
@@ -1388,12 +2879,19 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Booking"
   objects: {
     dumpster: Prisma.$DumpsterPayload<ExtArgs> | null
+    addons: Prisma.$BookingAddonPayload<ExtArgs>[]
+    notes: Prisma.$BookingNotePayload<ExtArgs>[]
+    history: Prisma.$BookingHistoryPayload<ExtArgs>[]
+    accessTokens: Prisma.$CustomerAccessTokenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    bookingNumber: string
     dumpsterId: string | null
     dumpsterSize: number
     dumpsterLabel: string | null
+    material: string | null
+    productCode: string | null
     serviceType: $Enums.ServiceType
     projectType: string | null
     customerName: string
@@ -1406,9 +2904,13 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     zip: string
     placement: string | null
     instructions: string | null
+    customerNotes: string | null
+    locationVerified: boolean
+    locationVerificationNote: string | null
     deliveryDate: Date
-    pickupDate: Date
-    rentalDays: number
+    pickupDate: Date | null
+    pickupDateUnknown: boolean
+    rentalDaysIncluded: number
     bookingStatus: $Enums.BookingStatus
     paymentStatus: $Enums.PaymentStatus
     basePrice: runtime.Decimal
@@ -1416,7 +2918,14 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     mileageFee: runtime.Decimal
     extraDaysFee: runtime.Decimal
     overageFee: runtime.Decimal
+    addonsTotal: runtime.Decimal
     total: runtime.Decimal
+    quotedAt: Date | null
+    scheduledAt: Date | null
+    deliveredAt: Date | null
+    pickedUpAt: Date | null
+    cancelledAt: Date | null
+    completedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["booking"]>
@@ -1814,6 +3323,10 @@ readonly fields: BookingFieldRefs;
 export interface Prisma__BookingClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   dumpster<T extends Prisma.Booking$dumpsterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$dumpsterArgs<ExtArgs>>): Prisma.Prisma__DumpsterClient<runtime.Types.Result.GetResult<Prisma.$DumpsterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  addons<T extends Prisma.Booking$addonsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$addonsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingAddonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notes<T extends Prisma.Booking$notesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$notesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  history<T extends Prisma.Booking$historyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$historyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  accessTokens<T extends Prisma.Booking$accessTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$accessTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerAccessTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1844,9 +3357,12 @@ export interface Prisma__BookingClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface BookingFieldRefs {
   readonly id: Prisma.FieldRef<"Booking", 'String'>
+  readonly bookingNumber: Prisma.FieldRef<"Booking", 'String'>
   readonly dumpsterId: Prisma.FieldRef<"Booking", 'String'>
   readonly dumpsterSize: Prisma.FieldRef<"Booking", 'Int'>
   readonly dumpsterLabel: Prisma.FieldRef<"Booking", 'String'>
+  readonly material: Prisma.FieldRef<"Booking", 'String'>
+  readonly productCode: Prisma.FieldRef<"Booking", 'String'>
   readonly serviceType: Prisma.FieldRef<"Booking", 'ServiceType'>
   readonly projectType: Prisma.FieldRef<"Booking", 'String'>
   readonly customerName: Prisma.FieldRef<"Booking", 'String'>
@@ -1859,9 +3375,13 @@ export interface BookingFieldRefs {
   readonly zip: Prisma.FieldRef<"Booking", 'String'>
   readonly placement: Prisma.FieldRef<"Booking", 'String'>
   readonly instructions: Prisma.FieldRef<"Booking", 'String'>
+  readonly customerNotes: Prisma.FieldRef<"Booking", 'String'>
+  readonly locationVerified: Prisma.FieldRef<"Booking", 'Boolean'>
+  readonly locationVerificationNote: Prisma.FieldRef<"Booking", 'String'>
   readonly deliveryDate: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly pickupDate: Prisma.FieldRef<"Booking", 'DateTime'>
-  readonly rentalDays: Prisma.FieldRef<"Booking", 'Int'>
+  readonly pickupDateUnknown: Prisma.FieldRef<"Booking", 'Boolean'>
+  readonly rentalDaysIncluded: Prisma.FieldRef<"Booking", 'Int'>
   readonly bookingStatus: Prisma.FieldRef<"Booking", 'BookingStatus'>
   readonly paymentStatus: Prisma.FieldRef<"Booking", 'PaymentStatus'>
   readonly basePrice: Prisma.FieldRef<"Booking", 'Decimal'>
@@ -1869,7 +3389,14 @@ export interface BookingFieldRefs {
   readonly mileageFee: Prisma.FieldRef<"Booking", 'Decimal'>
   readonly extraDaysFee: Prisma.FieldRef<"Booking", 'Decimal'>
   readonly overageFee: Prisma.FieldRef<"Booking", 'Decimal'>
+  readonly addonsTotal: Prisma.FieldRef<"Booking", 'Decimal'>
   readonly total: Prisma.FieldRef<"Booking", 'Decimal'>
+  readonly quotedAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly scheduledAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly deliveredAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly pickedUpAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly cancelledAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly completedAt: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Booking", 'DateTime'>
 }
@@ -2289,6 +3816,102 @@ export type Booking$dumpsterArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   include?: Prisma.DumpsterInclude<ExtArgs> | null
   where?: Prisma.DumpsterWhereInput
+}
+
+/**
+ * Booking.addons
+ */
+export type Booking$addonsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BookingAddon
+   */
+  select?: Prisma.BookingAddonSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BookingAddon
+   */
+  omit?: Prisma.BookingAddonOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingAddonInclude<ExtArgs> | null
+  where?: Prisma.BookingAddonWhereInput
+  orderBy?: Prisma.BookingAddonOrderByWithRelationInput | Prisma.BookingAddonOrderByWithRelationInput[]
+  cursor?: Prisma.BookingAddonWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingAddonScalarFieldEnum | Prisma.BookingAddonScalarFieldEnum[]
+}
+
+/**
+ * Booking.notes
+ */
+export type Booking$notesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BookingNote
+   */
+  select?: Prisma.BookingNoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BookingNote
+   */
+  omit?: Prisma.BookingNoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingNoteInclude<ExtArgs> | null
+  where?: Prisma.BookingNoteWhereInput
+  orderBy?: Prisma.BookingNoteOrderByWithRelationInput | Prisma.BookingNoteOrderByWithRelationInput[]
+  cursor?: Prisma.BookingNoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingNoteScalarFieldEnum | Prisma.BookingNoteScalarFieldEnum[]
+}
+
+/**
+ * Booking.history
+ */
+export type Booking$historyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BookingHistory
+   */
+  select?: Prisma.BookingHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BookingHistory
+   */
+  omit?: Prisma.BookingHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingHistoryInclude<ExtArgs> | null
+  where?: Prisma.BookingHistoryWhereInput
+  orderBy?: Prisma.BookingHistoryOrderByWithRelationInput | Prisma.BookingHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.BookingHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingHistoryScalarFieldEnum | Prisma.BookingHistoryScalarFieldEnum[]
+}
+
+/**
+ * Booking.accessTokens
+ */
+export type Booking$accessTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CustomerAccessToken
+   */
+  select?: Prisma.CustomerAccessTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CustomerAccessToken
+   */
+  omit?: Prisma.CustomerAccessTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomerAccessTokenInclude<ExtArgs> | null
+  where?: Prisma.CustomerAccessTokenWhereInput
+  orderBy?: Prisma.CustomerAccessTokenOrderByWithRelationInput | Prisma.CustomerAccessTokenOrderByWithRelationInput[]
+  cursor?: Prisma.CustomerAccessTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CustomerAccessTokenScalarFieldEnum | Prisma.CustomerAccessTokenScalarFieldEnum[]
 }
 
 /**

@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models.js'
-export type * from './prismaNamespace.js'
+export type * from '../models.ts'
+export type * from './prismaNamespace.ts'
 
 export const Decimal = runtime.Decimal
 
@@ -52,7 +52,12 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Dumpster: 'Dumpster',
-  Booking: 'Booking'
+  Booking: 'Booking',
+  Addon: 'Addon',
+  BookingAddon: 'BookingAddon',
+  BookingNote: 'BookingNote',
+  BookingHistory: 'BookingHistory',
+  CustomerAccessToken: 'CustomerAccessToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -80,6 +85,7 @@ export const DumpsterScalarFieldEnum = {
   color: 'color',
   status: 'status',
   notes: 'notes',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -89,9 +95,12 @@ export type DumpsterScalarFieldEnum = (typeof DumpsterScalarFieldEnum)[keyof typ
 
 export const BookingScalarFieldEnum = {
   id: 'id',
+  bookingNumber: 'bookingNumber',
   dumpsterId: 'dumpsterId',
   dumpsterSize: 'dumpsterSize',
   dumpsterLabel: 'dumpsterLabel',
+  material: 'material',
+  productCode: 'productCode',
   serviceType: 'serviceType',
   projectType: 'projectType',
   customerName: 'customerName',
@@ -104,9 +113,13 @@ export const BookingScalarFieldEnum = {
   zip: 'zip',
   placement: 'placement',
   instructions: 'instructions',
+  customerNotes: 'customerNotes',
+  locationVerified: 'locationVerified',
+  locationVerificationNote: 'locationVerificationNote',
   deliveryDate: 'deliveryDate',
   pickupDate: 'pickupDate',
-  rentalDays: 'rentalDays',
+  pickupDateUnknown: 'pickupDateUnknown',
+  rentalDaysIncluded: 'rentalDaysIncluded',
   bookingStatus: 'bookingStatus',
   paymentStatus: 'paymentStatus',
   basePrice: 'basePrice',
@@ -114,12 +127,86 @@ export const BookingScalarFieldEnum = {
   mileageFee: 'mileageFee',
   extraDaysFee: 'extraDaysFee',
   overageFee: 'overageFee',
+  addonsTotal: 'addonsTotal',
   total: 'total',
+  quotedAt: 'quotedAt',
+  scheduledAt: 'scheduledAt',
+  deliveredAt: 'deliveredAt',
+  pickedUpAt: 'pickedUpAt',
+  cancelledAt: 'cancelledAt',
+  completedAt: 'completedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const AddonScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AddonScalarFieldEnum = (typeof AddonScalarFieldEnum)[keyof typeof AddonScalarFieldEnum]
+
+
+export const BookingAddonScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  addonId: 'addonId',
+  addonCodeSnapshot: 'addonCodeSnapshot',
+  addonNameSnapshot: 'addonNameSnapshot',
+  addonPriceSnapshot: 'addonPriceSnapshot',
+  quantity: 'quantity',
+  createdAt: 'createdAt'
+} as const
+
+export type BookingAddonScalarFieldEnum = (typeof BookingAddonScalarFieldEnum)[keyof typeof BookingAddonScalarFieldEnum]
+
+
+export const BookingNoteScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  visibility: 'visibility',
+  body: 'body',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookingNoteScalarFieldEnum = (typeof BookingNoteScalarFieldEnum)[keyof typeof BookingNoteScalarFieldEnum]
+
+
+export const BookingHistoryScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  eventType: 'eventType',
+  actorType: 'actorType',
+  actorLabel: 'actorLabel',
+  summary: 'summary',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type BookingHistoryScalarFieldEnum = (typeof BookingHistoryScalarFieldEnum)[keyof typeof BookingHistoryScalarFieldEnum]
+
+
+export const CustomerAccessTokenScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  lastUsedAt: 'lastUsedAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type CustomerAccessTokenScalarFieldEnum = (typeof CustomerAccessTokenScalarFieldEnum)[keyof typeof CustomerAccessTokenScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -128,6 +215,14 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -144,4 +239,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

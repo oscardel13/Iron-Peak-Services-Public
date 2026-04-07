@@ -65,7 +65,7 @@ export default function BookingListSection({
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="font-semibold text-gray-900">
-                      {booking.customer.name}
+                      {booking.customerName}
                     </p>
                     <p className="text-sm text-gray-500">{booking.id}</p>
                   </div>
@@ -80,11 +80,11 @@ export default function BookingListSection({
                 </div>
 
                 <div className="mt-3 space-y-1 text-sm text-gray-600">
-                  <p>{booking.service.projectType}</p>
+                  <p>{booking.projectType}</p>
                   <p>
-                    {booking.service.city}, {booking.service.state}
+                    {booking.city}, {booking.state}
                   </p>
-                  <p>{formatDate(booking.schedule.deliveryDate)}</p>
+                  <p>{formatDate(booking.deliveryDate)}</p>
                 </div>
 
                 <div className="mt-3 flex items-center justify-between text-sm">
@@ -97,7 +97,7 @@ export default function BookingListSection({
                   </span>
 
                   <span className="font-semibold text-gray-900">
-                    {formatCurrency(booking.pricing.total)}
+                    {formatCurrency(booking.total)}
                   </span>
                 </div>
               </button>

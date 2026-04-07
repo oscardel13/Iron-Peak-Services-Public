@@ -3,11 +3,11 @@
 import StatCard from "../../components/StatCard/statCard.component";
 
 export default function InventorySummaryCards({ inventory }) {
-  const available = inventory.filter((item) => item.status === "available").length;
-  const reserved = inventory.filter((item) => item.status === "reserved").length;
-  const inUse = inventory.filter((item) => item.status === "in_use").length;
+  const available = inventory.filter((item) => item.status === "AVAILABLE").length;
+  const reserved = inventory.filter((item) => item.status === "RESERVED").length;
+  const inUse = inventory.filter((item) => item.status === "IN_USE").length;
   const maintenance = inventory.filter(
-    (item) => item.status === "maintenance" || item.status === "out_of_service"
+    (item) => item.status === "MAINTENANCE" || item.status === "OUT_OF_SERVICE"
   ).length;
 
   return (

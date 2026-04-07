@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import StatCard from "../components/StatCard/statCard.component";
 import {
     formatCurrency,
@@ -11,12 +11,28 @@ import {
 } from "@/data/mock-bookings";
 import BookingCardSection from "../components/booking-card-section/booking-card-section.component";
 import BookingsListSection from "../components/bookings-section/bookings-section.component"
+import { getAPI } from "../../../../utils/api";
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState(MOCK_BOOKINGS);
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState(MOCK_BOOKINGS[0]?.id || null);
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try{
+        console.log("Fetching bookings...");
+        const response = await getAPI("/bookings");
+        console.log("Fetched bookings:", response.data);
+        setBookings(response.data);
+      }
+      catch(error){
+        console.error("Failed to fetch bookings:", error);
+      }
+    };
+    fetchBookings();
+  }, []);
 
   const selectedBooking = bookings.find((b) => b.id === selectedId) || null;
 
@@ -30,14 +46,14 @@ export default function BookingsPage() {
     return bookings.filter((booking) => {
       const haystack = [
         booking.id,
-        booking.customer.name,
-        booking.customer.phone,
-        booking.customer.email,
-        booking.service.projectType,
-        booking.service.address1,
-        booking.service.city,
-        booking.service.state,
-        booking.service.zip,
+        booking.customerName,
+        booking.customerPhone,
+        booking.customerEmail,
+        booking.serviceType,
+        booking.address1,
+        booking.city,
+        booking.state,
+        booking.zip,
         booking.dumpsterLabel,
         booking.bookingStatus,
         booking.paymentStatus,
@@ -51,11 +67,11 @@ export default function BookingsPage() {
   }, [bookings, search]);
 
   const summary = useMemo(() => {
-    const active = bookings.filter((b) => b.bookingStatus === "active").length;
+    const active = bookings.filter((b) => b.bookingStatus === "ACTIVE").length;
     const scheduled = bookings.filter(
-      (b) => b.bookingStatus === "scheduled"
+      (b) => b.bookingStatus === "SCHEDULED"
     ).length;
-    const quotes = bookings.filter((b) => b.bookingStatus === "quote").length;
+    const quotes = bookings.filter((b) => b.bookingStatus === "QUOTE").length;
     const revenue = bookings
       .filter((b) => b.paymentStatus === "paid" || b.paymentStatus === "deposit_paid")
       .reduce((sum, b) => sum + (b.pricing.total || 0), 0);

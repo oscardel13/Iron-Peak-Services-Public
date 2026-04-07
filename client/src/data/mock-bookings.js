@@ -1,59 +1,53 @@
 export const BOOKING_STATUSES = [
-  "quote",
-  "scheduled",
-  "active",
-  "completed",
-  "cancelled",
+  "QUOTE",
+  "SCHEDULED",
+  "ACTIVE",
+  "COMPLETED",
+  "CANCELLED",
 ];
 
 export const PAYMENT_STATUSES = [
-  "unpaid",
-  "deposit_paid",
-  "paid",
-  "refunded",
+  "UNPAID",
+  "DEPOSIT_PAID",
+  "PAID",
+  "REFUNDED",
 ];
 
 export const MOCK_BOOKINGS = [
   {
     id: "booking-1001",
+    bookingNumber: "B-1001",
+
     dumpsterId: "dumpster-17-2",
     dumpsterSize: 17,
     dumpsterLabel: "17 Yard Dumpster #2",
 
-    customer: {
-      name: "John Martinez",
-      phone: "(720) 555-0142",
-      email: "john.martinez@example.com",
-    },
+    customerName: "John Martinez",
+    customerPhone: "(720) 555-0142",
+    customerEmail: "john.martinez@example.com",
 
-    service: {
-      type: "dumpster-rental",
-      projectType: "Garage Cleanout",
-      address1: "1423 Elm Street",
-      city: "Denver",
-      state: "CO",
-      zip: "80219",
-      placement: "Driveway",
-      instructions: "Please place on left side of driveway near garage.",
-    },
+    projectType: "Garage Cleanout",
+    address1: "1423 Elm Street",
+    city: "Denver",
+    state: "CO",
+    zip: "80219",
+    placement: "Driveway",
+    instructions: "Place on left side near garage",
 
-    schedule: {
-      deliveryDate: "2026-03-17",
-      pickupDate: "2026-03-21",
-      rentalDays: 4,
-    },
+    deliveryDate: "2026-03-17",
+    pickupDate: "2026-03-21",
+    pickupDateUnknown: false,
+    rentalDays: 4,
 
-    pricing: {
-      basePrice: 425,
-      deliveryFee: 0,
-      mileageFee: 0,
-      extraDaysFee: 0,
-      overageFee: 0,
-      total: 425,
-    },
+    basePrice: 425,
+    deliveryFee: 0,
+    mileageFee: 0,
+    extraDaysFee: 0,
+    overageFee: 0,
+    total: 425,
 
-    paymentStatus: "deposit_paid",
-    bookingStatus: "active",
+    paymentStatus: "DEPOSIT_PAID",
+    bookingStatus: "ACTIVE",
 
     createdAt: "2026-03-12T09:15:00.000Z",
     updatedAt: "2026-03-13T08:45:00.000Z",
@@ -61,44 +55,38 @@ export const MOCK_BOOKINGS = [
 
   {
     id: "booking-1002",
+    bookingNumber: "B-1002",
+
     dumpsterId: "dumpster-22-1",
     dumpsterSize: 22,
     dumpsterLabel: "22 Yard Dumpster #1",
 
-    customer: {
-      name: "Sarah Nguyen",
-      phone: "(303) 555-0187",
-      email: "sarah.nguyen@example.com",
-    },
+    customerName: "Sarah Nguyen",
+    customerPhone: "(303) 555-0187",
+    customerEmail: "sarah.nguyen@example.com",
 
-    service: {
-      type: "dumpster-rental",
-      projectType: "Kitchen Remodel",
-      address1: "7845 W 52nd Avenue",
-      city: "Arvada",
-      state: "CO",
-      zip: "80002",
-      placement: "Driveway",
-      instructions: "Call when 30 minutes out. Gate should be open.",
-    },
+    projectType: "Kitchen Remodel",
+    address1: "7845 W 52nd Avenue",
+    city: "Arvada",
+    state: "CO",
+    zip: "80002",
+    placement: "Driveway",
+    instructions: "Call when 30 minutes out",
 
-    schedule: {
-      deliveryDate: "2026-03-18",
-      pickupDate: "2026-03-25",
-      rentalDays: 7,
-    },
+    deliveryDate: "2026-03-18",
+    pickupDate: "2026-03-25",
+    pickupDateUnknown: false,
+    rentalDays: 7,
 
-    pricing: {
-      basePrice: 525,
-      deliveryFee: 0,
-      mileageFee: 0,
-      extraDaysFee: 0,
-      overageFee: 0,
-      total: 525,
-    },
+    basePrice: 525,
+    deliveryFee: 0,
+    mileageFee: 0,
+    extraDaysFee: 0,
+    overageFee: 0,
+    total: 525,
 
-    paymentStatus: "unpaid",
-    bookingStatus: "scheduled",
+    paymentStatus: "UNPAID",
+    bookingStatus: "SCHEDULED",
 
     createdAt: "2026-03-13T12:20:00.000Z",
     updatedAt: "2026-03-13T12:20:00.000Z",
@@ -106,44 +94,38 @@ export const MOCK_BOOKINGS = [
 
   {
     id: "booking-1003",
+    bookingNumber: "B-1003",
+
     dumpsterId: "dumpster-17-1",
     dumpsterSize: 17,
     dumpsterLabel: "17 Yard Dumpster #1",
 
-    customer: {
-      name: "Peak Build Co.",
-      phone: "(303) 555-0105",
-      email: "office@peakbuildco.com",
-    },
+    customerName: "Peak Build Co.",
+    customerPhone: "(303) 555-0105",
+    customerEmail: "office@peakbuildco.com",
 
-    service: {
-      type: "dumpster-rental",
-      projectType: "Roof Tear-Off",
-      address1: "2138 S Broadway",
-      city: "Englewood",
-      state: "CO",
-      zip: "80113",
-      placement: "Street",
-      instructions: "Permit already approved. Place in front of property.",
-    },
+    projectType: "Roof Tear-Off",
+    address1: "2138 S Broadway",
+    city: "Englewood",
+    state: "CO",
+    zip: "80113",
+    placement: "Street",
+    instructions: "Permit approved",
 
-    schedule: {
-      deliveryDate: "2026-03-19",
-      pickupDate: "2026-03-24",
-      rentalDays: 5,
-    },
+    deliveryDate: "2026-03-19",
+    pickupDate: "2026-03-24",
+    pickupDateUnknown: false,
+    rentalDays: 5,
 
-    pricing: {
-      basePrice: 425,
-      deliveryFee: 0,
-      mileageFee: 15,
-      extraDaysFee: 0,
-      overageFee: 0,
-      total: 440,
-    },
+    basePrice: 425,
+    deliveryFee: 0,
+    mileageFee: 15,
+    extraDaysFee: 0,
+    overageFee: 0,
+    total: 440,
 
-    paymentStatus: "paid",
-    bookingStatus: "scheduled",
+    paymentStatus: "PAID",
+    bookingStatus: "SCHEDULED",
 
     createdAt: "2026-03-10T15:42:00.000Z",
     updatedAt: "2026-03-12T10:00:00.000Z",
@@ -151,44 +133,38 @@ export const MOCK_BOOKINGS = [
 
   {
     id: "booking-1004",
+    bookingNumber: "B-1004",
+
     dumpsterId: null,
     dumpsterSize: 22,
     dumpsterLabel: null,
 
-    customer: {
-      name: "Melissa Carter",
-      phone: "(720) 555-0171",
-      email: "melissa.carter@example.com",
-    },
+    customerName: "Melissa Carter",
+    customerPhone: "(720) 555-0171",
+    customerEmail: "melissa.carter@example.com",
 
-    service: {
-      type: "dumpster-rental",
-      projectType: "Estate Cleanout",
-      address1: "9801 E 56th Avenue",
-      city: "Commerce City",
-      state: "CO",
-      zip: "80022",
-      placement: "Driveway",
-      instructions: "Need recommendation on size before confirming.",
-    },
+    projectType: "Estate Cleanout",
+    address1: "9801 E 56th Avenue",
+    city: "Commerce City",
+    state: "CO",
+    zip: "80022",
+    placement: "Driveway",
+    instructions: "Needs size recommendation",
 
-    schedule: {
-      deliveryDate: "2026-03-22",
-      pickupDate: "2026-03-29",
-      rentalDays: 7,
-    },
+    deliveryDate: "2026-03-22",
+    pickupDate: null,
+    pickupDateUnknown: true,
+    rentalDays: 7,
 
-    pricing: {
-      basePrice: 525,
-      deliveryFee: 0,
-      mileageFee: 0,
-      extraDaysFee: 0,
-      overageFee: 0,
-      total: 525,
-    },
+    basePrice: 525,
+    deliveryFee: 0,
+    mileageFee: 0,
+    extraDaysFee: 0,
+    overageFee: 0,
+    total: 525,
 
-    paymentStatus: "unpaid",
-    bookingStatus: "quote",
+    paymentStatus: "UNPAID",
+    bookingStatus: "QUOTE",
 
     createdAt: "2026-03-13T16:05:00.000Z",
     updatedAt: "2026-03-13T16:05:00.000Z",
@@ -196,44 +172,38 @@ export const MOCK_BOOKINGS = [
 
   {
     id: "booking-1005",
+    bookingNumber: "B-1005",
+
     dumpsterId: "dumpster-17-1",
     dumpsterSize: 17,
     dumpsterLabel: "17 Yard Dumpster #1",
 
-    customer: {
-      name: "Apex Property Services",
-      phone: "(303) 555-0190",
-      email: "dispatch@apexpropertyservices.com",
-    },
+    customerName: "Apex Property Services",
+    customerPhone: "(303) 555-0190",
+    customerEmail: "dispatch@apexpropertyservices.com",
 
-    service: {
-      type: "dumpster-rental",
-      projectType: "Tenant Turnover Cleanup",
-      address1: "4411 Federal Blvd",
-      city: "Denver",
-      state: "CO",
-      zip: "80211",
-      placement: "Alley",
-      instructions: "Use alley access behind building.",
-    },
+    projectType: "Tenant Cleanup",
+    address1: "4411 Federal Blvd",
+    city: "Denver",
+    state: "CO",
+    zip: "80211",
+    placement: "Alley",
+    instructions: "Use alley access",
 
-    schedule: {
-      deliveryDate: "2026-03-07",
-      pickupDate: "2026-03-11",
-      rentalDays: 4,
-    },
+    deliveryDate: "2026-03-07",
+    pickupDate: "2026-03-11",
+    pickupDateUnknown: false,
+    rentalDays: 4,
 
-    pricing: {
-      basePrice: 425,
-      deliveryFee: 0,
-      mileageFee: 0,
-      extraDaysFee: 0,
-      overageFee: 65,
-      total: 490,
-    },
+    basePrice: 425,
+    deliveryFee: 0,
+    mileageFee: 0,
+    extraDaysFee: 0,
+    overageFee: 65,
+    total: 490,
 
-    paymentStatus: "paid",
-    bookingStatus: "completed",
+    paymentStatus: "PAID",
+    bookingStatus: "COMPLETED",
 
     createdAt: "2026-03-01T11:30:00.000Z",
     updatedAt: "2026-03-11T17:10:00.000Z",

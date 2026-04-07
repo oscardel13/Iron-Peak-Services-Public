@@ -12,8 +12,9 @@
 export const DumpsterStatus = {
   AVAILABLE: 'AVAILABLE',
   RESERVED: 'RESERVED',
-  ACTIVE: 'ACTIVE',
-  MAINTENANCE: 'MAINTENANCE'
+  IN_USE: 'IN_USE',
+  MAINTENANCE: 'MAINTENANCE',
+  OUT_OF_SERVICE: 'OUT_OF_SERVICE'
 } as const
 
 export type DumpsterStatus = (typeof DumpsterStatus)[keyof typeof DumpsterStatus]
@@ -32,9 +33,12 @@ export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
 
 export const PaymentStatus = {
   UNPAID: 'UNPAID',
+  AUTHORIZED: 'AUTHORIZED',
   DEPOSIT_PAID: 'DEPOSIT_PAID',
   PAID: 'PAID',
-  REFUNDED: 'REFUNDED'
+  PARTIALLY_REFUNDED: 'PARTIALLY_REFUNDED',
+  REFUNDED: 'REFUNDED',
+  FAILED: 'FAILED'
 } as const
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
@@ -47,3 +51,20 @@ export const ServiceType = {
 } as const
 
 export type ServiceType = (typeof ServiceType)[keyof typeof ServiceType]
+
+
+export const NoteVisibility = {
+  INTERNAL: 'INTERNAL',
+  CUSTOMER: 'CUSTOMER'
+} as const
+
+export type NoteVisibility = (typeof NoteVisibility)[keyof typeof NoteVisibility]
+
+
+export const BookingActorType = {
+  ADMIN: 'ADMIN',
+  CUSTOMER_LINK: 'CUSTOMER_LINK',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type BookingActorType = (typeof BookingActorType)[keyof typeof BookingActorType]

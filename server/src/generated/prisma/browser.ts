@@ -13,10 +13,10 @@
  * 🟢 You can import this file directly.
  */
 
-import * as Prisma from './internal/prismaNamespaceBrowser.js'
+import * as Prisma from './internal/prismaNamespaceBrowser.ts'
 export { Prisma }
-export * as $Enums from './enums.js'
-export * from './enums.js';
+export * as $Enums from './enums.ts'
+export * from './enums.ts';
 /**
  * Model Dumpster
  * 
@@ -27,3 +27,28 @@ export type Dumpster = Prisma.DumpsterModel
  * 
  */
 export type Booking = Prisma.BookingModel
+/**
+ * Model Addon
+ * 
+ */
+export type Addon = Prisma.AddonModel
+/**
+ * Model BookingAddon
+ * 
+ */
+export type BookingAddon = Prisma.BookingAddonModel
+/**
+ * Model BookingNote
+ * 
+ */
+export type BookingNote = Prisma.BookingNoteModel
+/**
+ * Model BookingHistory
+ * 
+ */
+export type BookingHistory = Prisma.BookingHistoryModel
+/**
+ * Model CustomerAccessToken
+ * 
+ */
+export type CustomerAccessToken = Prisma.CustomerAccessTokenModel

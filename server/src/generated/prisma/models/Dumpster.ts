@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums.ts"
+import type * as Prisma from "../internal/prismaNamespace.ts"
 
 /**
  * Model Dumpster
@@ -43,6 +43,7 @@ export type DumpsterMinAggregateOutputType = {
   color: string | null
   status: $Enums.DumpsterStatus | null
   notes: string | null
+  isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +57,7 @@ export type DumpsterMaxAggregateOutputType = {
   color: string | null
   status: $Enums.DumpsterStatus | null
   notes: string | null
+  isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -69,6 +71,7 @@ export type DumpsterCountAggregateOutputType = {
   color: number
   status: number
   notes: number
+  isActive: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -92,6 +95,7 @@ export type DumpsterMinAggregateInputType = {
   color?: true
   status?: true
   notes?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -105,6 +109,7 @@ export type DumpsterMaxAggregateInputType = {
   color?: true
   status?: true
   notes?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -118,6 +123,7 @@ export type DumpsterCountAggregateInputType = {
   color?: true
   status?: true
   notes?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -218,6 +224,7 @@ export type DumpsterGroupByOutputType = {
   color: string | null
   status: $Enums.DumpsterStatus
   notes: string | null
+  isActive: boolean
   createdAt: Date
   updatedAt: Date
   _count: DumpsterCountAggregateOutputType | null
@@ -227,7 +234,7 @@ export type DumpsterGroupByOutputType = {
   _max: DumpsterMaxAggregateOutputType | null
 }
 
-type GetDumpsterGroupByPayload<T extends DumpsterGroupByArgs> = Prisma.PrismaPromise<
+export type GetDumpsterGroupByPayload<T extends DumpsterGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<DumpsterGroupByOutputType, T['by']> &
       {
@@ -254,6 +261,7 @@ export type DumpsterWhereInput = {
   color?: Prisma.StringNullableFilter<"Dumpster"> | string | null
   status?: Prisma.EnumDumpsterStatusFilter<"Dumpster"> | $Enums.DumpsterStatus
   notes?: Prisma.StringNullableFilter<"Dumpster"> | string | null
+  isActive?: Prisma.BoolFilter<"Dumpster"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Dumpster"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Dumpster"> | Date | string
   bookings?: Prisma.BookingListRelationFilter
@@ -268,6 +276,7 @@ export type DumpsterOrderByWithRelationInput = {
   color?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   bookings?: Prisma.BookingOrderByRelationAggregateInput
@@ -285,6 +294,7 @@ export type DumpsterWhereUniqueInput = Prisma.AtLeast<{
   color?: Prisma.StringNullableFilter<"Dumpster"> | string | null
   status?: Prisma.EnumDumpsterStatusFilter<"Dumpster"> | $Enums.DumpsterStatus
   notes?: Prisma.StringNullableFilter<"Dumpster"> | string | null
+  isActive?: Prisma.BoolFilter<"Dumpster"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Dumpster"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Dumpster"> | Date | string
   bookings?: Prisma.BookingListRelationFilter
@@ -299,6 +309,7 @@ export type DumpsterOrderByWithAggregationInput = {
   color?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.DumpsterCountOrderByAggregateInput
@@ -320,6 +331,7 @@ export type DumpsterScalarWhereWithAggregatesInput = {
   color?: Prisma.StringNullableWithAggregatesFilter<"Dumpster"> | string | null
   status?: Prisma.EnumDumpsterStatusWithAggregatesFilter<"Dumpster"> | $Enums.DumpsterStatus
   notes?: Prisma.StringNullableWithAggregatesFilter<"Dumpster"> | string | null
+  isActive?: Prisma.BoolWithAggregatesFilter<"Dumpster"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Dumpster"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Dumpster"> | Date | string
 }
@@ -333,6 +345,7 @@ export type DumpsterCreateInput = {
   color?: string | null
   status?: $Enums.DumpsterStatus
   notes?: string | null
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingCreateNestedManyWithoutDumpsterInput
@@ -347,6 +360,7 @@ export type DumpsterUncheckedCreateInput = {
   color?: string | null
   status?: $Enums.DumpsterStatus
   notes?: string | null
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutDumpsterInput
@@ -361,6 +375,7 @@ export type DumpsterUpdateInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUpdateManyWithoutDumpsterNestedInput
@@ -375,6 +390,7 @@ export type DumpsterUncheckedUpdateInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutDumpsterNestedInput
@@ -389,6 +405,7 @@ export type DumpsterCreateManyInput = {
   color?: string | null
   status?: $Enums.DumpsterStatus
   notes?: string | null
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -402,6 +419,7 @@ export type DumpsterUpdateManyMutationInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -415,6 +433,7 @@ export type DumpsterUncheckedUpdateManyInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -428,6 +447,7 @@ export type DumpsterCountOrderByAggregateInput = {
   color?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -445,6 +465,7 @@ export type DumpsterMaxOrderByAggregateInput = {
   color?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -458,6 +479,7 @@ export type DumpsterMinOrderByAggregateInput = {
   color?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -491,6 +513,10 @@ export type EnumDumpsterStatusFieldUpdateOperationsInput = {
   set?: $Enums.DumpsterStatus
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
@@ -520,6 +546,7 @@ export type DumpsterCreateWithoutBookingsInput = {
   color?: string | null
   status?: $Enums.DumpsterStatus
   notes?: string | null
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -533,6 +560,7 @@ export type DumpsterUncheckedCreateWithoutBookingsInput = {
   color?: string | null
   status?: $Enums.DumpsterStatus
   notes?: string | null
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -562,6 +590,7 @@ export type DumpsterUpdateWithoutBookingsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -575,6 +604,7 @@ export type DumpsterUncheckedUpdateWithoutBookingsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -619,6 +649,7 @@ export type DumpsterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   color?: boolean
   status?: boolean
   notes?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   bookings?: boolean | Prisma.Dumpster$bookingsArgs<ExtArgs>
@@ -634,6 +665,7 @@ export type DumpsterSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   color?: boolean
   status?: boolean
   notes?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["dumpster"]>
@@ -647,6 +679,7 @@ export type DumpsterSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   color?: boolean
   status?: boolean
   notes?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["dumpster"]>
@@ -660,11 +693,12 @@ export type DumpsterSelectScalar = {
   color?: boolean
   status?: boolean
   notes?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DumpsterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "size" | "sizeLabel" | "serialNumber" | "color" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["dumpster"]>
+export type DumpsterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "size" | "sizeLabel" | "serialNumber" | "color" | "status" | "notes" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["dumpster"]>
 export type DumpsterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   bookings?: boolean | Prisma.Dumpster$bookingsArgs<ExtArgs>
   _count?: boolean | Prisma.DumpsterCountOutputTypeDefaultArgs<ExtArgs>
@@ -686,6 +720,7 @@ export type $DumpsterPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     color: string | null
     status: $Enums.DumpsterStatus
     notes: string | null
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["dumpster"]>
@@ -1120,6 +1155,7 @@ export interface DumpsterFieldRefs {
   readonly color: Prisma.FieldRef<"Dumpster", 'String'>
   readonly status: Prisma.FieldRef<"Dumpster", 'DumpsterStatus'>
   readonly notes: Prisma.FieldRef<"Dumpster", 'String'>
+  readonly isActive: Prisma.FieldRef<"Dumpster", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Dumpster", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Dumpster", 'DateTime'>
 }

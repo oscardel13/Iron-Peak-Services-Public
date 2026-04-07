@@ -9,6 +9,8 @@
     "target": "esnext",
     "lib": ["esnext"],
     "types": ["node"],
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
 
     // Other Outputs
     "sourceMap": true,

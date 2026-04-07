@@ -2,11 +2,11 @@
 
 function getStatusClasses(status) {
   const map = {
-    available: "bg-green-100 text-green-700",
-    reserved: "bg-blue-100 text-blue-700",
-    in_use: "bg-amber-100 text-amber-700",
-    maintenance: "bg-orange-100 text-orange-700",
-    out_of_service: "bg-red-100 text-red-700",
+    AVAILABLE: "bg-green-100 text-green-700",
+    RESERVED: "bg-blue-100 text-blue-700",
+    IN_USE: "bg-amber-100 text-amber-700",
+    MAINTENANCE: "bg-orange-100 text-orange-700",
+    OUT_OF_SERVICE: "bg-red-100 text-red-700",
   };
 
   return map[status] || "bg-slate-100 text-slate-700";

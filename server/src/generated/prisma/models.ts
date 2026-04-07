@@ -8,6 +8,11 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Dumpster.js'
-export type * from './models/Booking.js'
-export type * from './commonInputTypes.js'
+export type * from './models/Dumpster.ts'
+export type * from './models/Booking.ts'
+export type * from './models/Addon.ts'
+export type * from './models/BookingAddon.ts'
+export type * from './models/BookingNote.ts'
+export type * from './models/BookingHistory.ts'
+export type * from './models/CustomerAccessToken.ts'
+export type * from './commonInputTypes.ts'

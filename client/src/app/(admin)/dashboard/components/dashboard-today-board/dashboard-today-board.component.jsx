@@ -22,9 +22,11 @@ function Column({ title, count, items, emptyText, type }) {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-medium text-gray-900">
-                    {booking.customer.name}
+                    {booking.customerName || "Unknown customer"}
                   </p>
-                  <p className="text-sm text-gray-500">{booking.id}</p>
+                  <p className="text-sm text-gray-500">
+                    {booking.bookingNumber || booking.id}
+                  </p>
                 </div>
 
                 <span className="rounded-full bg-white px-2 py-1 text-xs text-gray-600">
@@ -33,9 +35,9 @@ function Column({ title, count, items, emptyText, type }) {
               </div>
 
               <div className="mt-2 space-y-1 text-sm text-gray-600">
-                <p>{booking.service.projectType}</p>
+                <p>{booking.projectType || "No project type"}</p>
                 <p>
-                  {booking.service.address1}, {booking.service.city}
+                  {booking.address1}, {booking.city}
                 </p>
                 <p>{booking.dumpsterLabel || "Unassigned dumpster"}</p>
               </div>

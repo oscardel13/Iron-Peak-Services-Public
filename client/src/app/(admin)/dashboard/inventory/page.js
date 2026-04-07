@@ -1,21 +1,48 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { MOCK_INVENTORY } from "@/data/inventory";
+import { useEffect, useMemo, useState } from "react";
+
+import { MOCK_INVENTORY } from "@/data/inventory";  
+
 import InventorySummaryCards from "../components/inventory-summary-cards/inventory-summary-cards.component";
 import InventoryListSection from "../components/inventory-list-section/inventory-list-section.component";
 import InventoryCardSection from "../components/inventory-card-section/inventory-card-section.component";
+import { getAPI } from "../../../../utils/api";
 
 export default function InventoryPage() {
   const [inventory, setInventory] = useState(MOCK_INVENTORY);
   const [search, setSearch] = useState("");
-  const [selectedId, setSelectedId] = useState(MOCK_INVENTORY[0]?.id || null);
+  const [selectedId, setSelectedId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [draft, setDraft] = useState(null);
+
+  // useEffect(() => {
+  //   const fetchInventory = async () => {
+  //     try {
+  //       console.log("Fetching inventory...");
+  //       const response = await getAPI("/inventory/dumpsters");
+  //       console.log("Fetched inventory:", response.data);
+
+  //       const nextInventory = Array.isArray(response.data)
+  //         ? response.data
+  //         : response.data?.dumpsters ?? response.data?.inventory ?? [];
+
+  //       setInventory(nextInventory);
+
+  //       if (nextInventory.length > 0) {
+  //         setSelectedId((prev) => prev ?? nextInventory[0].id);
+  //         setDraft((prev) => prev ?? nextInventory[0]);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch inventory:", error);
+  //     }
+  //   };
+
+  //   fetchInventory();
+  // }, []);
 
   const selectedInventory =
     inventory.find((item) => item.id === selectedId) || null;
-
-  const [draft, setDraft] = useState(selectedInventory);
 
   const filteredInventory = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -28,11 +55,11 @@ export default function InventoryPage() {
         item.label,
         item.status,
         item.size,
-        item.yardLocation,
+        item.sizeLabel,
         item.serialNumber,
-        item.material,
         item.color,
         item.notes,
+        item.isActive ? "active" : "inactive",
       ]
         .filter(Boolean)
         .join(" ")

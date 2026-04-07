@@ -26,6 +26,10 @@ export default function BookingSummaryCard({ bookingForm }) {
         <div className="mt-3 border-t border-gray-100 pt-2">
           <Row label="Material" value={bookingForm.dumpster.material} />
           <Row
+            label="Material Surcharge"
+            value={`$${(bookingForm.pricing.materialSurcharge || 0).toFixed(2)}`}
+          />
+          <Row
             label="Container Size"
             value={
               bookingForm.dumpster.size

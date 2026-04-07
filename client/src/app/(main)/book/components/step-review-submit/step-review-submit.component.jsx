@@ -2,11 +2,15 @@
 
 import StepShell from "../step-shell/step-shell.component";
 
-function Row({ label, value }) {
+function Row({ label, value, bold = false }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-gray-100 py-3">
+    <div className="flex items-start justify-between gap-4 border-b border-gray-100 py-3 last:border-b-0">
       <p className="text-sm text-gray-500">{label}</p>
-      <p className="text-right text-sm font-medium text-gray-900">
+      <p
+        className={`text-right text-sm ${
+          bold ? "font-semibold text-gray-900" : "font-medium text-gray-900"
+        }`}
+      >
         {value || "—"}
       </p>
     </div>
@@ -19,6 +23,20 @@ function formatMaterial(material) {
     .split("-")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatCustomerType(customerType) {
+  if (!customerType) return "";
+  return customerType.charAt(0).toUpperCase() + customerType.slice(1);
+}
+
+function formatPlacement(placement) {
+  if (!placement) return "";
+  return placement.charAt(0).toUpperCase() + placement.slice(1);
+}
+
+function formatCurrency(value) {
+  return `$${(value || 0).toFixed(2)}`;
 }
 
 export default function StepReviewSubmit({
@@ -72,6 +90,10 @@ export default function StepReviewSubmit({
               value={formatMaterial(bookingForm.dumpster.material)}
             />
             <Row
+              label="Dumpster"
+              value={bookingForm.dumpster.productLabel}
+            />
+            <Row
               label="Size"
               value={
                 bookingForm.dumpster.size
@@ -79,7 +101,10 @@ export default function StepReviewSubmit({
                   : ""
               }
             />
-            <Row label="Product" value={bookingForm.dumpster.productLabel} />
+            <Row
+              label="Included"
+              value={bookingForm.dumpster.includedWeightText}
+            />
             <Row
               label="Priority Delivery"
               value={bookingForm.addons.priorityDelivery ? "Yes" : "No"}
@@ -102,7 +127,10 @@ export default function StepReviewSubmit({
               </button>
             </div>
 
-            <Row label="Delivery Date" value={bookingForm.schedule.deliveryDate} />
+            <Row
+              label="Delivery Date"
+              value={bookingForm.schedule.deliveryDate}
+            />
             <Row
               label="Pickup Date"
               value={
@@ -122,8 +150,16 @@ export default function StepReviewSubmit({
               }
             />
             <Row
+              label="Extra Days"
+              value={
+                bookingForm.schedule.unknownPickup
+                  ? "—"
+                  : `${bookingForm.schedule.extraDays || 0}`
+              }
+            />
+            <Row
               label="Extra Days Fee"
-              value={`$${(bookingForm.pricing.extraDaysFee || 0).toFixed(2)}`}
+              value={formatCurrency(bookingForm.pricing.extraDaysFee)}
             />
           </div>
 
@@ -139,18 +175,21 @@ export default function StepReviewSubmit({
               </button>
             </div>
 
-            <Row label="Placement" value={bookingForm.location.placement} />
+            <Row
+              label="Placement"
+              value={formatPlacement(bookingForm.location.placement)}
+            />
             <Row
               label="Location Verified"
               value={bookingForm.location.verified ? "Yes" : "No"}
             />
             <Row
               label="Customer Type"
-              value={bookingForm.customer.customerType}
+              value={formatCustomerType(bookingForm.customer.customerType)}
             />
             <Row
               label="Customer"
-              value={`${bookingForm.customer.firstName} ${bookingForm.customer.lastName}`}
+              value={`${bookingForm.customer.firstName} ${bookingForm.customer.lastName}`.trim()}
             />
             <Row label="Phone" value={bookingForm.customer.phone} />
             <Row label="Email" value={bookingForm.customer.email} />
@@ -166,12 +205,51 @@ export default function StepReviewSubmit({
           </div>
         ) : null}
 
+        <div className="rounded-2xl border border-gray-200 p-4">
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="font-semibold text-gray-900">Pricing</h3>
+            <button
+              type="button"
+              onClick={() => goToStep(2)}
+              className="text-sm font-medium text-indigo-600 underline"
+            >
+              Edit
+            </button>
+          </div>
+
+          <Row
+            label="Base Price"
+            value={formatCurrency(bookingForm.pricing.basePrice)}
+          />
+          <Row
+            label="Material Surcharge"
+            value={formatCurrency(bookingForm.pricing.materialSurcharge)}
+          />
+          <Row
+            label="Priority Delivery"
+            value={formatCurrency(bookingForm.pricing.priorityDeliveryFee)}
+          />
+          <Row
+            label="Driveway Protection"
+            value={formatCurrency(bookingForm.pricing.drivewayProtectionFee)}
+          />
+          <Row
+            label="Extra Days Fee"
+            value={formatCurrency(bookingForm.pricing.extraDaysFee)}
+          />
+          <Row
+            label="Final Total"
+            value={formatCurrency(bookingForm.pricing.total)}
+            bold
+          />
+        </div>
+
         <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm text-gray-500">Final Total</p>
               <p className="mt-1 text-2xl font-semibold text-gray-900">
-                ${(bookingForm.pricing.total || 0).toFixed(2)}
+                {formatCurrency(bookingForm.pricing.total)}
               </p>
             </div>
 
