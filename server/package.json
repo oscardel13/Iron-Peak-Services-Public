@@ -16,6 +16,8 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "tsx prisma/seed.ts", 
+    "prisma:reset": "prisma migrate reset --force --skip-seed && tsx prisma/seed.ts",
     "prisma:studio": "prisma studio"
   },
   "author": "",

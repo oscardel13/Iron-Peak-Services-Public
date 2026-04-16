@@ -61,6 +61,9 @@ model Dumpster {
   notes         String?
   isActive      Boolean         @default(true)
 
+  basePrice        Int     
+  concretePrice    Int       
+
   bookings      Booking[]
 
   createdAt     DateTime        @default(now())

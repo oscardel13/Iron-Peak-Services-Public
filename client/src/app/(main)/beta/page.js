@@ -9,22 +9,21 @@ export default function BookPage() {
       <Hero>
         <div className="relative max-w-3xl mx-auto text-center space-y-6 px-4">
           <p className="text-sm tracking-[0.28em] text-gray-200 uppercase">
-            Online Booking
+            BETA ROUTES
           </p>
 
           <h1 className="text-4xl md:text-5xl font-bold text-white">
-            Booking Coming Soon
+            EXACT LINK WILL BE GIVING TO APPROPIATE PARTIES FOR TESTING PURPOSES ONLY
           </h1>
 
           <p className="text-lg md:text-xl text-gray-100">
-            We’re currently building our online booking system so you can
-            schedule dumpster rentals quickly and easily.
+            {`We’re currently building our online booking system so you can schedule dumpster rentals quickly and easily.`}
           </p>
         </div>
       </Hero>
 
       {/* Content */}
-      <section className="px-4 md:px-16 py-16 bg-white">
+      {/* <section className="px-4 md:px-16 py-16 bg-white">
         <div className="max-w-4xl mx-auto text-center space-y-8">
 
           <h2 className="text-2xl md:text-3xl font-bold text-brand-text-primary">
@@ -42,7 +41,7 @@ export default function BookPage() {
             removal, or demolition service by contacting us directly.
           </p>
 
-          {/* CTA buttons */}
+          CTA buttons
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
 
             <a
@@ -52,17 +51,17 @@ export default function BookPage() {
               Call {METADATA.phone}
             </a>
 
-            {/* <a
+            <a
               href="/contact"
               className="px-6 py-3 rounded-lg border border-brand-primary text-brand-primary font-semibold hover:bg-brand-primary hover:text-white transition"
             >
               Request a Quote
-            </a> */}
+            </a>
 
           </div>
 
         </div>
-      </section>
+      </section> */}
 
     </div>
   );

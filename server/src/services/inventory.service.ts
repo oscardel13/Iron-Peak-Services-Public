@@ -36,6 +36,20 @@ export const deleteDumpster = async (id: string) => {
   return true;
 };
 
+export const lockDumpster = async (id: string) => {
+  return await prisma.dumpster.update({
+    where: { id },
+    data: { status: 'RESERVED'},
+  });
+}
+
+export const unlockDumpster = async (id: string) => {
+  return await prisma.dumpster.update({
+    where: { id },
+    data: { status: 'AVAILABLE'},
+  });
+}
+
 export const getAddons = async (query: any) => {
   return await prisma.addon.findMany({
     where: { isActive: true },

@@ -7,6 +7,7 @@ export const DUMPSTER_STATUSES = [
 ];
 
 export const MOCK_INVENTORY = [
+  // ===== 17 YARD (3 total) =====
   {
     id: "dumpster-17-1",
     label: "17 Yard Dumpster #1",
@@ -14,8 +15,8 @@ export const MOCK_INVENTORY = [
     sizeLabel: "17 Yard",
     serialNumber: "DMP-17-001",
     color: "Green",
-    status: "IN_USE",
-    notes: "Currently assigned to an active booking.",
+    status: "AVAILABLE",
+    notes: "Ready for dispatch.",
     isActive: true,
     createdAt: "2025-11-10T10:00:00.000Z",
     updatedAt: "2026-03-11T17:10:00.000Z",
@@ -27,12 +28,27 @@ export const MOCK_INVENTORY = [
     sizeLabel: "17 Yard",
     serialNumber: "DMP-17-002",
     color: "Green",
-    status: "AVAILABLE",
-    notes: "Ready for dispatch.",
+    status: "IN_USE",
+    notes: "Currently out on a job.",
     isActive: true,
     createdAt: "2025-11-15T09:30:00.000Z",
     updatedAt: "2026-03-10T09:30:00.000Z",
   },
+  {
+    id: "dumpster-17-3",
+    label: "17 Yard Dumpster #3",
+    size: 17,
+    sizeLabel: "17 Yard",
+    serialNumber: "DMP-17-003",
+    color: "Green",
+    status: "AVAILABLE",
+    notes: "Available and ready.",
+    isActive: true,
+    createdAt: "2025-11-20T08:00:00.000Z",
+    updatedAt: "2026-03-15T08:00:00.000Z",
+  },
+
+  // ===== 22 YARD (2 total) =====
   {
     id: "dumpster-22-1",
     label: "22 Yard Dumpster #1",
@@ -41,7 +57,7 @@ export const MOCK_INVENTORY = [
     serialNumber: "DMP-22-001",
     color: "Blue",
     status: "RESERVED",
-    notes: "Reserved for upcoming booking.",
+    notes: "Scheduled for upcoming delivery.",
     isActive: true,
     createdAt: "2025-12-02T14:00:00.000Z",
     updatedAt: "2026-03-13T12:20:00.000Z",
@@ -53,23 +69,10 @@ export const MOCK_INVENTORY = [
     sizeLabel: "22 Yard",
     serialNumber: "DMP-22-002",
     color: "Blue",
-    status: "MAINTENANCE",
-    notes: "Wheel repair scheduled.",
+    status: "AVAILABLE",
+    notes: "Ready for dispatch.",
     isActive: true,
     createdAt: "2025-12-10T08:15:00.000Z",
     updatedAt: "2026-03-14T08:45:00.000Z",
-  },
-  {
-    id: "dumpster-30-1",
-    label: "30 Yard Dumpster #1",
-    size: 30,
-    sizeLabel: "30 Yard",
-    serialNumber: "DMP-30-001",
-    color: "Black",
-    status: "OUT_OF_SERVICE",
-    notes: "Needs floor patch before dispatch.",
-    isActive: true,
-    createdAt: "2025-10-20T11:00:00.000Z",
-    updatedAt: "2026-03-12T16:30:00.000Z",
   },
 ];

@@ -86,6 +86,8 @@ export const DumpsterScalarFieldEnum = {
   status: 'status',
   notes: 'notes',
   isActive: 'isActive',
+  basePrice: 'basePrice',
+  concretePrice: 'concretePrice',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

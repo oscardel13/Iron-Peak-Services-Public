@@ -10,23 +10,47 @@ import DashboardTodayBoard from "./components/dashboard-today-board/dashboard-to
 import DashboardAttentionSection from "./components/dashboard-attention-section/dashboard-attention-section.component";
 import DashboardRecentBookings from "./components/dashboard-recent-bookings/dashboard-recent-bookings.component";
 
-export default function DashboardPage() {
-  const [bookings, setBookings] = useState(MOCK_BOOKINGS);
+import { getAPI } from "@/utils/api";
 
-  // useEffect(() => {
-  //     const fetchBookings = async () => {
-  //       try{
-  //         console.log("Fetching bookings...");
-  //         const response = await getAPI("/bookings");
-  //         console.log("Fetched bookings:", response.data);
-  //         setBookings(response.data);
-  //       }
-  //       catch(error){
-  //         console.error("Failed to fetch bookings:", error);
-  //       }
-  //     };
-  //     fetchBookings();
-  //   }, []);
+export default function DashboardPage() {
+  const [bookings, setBookings] = useState([]);
+  const [inventory, setInventory] = useState([]);
+
+  useEffect(() => {
+      const fetchBookings = async () => {
+        try{
+          console.log("Fetching bookings...");
+          const response = await getAPI("/bookings");
+          console.log("Fetched bookings:", response.data);
+          setBookings(response.data);
+        }
+        catch(error){
+          console.error("Failed to fetch bookings:", error);
+        }
+      };
+      const fetchInventory = async () => {
+            try {
+              console.log("Fetching inventory...");
+              const response = await getAPI("/inventory/dumpsters");
+              console.log("Fetched inventory:", response.data);
+      
+              const nextInventory = Array.isArray(response.data)
+                ? response.data
+                : response.data?.dumpsters ?? response.data?.inventory ?? [];
+      
+              setInventory(nextInventory);
+      
+              if (nextInventory.length > 0) {
+                setSelectedId((prev) => prev ?? nextInventory[0].id);
+                setDraft((prev) => prev ?? nextInventory[0]);
+              }
+            } catch (error) {
+              console.error("Failed to fetch inventory:", error);
+            }
+          };
+      fetchBookings();
+      fetchInventory();
+    }, []);
   
   const dashboardData = useMemo(() => {
     const today = new Date();
@@ -54,16 +78,16 @@ export default function DashboardPage() {
       (booking) => booking.pickupDate === todayKey
     );
 
-    const availableInventory = MOCK_INVENTORY.filter(
+    const availableInventory = inventory.filter(
       (item) => item.status === "AVAILABLE"
     );
 
-    const maintenanceInventory = MOCK_INVENTORY.filter(
+    const maintenanceInventory = inventory.filter(
       (item) =>
         item.status === "MAINTENANCE" || item.status === "OUT_OF_SERVICE"
     );
 
-    const reservedInventory = MOCK_INVENTORY.filter(
+    const reservedInventory = inventory.filter(
       (item) => item.status === "RESERVED"
     );
 
@@ -92,7 +116,7 @@ export default function DashboardPage() {
       urgentPaymentBookings,
       quotesNeedingFollowUp,
     };
-  }, [bookings]);
+  }, [bookings, inventory]);
 
   return (
     <div className="space-y-6">

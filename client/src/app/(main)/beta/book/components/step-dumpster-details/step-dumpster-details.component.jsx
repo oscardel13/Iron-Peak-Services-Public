@@ -25,7 +25,7 @@ export default function StepDumpsterDetails({
   return (
     <StepShell
       title="Choose your dumpster"
-      description="Pick the material first, then choose from the dumpsters that support it."
+      description="Select the material for pricing, then choose your dumpster."
       onNext={goToNextStep}
       onBack={goToPreviousStep}
     >
@@ -77,14 +77,9 @@ export default function StepDumpsterDetails({
         <div className="space-y-4">
           <SectionTitle>Available dumpsters</SectionTitle>
 
-          {!bookingForm.dumpster.material ? (
+          {availableProducts.length === 0 ? (
             <p className="text-sm text-gray-500">
-              Choose a material first to see available dumpsters.
-            </p>
-          ) : availableProducts.length === 0 ? (
-            <p className="text-sm text-gray-500">
-              No dumpsters currently support{" "}
-              {getMaterialLabel(bookingForm.dumpster.material, MATERIAL_OPTIONS)}.
+              No dumpsters are currently available.
             </p>
           ) : (
             <div className="grid gap-4">

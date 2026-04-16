@@ -1,4 +1,6 @@
 import { prisma } from '../libs/prisma.ts';
+import { Prisma, BookingStatus, PaymentStatus, ServiceType } from "../generated/prisma/client.js";
+
 
 const generateBookingNumber = () => {
   const now = new Date();
@@ -48,9 +50,20 @@ export const createBooking = async (data: any) => {
     return await prisma.booking.create({
       data: {
         bookingNumber,
+
+        dumpsterId: data.dumpsterId ?? null,
+        dumpsterSize: Number(data.dumpsterSize),
+        dumpsterLabel: data.dumpsterLabel ?? null,
+        material: data.material ?? null,
+        productCode: data.productCode ?? null,
+
+        serviceType: data.serviceType ?? ServiceType.DUMPSTER_RENTAL,
+        projectType: data.projectType ?? null,
+
         customerName: data.customerName,
         customerPhone: data.customerPhone,
         customerEmail: data.customerEmail ?? null,
+
         address1: data.address1,
         address2: data.address2 ?? null,
         city: data.city,
@@ -60,30 +73,24 @@ export const createBooking = async (data: any) => {
         instructions: data.instructions ?? null,
         customerNotes: data.customerNotes ?? null,
 
-        dumpsterSize: data.dumpsterSize,
-        dumpsterLabel: data.dumpsterLabel ?? null,
-        material: data.material ?? null,
-        productCode: data.productCode ?? null,
+        locationVerified: Boolean(data.locationVerified),
+        locationVerificationNote: data.locationVerificationNote ?? null,
 
         deliveryDate: new Date(data.deliveryDate),
         pickupDate: data.pickupDate ? new Date(data.pickupDate) : null,
         pickupDateUnknown: Boolean(data.pickupDateUnknown),
+        rentalDaysIncluded: Number(data.rentalDaysIncluded ?? 7),
 
-        basePrice: data.basePrice,
-        deliveryFee: data.deliveryFee ?? 0,
-        mileageFee: data.mileageFee ?? 0,
-        extraDaysFee: data.extraDaysFee ?? 0,
-        overageFee: data.overageFee ?? 0,
-        addonsTotal: data.addonsTotal ?? 0,
-        total: data.total,
+        bookingStatus: data.bookingStatus ?? BookingStatus.QUOTE,
+        paymentStatus: data.paymentStatus ?? PaymentStatus.UNPAID,
 
-        bookingStatus: data.bookingStatus ?? 'QUOTE',
-        paymentStatus: data.paymentStatus ?? 'UNPAID',
-        serviceType: data.serviceType ?? 'DUMPSTER_RENTAL',
-        rentalDaysIncluded: data.rentalDaysIncluded ?? 7,
-        locationVerified: Boolean(data.locationVerified),
-        locationVerificationNote: data.locationVerificationNote ?? null,
-        projectType: data.projectType ?? null
+        basePrice: new Prisma.Decimal(data.basePrice ?? 0),
+        deliveryFee: new Prisma.Decimal(data.deliveryFee ?? 0),
+        mileageFee: new Prisma.Decimal(data.mileageFee ?? 0),
+        extraDaysFee: new Prisma.Decimal(data.extraDaysFee ?? 0),
+        overageFee: new Prisma.Decimal(data.overageFee ?? 0),
+        addonsTotal: new Prisma.Decimal(data.addonsTotal ?? 0),
+        total: new Prisma.Decimal(data.total ?? 0),
       },
       include: {
         dumpster: true,
@@ -91,7 +98,7 @@ export const createBooking = async (data: any) => {
       },
     });
   } catch (error) {
-    console.error('Error creating booking:', error);
+    console.error("Error creating booking:", error);
     throw error;
   }
 };

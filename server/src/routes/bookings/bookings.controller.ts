@@ -46,7 +46,6 @@ export const HttpGetBookingById = async (req: Request, res: Response) => {
 // TODO: Add validation, error handling, etc.
 export const HttpCreateBooking = async (req: Request, res: Response) => {
   try {
-    console.log('Creating booking with data:', req.body);
     const booking = await createBooking(req.body);
     res.status(201).json(booking);
   } catch (error) {

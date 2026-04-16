@@ -10,36 +10,36 @@ import InventoryCardSection from "../components/inventory-card-section/inventory
 import { getAPI } from "../../../../utils/api";
 
 export default function InventoryPage() {
-  const [inventory, setInventory] = useState(MOCK_INVENTORY);
+  const [inventory, setInventory] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchInventory = async () => {
-  //     try {
-  //       console.log("Fetching inventory...");
-  //       const response = await getAPI("/inventory/dumpsters");
-  //       console.log("Fetched inventory:", response.data);
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        console.log("Fetching inventory...");
+        const response = await getAPI("/inventory/dumpsters");
+        console.log("Fetched inventory:", response.data);
 
-  //       const nextInventory = Array.isArray(response.data)
-  //         ? response.data
-  //         : response.data?.dumpsters ?? response.data?.inventory ?? [];
+        const nextInventory = Array.isArray(response.data)
+          ? response.data
+          : response.data?.dumpsters ?? response.data?.inventory ?? [];
 
-  //       setInventory(nextInventory);
+        setInventory(nextInventory);
 
-  //       if (nextInventory.length > 0) {
-  //         setSelectedId((prev) => prev ?? nextInventory[0].id);
-  //         setDraft((prev) => prev ?? nextInventory[0]);
-  //       }
-  //     } catch (error) {
-  //       console.error("Failed to fetch inventory:", error);
-  //     }
-  //   };
+        if (nextInventory.length > 0) {
+          setSelectedId((prev) => prev ?? nextInventory[0].id);
+          setDraft((prev) => prev ?? nextInventory[0]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch inventory:", error);
+      }
+    };
 
-  //   fetchInventory();
-  // }, []);
+    fetchInventory();
+  }, []);
 
   const selectedInventory =
     inventory.find((item) => item.id === selectedId) || null;

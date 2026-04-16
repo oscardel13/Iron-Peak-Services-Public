@@ -43,6 +43,7 @@ export default function StepReviewSubmit({
   bookingForm,
   goToPreviousStep,
   goToStep,
+  onSubmit
 }) {
   return (
     <StepShell
@@ -254,6 +255,7 @@ export default function StepReviewSubmit({
             </div>
 
             <button
+              onClick={onSubmit}
               type="button"
               className="rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white"
             >

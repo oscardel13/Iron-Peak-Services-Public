@@ -28,10 +28,14 @@ export type AggregateDumpster = {
 
 export type DumpsterAvgAggregateOutputType = {
   size: number | null
+  basePrice: number | null
+  concretePrice: number | null
 }
 
 export type DumpsterSumAggregateOutputType = {
   size: number | null
+  basePrice: number | null
+  concretePrice: number | null
 }
 
 export type DumpsterMinAggregateOutputType = {
@@ -44,6 +48,8 @@ export type DumpsterMinAggregateOutputType = {
   status: $Enums.DumpsterStatus | null
   notes: string | null
   isActive: boolean | null
+  basePrice: number | null
+  concretePrice: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -58,6 +64,8 @@ export type DumpsterMaxAggregateOutputType = {
   status: $Enums.DumpsterStatus | null
   notes: string | null
   isActive: boolean | null
+  basePrice: number | null
+  concretePrice: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -72,6 +80,8 @@ export type DumpsterCountAggregateOutputType = {
   status: number
   notes: number
   isActive: number
+  basePrice: number
+  concretePrice: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -80,10 +90,14 @@ export type DumpsterCountAggregateOutputType = {
 
 export type DumpsterAvgAggregateInputType = {
   size?: true
+  basePrice?: true
+  concretePrice?: true
 }
 
 export type DumpsterSumAggregateInputType = {
   size?: true
+  basePrice?: true
+  concretePrice?: true
 }
 
 export type DumpsterMinAggregateInputType = {
@@ -96,6 +110,8 @@ export type DumpsterMinAggregateInputType = {
   status?: true
   notes?: true
   isActive?: true
+  basePrice?: true
+  concretePrice?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -110,6 +126,8 @@ export type DumpsterMaxAggregateInputType = {
   status?: true
   notes?: true
   isActive?: true
+  basePrice?: true
+  concretePrice?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -124,6 +142,8 @@ export type DumpsterCountAggregateInputType = {
   status?: true
   notes?: true
   isActive?: true
+  basePrice?: true
+  concretePrice?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -225,6 +245,8 @@ export type DumpsterGroupByOutputType = {
   status: $Enums.DumpsterStatus
   notes: string | null
   isActive: boolean
+  basePrice: number
+  concretePrice: number
   createdAt: Date
   updatedAt: Date
   _count: DumpsterCountAggregateOutputType | null
@@ -262,6 +284,8 @@ export type DumpsterWhereInput = {
   status?: Prisma.EnumDumpsterStatusFilter<"Dumpster"> | $Enums.DumpsterStatus
   notes?: Prisma.StringNullableFilter<"Dumpster"> | string | null
   isActive?: Prisma.BoolFilter<"Dumpster"> | boolean
+  basePrice?: Prisma.IntFilter<"Dumpster"> | number
+  concretePrice?: Prisma.IntFilter<"Dumpster"> | number
   createdAt?: Prisma.DateTimeFilter<"Dumpster"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Dumpster"> | Date | string
   bookings?: Prisma.BookingListRelationFilter
@@ -277,6 +301,8 @@ export type DumpsterOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  basePrice?: Prisma.SortOrder
+  concretePrice?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   bookings?: Prisma.BookingOrderByRelationAggregateInput
@@ -295,6 +321,8 @@ export type DumpsterWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumDumpsterStatusFilter<"Dumpster"> | $Enums.DumpsterStatus
   notes?: Prisma.StringNullableFilter<"Dumpster"> | string | null
   isActive?: Prisma.BoolFilter<"Dumpster"> | boolean
+  basePrice?: Prisma.IntFilter<"Dumpster"> | number
+  concretePrice?: Prisma.IntFilter<"Dumpster"> | number
   createdAt?: Prisma.DateTimeFilter<"Dumpster"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Dumpster"> | Date | string
   bookings?: Prisma.BookingListRelationFilter
@@ -310,6 +338,8 @@ export type DumpsterOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  basePrice?: Prisma.SortOrder
+  concretePrice?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.DumpsterCountOrderByAggregateInput
@@ -332,6 +362,8 @@ export type DumpsterScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumDumpsterStatusWithAggregatesFilter<"Dumpster"> | $Enums.DumpsterStatus
   notes?: Prisma.StringNullableWithAggregatesFilter<"Dumpster"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"Dumpster"> | boolean
+  basePrice?: Prisma.IntWithAggregatesFilter<"Dumpster"> | number
+  concretePrice?: Prisma.IntWithAggregatesFilter<"Dumpster"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Dumpster"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Dumpster"> | Date | string
 }
@@ -346,6 +378,8 @@ export type DumpsterCreateInput = {
   status?: $Enums.DumpsterStatus
   notes?: string | null
   isActive?: boolean
+  basePrice: number
+  concretePrice: number
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingCreateNestedManyWithoutDumpsterInput
@@ -361,6 +395,8 @@ export type DumpsterUncheckedCreateInput = {
   status?: $Enums.DumpsterStatus
   notes?: string | null
   isActive?: boolean
+  basePrice: number
+  concretePrice: number
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutDumpsterInput
@@ -376,6 +412,8 @@ export type DumpsterUpdateInput = {
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  basePrice?: Prisma.IntFieldUpdateOperationsInput | number
+  concretePrice?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUpdateManyWithoutDumpsterNestedInput
@@ -391,6 +429,8 @@ export type DumpsterUncheckedUpdateInput = {
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  basePrice?: Prisma.IntFieldUpdateOperationsInput | number
+  concretePrice?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutDumpsterNestedInput
@@ -406,6 +446,8 @@ export type DumpsterCreateManyInput = {
   status?: $Enums.DumpsterStatus
   notes?: string | null
   isActive?: boolean
+  basePrice: number
+  concretePrice: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -420,6 +462,8 @@ export type DumpsterUpdateManyMutationInput = {
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  basePrice?: Prisma.IntFieldUpdateOperationsInput | number
+  concretePrice?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -434,6 +478,8 @@ export type DumpsterUncheckedUpdateManyInput = {
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  basePrice?: Prisma.IntFieldUpdateOperationsInput | number
+  concretePrice?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -448,12 +494,16 @@ export type DumpsterCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  basePrice?: Prisma.SortOrder
+  concretePrice?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type DumpsterAvgOrderByAggregateInput = {
   size?: Prisma.SortOrder
+  basePrice?: Prisma.SortOrder
+  concretePrice?: Prisma.SortOrder
 }
 
 export type DumpsterMaxOrderByAggregateInput = {
@@ -466,6 +516,8 @@ export type DumpsterMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  basePrice?: Prisma.SortOrder
+  concretePrice?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -480,12 +532,16 @@ export type DumpsterMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  basePrice?: Prisma.SortOrder
+  concretePrice?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type DumpsterSumOrderByAggregateInput = {
   size?: Prisma.SortOrder
+  basePrice?: Prisma.SortOrder
+  concretePrice?: Prisma.SortOrder
 }
 
 export type DumpsterNullableScalarRelationFilter = {
@@ -547,6 +603,8 @@ export type DumpsterCreateWithoutBookingsInput = {
   status?: $Enums.DumpsterStatus
   notes?: string | null
   isActive?: boolean
+  basePrice: number
+  concretePrice: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -561,6 +619,8 @@ export type DumpsterUncheckedCreateWithoutBookingsInput = {
   status?: $Enums.DumpsterStatus
   notes?: string | null
   isActive?: boolean
+  basePrice: number
+  concretePrice: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -591,6 +651,8 @@ export type DumpsterUpdateWithoutBookingsInput = {
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  basePrice?: Prisma.IntFieldUpdateOperationsInput | number
+  concretePrice?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -605,6 +667,8 @@ export type DumpsterUncheckedUpdateWithoutBookingsInput = {
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  basePrice?: Prisma.IntFieldUpdateOperationsInput | number
+  concretePrice?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -650,6 +714,8 @@ export type DumpsterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   status?: boolean
   notes?: boolean
   isActive?: boolean
+  basePrice?: boolean
+  concretePrice?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   bookings?: boolean | Prisma.Dumpster$bookingsArgs<ExtArgs>
@@ -666,6 +732,8 @@ export type DumpsterSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   status?: boolean
   notes?: boolean
   isActive?: boolean
+  basePrice?: boolean
+  concretePrice?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["dumpster"]>
@@ -680,6 +748,8 @@ export type DumpsterSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   status?: boolean
   notes?: boolean
   isActive?: boolean
+  basePrice?: boolean
+  concretePrice?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["dumpster"]>
@@ -694,11 +764,13 @@ export type DumpsterSelectScalar = {
   status?: boolean
   notes?: boolean
   isActive?: boolean
+  basePrice?: boolean
+  concretePrice?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DumpsterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "size" | "sizeLabel" | "serialNumber" | "color" | "status" | "notes" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["dumpster"]>
+export type DumpsterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "size" | "sizeLabel" | "serialNumber" | "color" | "status" | "notes" | "isActive" | "basePrice" | "concretePrice" | "createdAt" | "updatedAt", ExtArgs["result"]["dumpster"]>
 export type DumpsterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   bookings?: boolean | Prisma.Dumpster$bookingsArgs<ExtArgs>
   _count?: boolean | Prisma.DumpsterCountOutputTypeDefaultArgs<ExtArgs>
@@ -721,6 +793,8 @@ export type $DumpsterPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     status: $Enums.DumpsterStatus
     notes: string | null
     isActive: boolean
+    basePrice: number
+    concretePrice: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["dumpster"]>
@@ -1156,6 +1230,8 @@ export interface DumpsterFieldRefs {
   readonly status: Prisma.FieldRef<"Dumpster", 'DumpsterStatus'>
   readonly notes: Prisma.FieldRef<"Dumpster", 'String'>
   readonly isActive: Prisma.FieldRef<"Dumpster", 'Boolean'>
+  readonly basePrice: Prisma.FieldRef<"Dumpster", 'Int'>
+  readonly concretePrice: Prisma.FieldRef<"Dumpster", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Dumpster", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Dumpster", 'DateTime'>
 }
