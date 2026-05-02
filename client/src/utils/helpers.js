@@ -15,8 +15,29 @@ export const formatDateTime = (value) => {
   return new Date(value).toLocaleString();
 } 
 
-// module.export (
-//     formatCurrency,
-//     formatDate,
-//     formatDateTime
-// )
+export function getChangedFields(original, updated) {
+  const changes = {};
+
+  for (const key in updated) {
+    const originalValue = original[key];
+    const updatedValue = updated[key];
+
+    // normalize Dates → strings
+    const o =
+      originalValue instanceof Date
+        ? originalValue.toISOString()
+        : originalValue;
+
+    const u =
+      updatedValue instanceof Date
+        ? updatedValue.toISOString()
+        : updatedValue;
+
+    // simple deep compare fallback
+    if (JSON.stringify(o) !== JSON.stringify(u)) {
+      changes[key] = updatedValue;
+    }
+  }
+
+  return changes;
+}

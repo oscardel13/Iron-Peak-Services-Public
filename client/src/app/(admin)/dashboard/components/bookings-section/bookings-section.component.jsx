@@ -55,7 +55,6 @@ export default function BookingListSection({
         ) : (
           filteredBookings.map((booking) => {
             const isSelected = booking.id === selectedId;
-            console.log(booking)
 
             return (
               <button

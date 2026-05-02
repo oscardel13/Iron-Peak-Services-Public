@@ -3,9 +3,10 @@ import {
   getBookings,
   getBookingById,
   createBooking,
-  updateBooking,
+  //updateBooking,
   deleteBooking,
   getBookingHistory,
+  patchBooking,
   // getBookingNotes,
   // addBookingNote,
   // getBookingAddons,
@@ -57,18 +58,20 @@ export const HttpCreateBooking = async (req: Request, res: Response) => {
 // Should be accessible by admin and customer only (with restrictions on what can be updated).
 // Consider implementing optimistic locking or versioning to handle concurrent updates (research this).
 // or having 2 separate endpoints for admin and customer updates with different allowed fields.
-export const HttpUpdateBooking = async (req: Request, res: Response) => {
+export const HttpPatchBooking = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (!id) {
       return res.status(400).json({ error: 'Booking ID is required' });
     }
-    const booking = await updateBooking(id as string, req.body);
+    const booking = await patchBooking(id as string, req.body);
+
     if (!booking) {
       return res.status(404).json({ error: 'Booking not found' });
     }
     res.json(booking);
   } catch (error) {
+    console.log('Error patching booking:', error);
     res.status(500).json({ error: 'Failed to update booking' });
   }
 };

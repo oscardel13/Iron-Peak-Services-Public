@@ -3,8 +3,9 @@ import {
   HttpGetBookings,
   HttpGetBookingById,
   HttpCreateBooking,
-  HttpUpdateBooking,
+  // HttpUpdateBooking,
   HttpDeleteBooking,
+  HttpPatchBooking,
   // HttpGetBookingHistory,
   // HttpGetBookingNotes,
   // HttpAddBookingNote,
@@ -16,6 +17,7 @@ import {
 const router = express.Router();
 
 // GET /api/v1/admin/bookings
+// need admin auth for this route
 router.get('/', HttpGetBookings);
 
 // POST /api/v1/admin/bookings
@@ -25,12 +27,15 @@ router.post('/', HttpCreateBooking);
 // router.get('/history', HttpGetBookingHistory);
 
 // GET /api/v1/admin/bookings/:id
+// need admin auth for this route
 router.get('/:id', HttpGetBookingById);
 
-// PUT /api/v1/admin/bookings/:id
-router.put('/:id', HttpUpdateBooking);
+// PATCH /api/v1/admin/bookings/:id
+// need admin auth for this route
+router.patch('/:id', HttpPatchBooking);
 
 // DELETE /api/v1/admin/bookings/:id
+// need admin auth for this route
 router.delete('/:id', HttpDeleteBooking);
 
 // // GET /api/v1/admin/bookings/:id/notes

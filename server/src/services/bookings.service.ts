@@ -1,6 +1,7 @@
 import { prisma } from '../libs/prisma.ts';
 import { Prisma, BookingStatus, PaymentStatus, ServiceType } from "../generated/prisma/client.js";
 import { calculateBookingPricing, getSelectedAddons } from '../helpers/bookings.helper.ts';
+import { buildBookingUpdateData } from '../utils/helper.ts';
 
 
 const generateBookingNumber = () => {
@@ -12,6 +13,7 @@ const generateBookingNumber = () => {
   return `BK-${yyyy}${mm}${dd}-${rand}`;
 };
 
+// TODO: Implement filtering, pagination, etc.
 export const getBookings = async (query: any) => {
   // TODO: Implement filtering, pagination, etc.
   return await prisma.booking.findMany({
@@ -160,11 +162,18 @@ export const createBooking = async (data: any) => {
   }
 };
 
-export const updateBooking = async (id: string, data: any) => {
-  // TODO: Implement booking update logic
+export const patchBooking = async (id: string, data: any) => {
+  console.log(`Patching booking ${id} with data:`, data);
+
+  const updateData = buildBookingUpdateData(data);
+
+  if (Object.keys(updateData).length === 0) {
+    throw new Error("No valid fields provided for update");
+  }
+
   return await prisma.booking.update({
     where: { id },
-    data,
+    data: updateData,
     include: {
       dumpster: true,
       addons: {

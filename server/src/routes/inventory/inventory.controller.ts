@@ -26,7 +26,6 @@ export const HttpGetDumpsters = async (req: Request, res: Response) => {
 export const HttpGetAvailableDumpstersByDates = async (req: Request, res: Response) => {
   try {
     const { deliveryDate, pickupDate } = req.query;
-    console.log("Fetching dates:", deliveryDate, " :" ,pickupDate);
     const dumpsters = await getDumpstersFilteredByDates(req.query);
     res.json(dumpsters);
   } catch (error) {

@@ -11,7 +11,8 @@ import {
 } from "@/data/mock-bookings";
 import BookingCardSection from "../components/booking-card-section/booking-card-section.component";
 import BookingsListSection from "../components/bookings-section/bookings-section.component"
-import { getAPI } from "../../../../utils/api";
+import { getAPI, patchAPI } from "../../../../utils/api";
+import { getChangedFields } from "../../../../utils/helpers";
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState(MOCK_BOOKINGS);
@@ -95,23 +96,38 @@ export default function BookingsPage() {
     setIsEditing(false);
   }
 
-  function handleSave() {
-    if (!draft) return;
+  async function handleSave() {
+    const bookingToRender = bookings.find((b) => b.id === draft.id);
+    if (!draft || !bookingToRender) return;
 
-    const updatedBooking = {
-      ...draft,
-      updatedAt: new Date().toISOString(),
-    };
+    try {
+      const changes = getChangedFields(bookingToRender, draft);
 
-    setBookings((prev) =>
-      prev.map((booking) =>
-        booking.id === updatedBooking.id ? updatedBooking : booking
-      )
-    );
+      // nothing changed → don't call API
+      if (Object.keys(changes).length === 0) {
+        setIsEditing(false);
+        return;
+      }
 
-    setDraft(updatedBooking);
-    setIsEditing(false);
+      const response = await patchAPI(
+        `/bookings/${draft.id}`,
+        changes
+      );
+
+      console.log("Updated booking response:", response.data);
+
+      // setBookings((prev) =>
+      //   prev.map((booking) =>
+      //     booking.id === draft.id ? response.data : booking
+      //   )
+      // );
+
+      // setDraft(response.data);
+      // setIsEditing(false);
+  } catch (error) {
+      console.error("Failed to update booking:", error);
   }
+}
 
   function updateDraft(path, value) {
     setDraft((prev) => {
