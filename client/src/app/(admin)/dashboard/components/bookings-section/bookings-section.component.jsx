@@ -3,6 +3,9 @@
 import { formatCurrency, formatDate } from "@/utils/helpers";
 
 function getStatusClasses(status) {
+  const normalizedStatus = status?.toLowerCase();
+
+
   const map = {
     quote: "bg-slate-100 text-slate-700",
     scheduled: "bg-blue-100 text-blue-700",
@@ -15,7 +18,7 @@ function getStatusClasses(status) {
     refunded: "bg-slate-100 text-slate-700",
   };
 
-  return map[status] || "bg-slate-100 text-slate-700";
+  return map[normalizedStatus] || "bg-slate-100 text-slate-700";
 }
 
 function Input(props) {
@@ -52,6 +55,7 @@ export default function BookingListSection({
         ) : (
           filteredBookings.map((booking) => {
             const isSelected = booking.id === selectedId;
+            console.log(booking)
 
             return (
               <button
@@ -84,7 +88,7 @@ export default function BookingListSection({
                   <p>
                     {booking.city}, {booking.state}
                   </p>
-                  <p>{formatDate(booking.deliveryDate)}</p>
+                  <p>{formatDate(booking.deliveryDate.split("T")[0])}</p>
                 </div>
 
                 <div className="mt-3 flex items-center justify-between text-sm">

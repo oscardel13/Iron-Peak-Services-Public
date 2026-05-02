@@ -5,6 +5,7 @@ import {
   getDumpsterById,
   createDumpster,
   updateDumpster,
+  getDumpstersFilteredByDates,
   deleteDumpster,
   getAddons,
   getAddonById,
@@ -19,6 +20,17 @@ export const HttpGetDumpsters = async (req: Request, res: Response) => {
     res.json(dumpsters);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch dumpsters' });
+  }
+};
+
+export const HttpGetAvailableDumpstersByDates = async (req: Request, res: Response) => {
+  try {
+    const { deliveryDate, pickupDate } = req.query;
+    console.log("Fetching dates:", deliveryDate, " :" ,pickupDate);
+    const dumpsters = await getDumpstersFilteredByDates(req.query);
+    res.json(dumpsters);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch available dumpsters' });
   }
 };
 

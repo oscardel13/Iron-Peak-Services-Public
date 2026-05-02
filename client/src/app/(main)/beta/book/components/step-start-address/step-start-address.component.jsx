@@ -13,6 +13,17 @@ function Input(props) {
   );
 }
 
+function Select(props) {
+  return (
+    <select
+      {...props}
+      className={`w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 ${
+        props.className || ""
+      }`}
+    />
+  );
+}
+
 export default function StepStartAddress({
   bookingForm,
   updateBookingForm,
@@ -21,7 +32,7 @@ export default function StepStartAddress({
   return (
     <StepShell
       title="Start address"
-      description="Enter the delivery address to begin your booking."
+      description="Enter the delivery address and project type to begin your booking."
       onNext={goToNextStep}
       hideBack
     >
@@ -95,6 +106,22 @@ export default function StepStartAddress({
               value={bookingForm.address.zip}
               onChange={(e) => updateBookingForm("address.zip", e.target.value)}
             />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
+              Project Type
+            </label>
+            <Select
+              value={bookingForm.address.projectType}
+              onChange={(e) =>
+                updateBookingForm("address.projectType", e.target.value)
+              }
+            >
+              <option value="">Select project type</option>
+              <option value="residential">Residential</option>
+              <option value="commercial">Commercial</option>
+            </Select>
           </div>
         </div>
       </div>

@@ -4,21 +4,57 @@ function Row({ label, value, bold = false }) {
   return (
     <div className="flex items-start justify-between gap-4 py-2">
       <p className="text-sm text-gray-500">{label}</p>
-      <p className={`text-sm text-right ${bold ? "font-semibold text-gray-900" : "text-gray-800"}`}>
+      <p
+        className={`text-sm text-right ${
+          bold ? "font-semibold text-gray-900" : "text-gray-800"
+        }`}
+      >
         {value || "—"}
       </p>
     </div>
   );
 }
 
+function formatProjectType(projectType) {
+  if (!projectType) return "";
+  return projectType
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+// pretend this exists for now
+function getDistanceFromWarehouse(address) {
+  return address.distanceFromWarehouse ?? null;
+}
+
 export default function BookingSummaryCard({ bookingForm }) {
+  const distanceFromWarehouse = getDistanceFromWarehouse(bookingForm.address);
+
   return (
     <div className="space-y-3">
       <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-        <h3 className="text-base font-semibold text-gray-900">Delivery location</h3>
+        <h3 className="text-base font-semibold text-gray-900">
+          Delivery location
+        </h3>
         <p className="mt-2 text-sm text-gray-700">
           {bookingForm.address.fullAddress || "No address selected yet"}
         </p>
+
+        <div className="mt-3 border-t border-gray-100 pt-2">
+          <Row
+            label="Project Type"
+            value={formatProjectType(bookingForm.address.projectType)}
+          />
+          <Row
+            label="Distance from Warehouse"
+            value={
+              distanceFromWarehouse != null
+                ? `${distanceFromWarehouse} miles`
+                : ""
+            }
+          />
+        </div>
       </div>
 
       <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">

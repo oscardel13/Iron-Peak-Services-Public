@@ -57,7 +57,6 @@ export type BookingMinAggregateOutputType = {
   dumpsterSize: number | null
   dumpsterLabel: string | null
   material: string | null
-  productCode: string | null
   serviceType: $Enums.ServiceType | null
   projectType: string | null
   customerName: string | null
@@ -103,7 +102,6 @@ export type BookingMaxAggregateOutputType = {
   dumpsterSize: number | null
   dumpsterLabel: string | null
   material: string | null
-  productCode: string | null
   serviceType: $Enums.ServiceType | null
   projectType: string | null
   customerName: string | null
@@ -149,7 +147,6 @@ export type BookingCountAggregateOutputType = {
   dumpsterSize: number
   dumpsterLabel: number
   material: number
-  productCode: number
   serviceType: number
   projectType: number
   customerName: number
@@ -221,7 +218,6 @@ export type BookingMinAggregateInputType = {
   dumpsterSize?: true
   dumpsterLabel?: true
   material?: true
-  productCode?: true
   serviceType?: true
   projectType?: true
   customerName?: true
@@ -267,7 +263,6 @@ export type BookingMaxAggregateInputType = {
   dumpsterSize?: true
   dumpsterLabel?: true
   material?: true
-  productCode?: true
   serviceType?: true
   projectType?: true
   customerName?: true
@@ -313,7 +308,6 @@ export type BookingCountAggregateInputType = {
   dumpsterSize?: true
   dumpsterLabel?: true
   material?: true
-  productCode?: true
   serviceType?: true
   projectType?: true
   customerName?: true
@@ -446,7 +440,6 @@ export type BookingGroupByOutputType = {
   dumpsterSize: number
   dumpsterLabel: string | null
   material: string | null
-  productCode: string | null
   serviceType: $Enums.ServiceType
   projectType: string | null
   customerName: string
@@ -515,7 +508,6 @@ export type BookingWhereInput = {
   dumpsterSize?: Prisma.IntFilter<"Booking"> | number
   dumpsterLabel?: Prisma.StringNullableFilter<"Booking"> | string | null
   material?: Prisma.StringNullableFilter<"Booking"> | string | null
-  productCode?: Prisma.StringNullableFilter<"Booking"> | string | null
   serviceType?: Prisma.EnumServiceTypeFilter<"Booking"> | $Enums.ServiceType
   projectType?: Prisma.StringNullableFilter<"Booking"> | string | null
   customerName?: Prisma.StringFilter<"Booking"> | string
@@ -566,7 +558,6 @@ export type BookingOrderByWithRelationInput = {
   dumpsterSize?: Prisma.SortOrder
   dumpsterLabel?: Prisma.SortOrderInput | Prisma.SortOrder
   material?: Prisma.SortOrderInput | Prisma.SortOrder
-  productCode?: Prisma.SortOrderInput | Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   projectType?: Prisma.SortOrderInput | Prisma.SortOrder
   customerName?: Prisma.SortOrder
@@ -620,7 +611,6 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   dumpsterSize?: Prisma.IntFilter<"Booking"> | number
   dumpsterLabel?: Prisma.StringNullableFilter<"Booking"> | string | null
   material?: Prisma.StringNullableFilter<"Booking"> | string | null
-  productCode?: Prisma.StringNullableFilter<"Booking"> | string | null
   serviceType?: Prisma.EnumServiceTypeFilter<"Booking"> | $Enums.ServiceType
   projectType?: Prisma.StringNullableFilter<"Booking"> | string | null
   customerName?: Prisma.StringFilter<"Booking"> | string
@@ -671,7 +661,6 @@ export type BookingOrderByWithAggregationInput = {
   dumpsterSize?: Prisma.SortOrder
   dumpsterLabel?: Prisma.SortOrderInput | Prisma.SortOrder
   material?: Prisma.SortOrderInput | Prisma.SortOrder
-  productCode?: Prisma.SortOrderInput | Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   projectType?: Prisma.SortOrderInput | Prisma.SortOrder
   customerName?: Prisma.SortOrder
@@ -725,7 +714,6 @@ export type BookingScalarWhereWithAggregatesInput = {
   dumpsterSize?: Prisma.IntWithAggregatesFilter<"Booking"> | number
   dumpsterLabel?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   material?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
-  productCode?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   serviceType?: Prisma.EnumServiceTypeWithAggregatesFilter<"Booking"> | $Enums.ServiceType
   projectType?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   customerName?: Prisma.StringWithAggregatesFilter<"Booking"> | string
@@ -770,7 +758,6 @@ export type BookingCreateInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -821,7 +808,6 @@ export type BookingUncheckedCreateInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -870,7 +856,6 @@ export type BookingUpdateInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -921,7 +906,6 @@ export type BookingUncheckedUpdateInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -971,7 +955,6 @@ export type BookingCreateManyInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -1016,7 +999,6 @@ export type BookingUpdateManyMutationInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1062,7 +1044,6 @@ export type BookingUncheckedUpdateManyInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1118,7 +1099,6 @@ export type BookingCountOrderByAggregateInput = {
   dumpsterSize?: Prisma.SortOrder
   dumpsterLabel?: Prisma.SortOrder
   material?: Prisma.SortOrder
-  productCode?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   projectType?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
@@ -1176,7 +1156,6 @@ export type BookingMaxOrderByAggregateInput = {
   dumpsterSize?: Prisma.SortOrder
   dumpsterLabel?: Prisma.SortOrder
   material?: Prisma.SortOrder
-  productCode?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   projectType?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
@@ -1222,7 +1201,6 @@ export type BookingMinOrderByAggregateInput = {
   dumpsterSize?: Prisma.SortOrder
   dumpsterLabel?: Prisma.SortOrder
   material?: Prisma.SortOrder
-  productCode?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   projectType?: Prisma.SortOrder
   customerName?: Prisma.SortOrder
@@ -1406,7 +1384,6 @@ export type BookingCreateWithoutDumpsterInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -1455,7 +1432,6 @@ export type BookingUncheckedCreateWithoutDumpsterInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -1534,7 +1510,6 @@ export type BookingScalarWhereInput = {
   dumpsterSize?: Prisma.IntFilter<"Booking"> | number
   dumpsterLabel?: Prisma.StringNullableFilter<"Booking"> | string | null
   material?: Prisma.StringNullableFilter<"Booking"> | string | null
-  productCode?: Prisma.StringNullableFilter<"Booking"> | string | null
   serviceType?: Prisma.EnumServiceTypeFilter<"Booking"> | $Enums.ServiceType
   projectType?: Prisma.StringNullableFilter<"Booking"> | string | null
   customerName?: Prisma.StringFilter<"Booking"> | string
@@ -1579,7 +1554,6 @@ export type BookingCreateWithoutAddonsInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -1629,7 +1603,6 @@ export type BookingUncheckedCreateWithoutAddonsInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -1693,7 +1666,6 @@ export type BookingUpdateWithoutAddonsInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1743,7 +1715,6 @@ export type BookingUncheckedUpdateWithoutAddonsInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1791,7 +1762,6 @@ export type BookingCreateWithoutNotesInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -1841,7 +1811,6 @@ export type BookingUncheckedCreateWithoutNotesInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -1905,7 +1874,6 @@ export type BookingUpdateWithoutNotesInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1955,7 +1923,6 @@ export type BookingUncheckedUpdateWithoutNotesInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2003,7 +1970,6 @@ export type BookingCreateWithoutHistoryInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -2053,7 +2019,6 @@ export type BookingUncheckedCreateWithoutHistoryInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -2117,7 +2082,6 @@ export type BookingUpdateWithoutHistoryInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2167,7 +2131,6 @@ export type BookingUncheckedUpdateWithoutHistoryInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2215,7 +2178,6 @@ export type BookingCreateWithoutAccessTokensInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -2265,7 +2227,6 @@ export type BookingUncheckedCreateWithoutAccessTokensInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -2329,7 +2290,6 @@ export type BookingUpdateWithoutAccessTokensInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2379,7 +2339,6 @@ export type BookingUncheckedUpdateWithoutAccessTokensInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2427,7 +2386,6 @@ export type BookingCreateManyDumpsterInput = {
   dumpsterSize: number
   dumpsterLabel?: string | null
   material?: string | null
-  productCode?: string | null
   serviceType?: $Enums.ServiceType
   projectType?: string | null
   customerName: string
@@ -2472,7 +2430,6 @@ export type BookingUpdateWithoutDumpsterInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2521,7 +2478,6 @@ export type BookingUncheckedUpdateWithoutDumpsterInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2570,7 +2526,6 @@ export type BookingUncheckedUpdateManyWithoutDumpsterInput = {
   dumpsterSize?: Prisma.IntFieldUpdateOperationsInput | number
   dumpsterLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   material?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  productCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serviceType?: Prisma.EnumServiceTypeFieldUpdateOperationsInput | $Enums.ServiceType
   projectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2674,7 +2629,6 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   dumpsterSize?: boolean
   dumpsterLabel?: boolean
   material?: boolean
-  productCode?: boolean
   serviceType?: boolean
   projectType?: boolean
   customerName?: boolean
@@ -2726,7 +2680,6 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   dumpsterSize?: boolean
   dumpsterLabel?: boolean
   material?: boolean
-  productCode?: boolean
   serviceType?: boolean
   projectType?: boolean
   customerName?: boolean
@@ -2773,7 +2726,6 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   dumpsterSize?: boolean
   dumpsterLabel?: boolean
   material?: boolean
-  productCode?: boolean
   serviceType?: boolean
   projectType?: boolean
   customerName?: boolean
@@ -2820,7 +2772,6 @@ export type BookingSelectScalar = {
   dumpsterSize?: boolean
   dumpsterLabel?: boolean
   material?: boolean
-  productCode?: boolean
   serviceType?: boolean
   projectType?: boolean
   customerName?: boolean
@@ -2859,7 +2810,7 @@ export type BookingSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bookingNumber" | "dumpsterId" | "dumpsterSize" | "dumpsterLabel" | "material" | "productCode" | "serviceType" | "projectType" | "customerName" | "customerPhone" | "customerEmail" | "address1" | "address2" | "city" | "state" | "zip" | "placement" | "instructions" | "customerNotes" | "locationVerified" | "locationVerificationNote" | "deliveryDate" | "pickupDate" | "pickupDateUnknown" | "rentalDaysIncluded" | "bookingStatus" | "paymentStatus" | "basePrice" | "deliveryFee" | "mileageFee" | "extraDaysFee" | "overageFee" | "addonsTotal" | "total" | "quotedAt" | "scheduledAt" | "deliveredAt" | "pickedUpAt" | "cancelledAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bookingNumber" | "dumpsterId" | "dumpsterSize" | "dumpsterLabel" | "material" | "serviceType" | "projectType" | "customerName" | "customerPhone" | "customerEmail" | "address1" | "address2" | "city" | "state" | "zip" | "placement" | "instructions" | "customerNotes" | "locationVerified" | "locationVerificationNote" | "deliveryDate" | "pickupDate" | "pickupDateUnknown" | "rentalDaysIncluded" | "bookingStatus" | "paymentStatus" | "basePrice" | "deliveryFee" | "mileageFee" | "extraDaysFee" | "overageFee" | "addonsTotal" | "total" | "quotedAt" | "scheduledAt" | "deliveredAt" | "pickedUpAt" | "cancelledAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   dumpster?: boolean | Prisma.Booking$dumpsterArgs<ExtArgs>
   addons?: boolean | Prisma.Booking$addonsArgs<ExtArgs>
@@ -2891,7 +2842,6 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     dumpsterSize: number
     dumpsterLabel: string | null
     material: string | null
-    productCode: string | null
     serviceType: $Enums.ServiceType
     projectType: string | null
     customerName: string
@@ -3362,7 +3312,6 @@ export interface BookingFieldRefs {
   readonly dumpsterSize: Prisma.FieldRef<"Booking", 'Int'>
   readonly dumpsterLabel: Prisma.FieldRef<"Booking", 'String'>
   readonly material: Prisma.FieldRef<"Booking", 'String'>
-  readonly productCode: Prisma.FieldRef<"Booking", 'String'>
   readonly serviceType: Prisma.FieldRef<"Booking", 'ServiceType'>
   readonly projectType: Prisma.FieldRef<"Booking", 'String'>
   readonly customerName: Prisma.FieldRef<"Booking", 'String'>

@@ -8,6 +8,8 @@ export const INITIAL_BOOKING_FORM = {
     zip: "",
     lat: null,
     lng: null,
+    projectType: "residential",
+    distanceFromWarehouse: null,
   },
   dumpster: {
     material: "",
@@ -15,6 +17,7 @@ export const INITIAL_BOOKING_FORM = {
     productId: "",
     productLabel: "",
     basePrice: 0,
+    concretePrice: 0,
     includedWeightText: "",
   },
   addons: {

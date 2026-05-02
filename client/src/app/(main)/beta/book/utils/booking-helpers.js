@@ -41,3 +41,26 @@ export function calculateBookingTotal(form) {
     (form.pricing.extraDaysFee || 0)
   );
 }
+
+export function getDistanceFromWarehouse(lat, lng) {
+  if (lat == null || lng == null) return null;
+
+  const warehouseLat = 40.7128; // Example: New York City latitude
+  const warehouseLng = -74.006; // Example: New York City longitude
+
+  const toRad = (value) => (value * Math.PI) / 180;
+
+  const R = 3958.8; // Radius of the Earth in miles
+  const dLat = toRad(lat - warehouseLat);
+  const dLng = toRad(lng - warehouseLng);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(warehouseLat)) *
+      Math.cos(toRad(lat)) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+
+  return Math.round(distance * 10) / 10; // Round to 1 decimal place
+}

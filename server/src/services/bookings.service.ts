@@ -1,5 +1,6 @@
 import { prisma } from '../libs/prisma.ts';
 import { Prisma, BookingStatus, PaymentStatus, ServiceType } from "../generated/prisma/client.js";
+import { calculateBookingPricing, getSelectedAddons } from '../helpers/bookings.helper.ts';
 
 
 const generateBookingNumber = () => {
@@ -42,20 +43,60 @@ export const getBookingById = async (id: string) => {
   });
 };
 
-// TODO: Implement total cost calculation, etc.
 export const createBooking = async (data: any) => {
   try {
     const bookingNumber = generateBookingNumber();
+
+    const dumpster = data.dumpsterId
+      ? await prisma.dumpster.findUnique({
+          where: { id: data.dumpsterId },
+        })
+      : null;
+
+    if (!dumpster) {
+      throw new Error("A valid dumpsterId is required to create a booking.");
+    }
+
+    const selectedAddonCodes = Object.entries(data.addons ?? {})
+      .filter(([, selected]) => Boolean(selected))
+      .map(([code]) => code);
+
+    const selectedAddons = selectedAddonCodes.length
+      ? await prisma.addon.findMany({
+          where: {
+            code: { in: selectedAddonCodes },
+            isActive: true,
+          },
+        })
+      : [];
+
+    const addonsTotal = selectedAddons.reduce((sum, addon) => {
+      return sum + Number(addon.price);
+    }, 0);
+
+    const pricing = calculateBookingPricing({
+      basePrice: dumpster.basePrice,
+      concretePrice: dumpster.concretePrice,
+      material: data.material,
+
+      rentalDays: data.rentalDays,
+      rentalDaysIncluded: data.rentalDaysIncluded ?? 7,
+
+      deliveryFee: data.deliveryFee ?? 0,
+      mileageFee: data.mileageFee ?? 0,
+      overageFee: data.overageFee ?? 0,
+
+      addonsTotal,
+    });
 
     return await prisma.booking.create({
       data: {
         bookingNumber,
 
-        dumpsterId: data.dumpsterId ?? null,
-        dumpsterSize: Number(data.dumpsterSize),
-        dumpsterLabel: data.dumpsterLabel ?? null,
+        dumpsterId: dumpster.id,
+        dumpsterSize: dumpster.size,
+        dumpsterLabel: dumpster.label,
         material: data.material ?? null,
-        productCode: data.productCode ?? null,
 
         serviceType: data.serviceType ?? ServiceType.DUMPSTER_RENTAL,
         projectType: data.projectType ?? null,
@@ -84,17 +125,33 @@ export const createBooking = async (data: any) => {
         bookingStatus: data.bookingStatus ?? BookingStatus.QUOTE,
         paymentStatus: data.paymentStatus ?? PaymentStatus.UNPAID,
 
-        basePrice: new Prisma.Decimal(data.basePrice ?? 0),
-        deliveryFee: new Prisma.Decimal(data.deliveryFee ?? 0),
-        mileageFee: new Prisma.Decimal(data.mileageFee ?? 0),
-        extraDaysFee: new Prisma.Decimal(data.extraDaysFee ?? 0),
-        overageFee: new Prisma.Decimal(data.overageFee ?? 0),
-        addonsTotal: new Prisma.Decimal(data.addonsTotal ?? 0),
-        total: new Prisma.Decimal(data.total ?? 0),
+        quotedAt: new Date(),
+
+        basePrice: new Prisma.Decimal(pricing.basePrice),
+        deliveryFee: new Prisma.Decimal(pricing.deliveryFee),
+        mileageFee: new Prisma.Decimal(pricing.mileageFee),
+        extraDaysFee: new Prisma.Decimal(pricing.extraDaysFee),
+        overageFee: new Prisma.Decimal(pricing.overageFee),
+        addonsTotal: new Prisma.Decimal(pricing.addonsTotal),
+        total: new Prisma.Decimal(pricing.total),
+
+        addons: {
+          create: selectedAddons.map((addon) => ({
+            addonId: addon.id,
+            addonCodeSnapshot: addon.code,
+            addonNameSnapshot: addon.name,
+            addonPriceSnapshot: addon.price,
+            quantity: 1,
+          })),
+        },
       },
       include: {
         dumpster: true,
-        addons: true,
+        addons: {
+          include: {
+            addon: true,
+          },
+        },
       },
     });
   } catch (error) {

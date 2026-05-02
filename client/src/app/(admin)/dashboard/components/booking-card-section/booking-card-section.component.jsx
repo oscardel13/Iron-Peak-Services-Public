@@ -7,6 +7,8 @@ import {
 import { formatDateTime } from "@/utils/helpers";
 
 function getStatusClasses(status) {
+  const normalizedStatus = status?.toLowerCase();
+
   const map = {
     quote: "bg-slate-100 text-slate-700",
     scheduled: "bg-blue-100 text-blue-700",
@@ -14,12 +16,15 @@ function getStatusClasses(status) {
     completed: "bg-green-100 text-green-700",
     cancelled: "bg-red-100 text-red-700",
     unpaid: "bg-red-100 text-red-700",
+    authorized: "bg-blue-100 text-blue-700",
     deposit_paid: "bg-yellow-100 text-yellow-700",
     paid: "bg-green-100 text-green-700",
+    partially_refunded: "bg-orange-100 text-orange-700",
     refunded: "bg-slate-100 text-slate-700",
+    failed: "bg-red-100 text-red-700",
   };
 
-  return map[status] || "bg-slate-100 text-slate-700";
+  return map[normalizedStatus] || "bg-slate-100 text-slate-700";
 }
 
 function Label({ children }) {
@@ -63,10 +68,56 @@ function Textarea(props) {
   );
 }
 
+function formatDateInputValue(value) {
+  if (!value) return "";
+
+  if (typeof value === "string") {
+    return value.split("T")[0];
+  }
+
+  return new Date(value).toISOString().split("T")[0];
+}
+
+function formatMoneyInputValue(value) {
+  if (value === null || value === undefined) return "";
+  return Number(value);
+}
+
+function formatCurrency(value) {
+  return `$${Number(value || 0).toFixed(2)}`;
+}
+
+function formatTextValue(value) {
+  if (!value) return "";
+  return String(value)
+    .toLowerCase()
+    .split("_")
+    .join("-")
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function getAddonName(bookingAddon) {
+  return (
+    bookingAddon?.addonNameSnapshot ||
+    bookingAddon?.addon?.name ||
+    bookingAddon?.name ||
+    "Addon"
+  );
+}
+
+function getAddonPrice(bookingAddon) {
+  return (
+    bookingAddon?.addonPriceSnapshot ||
+    bookingAddon?.addon?.price ||
+    bookingAddon?.price ||
+    0
+  );
+}
+
 export default function BookingCardSection({
   bookingToRender,
-  selectedBooking,
-  draft,
   isEditing,
   handleEdit,
   handleCancelEdit,
@@ -80,6 +131,11 @@ export default function BookingCardSection({
       </section>
     );
   }
+
+  const materialSurchargeLabel =
+    bookingToRender.material?.toLowerCase() === "concrete"
+      ? bookingToRender.dumpster.concretePrice
+      : "$0.00";
 
   return (
     <section className="rounded-2xl border border-gray-200 bg-white shadow-sm">
@@ -95,7 +151,7 @@ export default function BookingCardSection({
                 bookingToRender.bookingStatus
               )}`}
             >
-              {bookingToRender.bookingStatus.replaceAll("_", " ")}
+              {formatTextValue(bookingToRender.bookingStatus)}
             </span>
 
             <span
@@ -103,14 +159,14 @@ export default function BookingCardSection({
                 bookingToRender.paymentStatus
               )}`}
             >
-              {bookingToRender.paymentStatus.replaceAll("_", " ")}
+              {formatTextValue(bookingToRender.paymentStatus)}
             </span>
           </div>
 
           <p className="mt-1 text-sm text-gray-500">{bookingToRender.id}</p>
 
           <p className="mt-2 text-sm text-gray-600">
-            {bookingToRender.serviceType} ·{" "}
+            {formatTextValue(bookingToRender.serviceType)} ·{" "}
             {bookingToRender.dumpsterLabel ||
               `${bookingToRender.dumpsterSize} Yard Requested`}
           </p>
@@ -155,27 +211,27 @@ export default function BookingCardSection({
               <div>
                 <Label>Name</Label>
                 <Input
-                  value={bookingToRender.customerName}
+                  value={bookingToRender.customerName || ""}
                   disabled={!isEditing}
-                  onChange={(e) => updateDraft("name", e.target.value)}
+                  onChange={(e) => updateDraft("customerName", e.target.value)}
                 />
               </div>
 
               <div>
                 <Label>Phone</Label>
                 <Input
-                  value={bookingToRender.customerPhone}
+                  value={bookingToRender.customerPhone || ""}
                   disabled={!isEditing}
-                  onChange={(e) => updateDraft("phone", e.target.value)}
+                  onChange={(e) => updateDraft("customerPhone", e.target.value)}
                 />
               </div>
 
               <div>
                 <Label>Email</Label>
                 <Input
-                  value={bookingToRender.customerEmail}
+                  value={bookingToRender.customerEmail || ""}
                   disabled={!isEditing}
-                  onChange={(e) => updateDraft("email", e.target.value)}
+                  onChange={(e) => updateDraft("customerEmail", e.target.value)}
                 />
               </div>
             </div>
@@ -190,13 +246,13 @@ export default function BookingCardSection({
               <div>
                 <Label>Booking Status</Label>
                 <Select
-                  value={bookingToRender.bookingStatus}
+                  value={bookingToRender.bookingStatus || ""}
                   disabled={!isEditing}
                   onChange={(e) => updateDraft("bookingStatus", e.target.value)}
                 >
                   {BOOKING_STATUSES.map((status) => (
                     <option key={status} value={status}>
-                      {status.replaceAll("_", " ")}
+                      {formatTextValue(status)}
                     </option>
                   ))}
                 </Select>
@@ -205,13 +261,13 @@ export default function BookingCardSection({
               <div>
                 <Label>Payment Status</Label>
                 <Select
-                  value={bookingToRender.paymentStatus}
+                  value={bookingToRender.paymentStatus || ""}
                   disabled={!isEditing}
                   onChange={(e) => updateDraft("paymentStatus", e.target.value)}
                 >
                   {PAYMENT_STATUSES.map((status) => (
                     <option key={status} value={status}>
-                      {status.replaceAll("_", " ")}
+                      {formatTextValue(status)}
                     </option>
                   ))}
                 </Select>
@@ -259,40 +315,66 @@ export default function BookingCardSection({
             <div>
               <Label>Project Type</Label>
               <Input
-                value={bookingToRender.projectType}
+                value={formatTextValue(bookingToRender.projectType)}
                 disabled={!isEditing}
-                onChange={(e) =>
-                  updateDraft("projectType", e.target.value)
-                }
+                onChange={(e) => updateDraft("projectType", e.target.value)}
+              />
+            </div>
+
+            <div>
+              <Label>Material</Label>
+              <Input
+                value={formatTextValue(bookingToRender.material)}
+                disabled={!isEditing}
+                onChange={(e) => updateDraft("material", e.target.value)}
               />
             </div>
 
             <div>
               <Label>Placement</Label>
               <Input
-                value={bookingToRender.placement}
+                value={bookingToRender.placement || ""}
                 disabled={!isEditing}
-                onChange={(e) =>
-                  updateDraft("placement", e.target.value)
-                }
+                onChange={(e) => updateDraft("placement", e.target.value)}
               />
+            </div>
+
+            <div>
+              <Label>Add-ons</Label>
+              <div className="min-h-[38px] rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800">
+                {bookingToRender.addons?.length ? (
+                  <ul className="space-y-1">
+                    {bookingToRender.addons.map((bookingAddon) => (
+                      <li
+                        key={bookingAddon.id}
+                        className="flex justify-between gap-3"
+                      >
+                        <span>{getAddonName(bookingAddon)}</span>
+                        <span className="font-medium">
+                          {formatCurrency(getAddonPrice(bookingAddon))}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span className="text-gray-500">No add-ons selected</span>
+                )}
+              </div>
             </div>
 
             <div className="md:col-span-2">
               <Label>Address</Label>
               <Input
-                value={bookingToRender.address1}
+                value={bookingToRender.address1 || ""}
                 disabled={!isEditing}
-                onChange={(e) =>
-                  updateDraft("address1", e.target.value)
-                }
+                onChange={(e) => updateDraft("address1", e.target.value)}
               />
             </div>
 
             <div>
               <Label>City</Label>
               <Input
-                value={bookingToRender.city}
+                value={bookingToRender.city || ""}
                 disabled={!isEditing}
                 onChange={(e) => updateDraft("city", e.target.value)}
               />
@@ -301,7 +383,7 @@ export default function BookingCardSection({
             <div>
               <Label>State</Label>
               <Input
-                value={bookingToRender.state}
+                value={bookingToRender.state || ""}
                 disabled={!isEditing}
                 onChange={(e) => updateDraft("state", e.target.value)}
               />
@@ -310,7 +392,7 @@ export default function BookingCardSection({
             <div>
               <Label>ZIP</Label>
               <Input
-                value={bookingToRender.zip}
+                value={bookingToRender.zip || ""}
                 disabled={!isEditing}
                 onChange={(e) => updateDraft("zip", e.target.value)}
               />
@@ -320,11 +402,9 @@ export default function BookingCardSection({
               <Label>Instructions</Label>
               <Textarea
                 rows={4}
-                value={bookingToRender.instructions}
+                value={bookingToRender.instructions || ""}
                 disabled={!isEditing}
-                onChange={(e) =>
-                  updateDraft("instructions", e.target.value)
-                }
+                onChange={(e) => updateDraft("instructions", e.target.value)}
               />
             </div>
           </div>
@@ -341,11 +421,9 @@ export default function BookingCardSection({
                 <Label>Delivery Date</Label>
                 <Input
                   type="date"
-                  value={bookingToRender.deliveryDate}
+                  value={formatDateInputValue(bookingToRender.deliveryDate)}
                   disabled={!isEditing}
-                  onChange={(e) =>
-                    updateDraft("deliveryDate", e.target.value)
-                  }
+                  onChange={(e) => updateDraft("deliveryDate", e.target.value)}
                 />
               </div>
 
@@ -353,25 +431,39 @@ export default function BookingCardSection({
                 <Label>Pickup Date</Label>
                 <Input
                   type="date"
-                  value={bookingToRender.pickupDate}
+                  value={formatDateInputValue(bookingToRender.pickupDate)}
                   disabled={!isEditing}
                   onChange={(e) =>
-                    updateDraft("pickupDate", e.target.value)
+                    updateDraft("pickupDate", e.target.value || null)
                   }
                 />
               </div>
 
-              {/* <div>
-                <Label>Rental Days</Label>
-                <Input
-                  type="number"
-                  value={bookingToRender.schedule.rentalDays}
+              <div>
+                <Label>Pickup Date Unknown</Label>
+                <Select
+                  value={bookingToRender.pickupDateUnknown ? "yes" : "no"}
                   disabled={!isEditing}
                   onChange={(e) =>
-                    updateDraft("schedule.rentalDays", Number(e.target.value))
+                    updateDraft("pickupDateUnknown", e.target.value === "yes")
+                  }
+                >
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </Select>
+              </div>
+
+              <div>
+                <Label>Rental Days Included</Label>
+                <Input
+                  type="number"
+                  value={bookingToRender.rentalDaysIncluded ?? 7}
+                  disabled={!isEditing}
+                  onChange={(e) =>
+                    updateDraft("rentalDaysIncluded", Number(e.target.value))
                   }
                 />
-              </div> */}
+              </div>
             </div>
           </div>
 
@@ -385,7 +477,7 @@ export default function BookingCardSection({
                 <Label>Base Price</Label>
                 <Input
                   type="number"
-                  value={bookingToRender.basePrice}
+                  value={formatMoneyInputValue(bookingToRender.basePrice)}
                   disabled={!isEditing}
                   onChange={(e) =>
                     updateDraft("basePrice", Number(e.target.value))
@@ -394,10 +486,27 @@ export default function BookingCardSection({
               </div>
 
               <div>
+                <Label>Material Surcharge</Label>
+                <Input value={materialSurchargeLabel} disabled />
+              </div>
+
+              <div>
+                <Label>Add-ons Total</Label>
+                <Input
+                  type="number"
+                  value={formatMoneyInputValue(bookingToRender.addonsTotal)}
+                  disabled={!isEditing}
+                  onChange={(e) =>
+                    updateDraft("addonsTotal", Number(e.target.value))
+                  }
+                />
+              </div>
+
+              <div>
                 <Label>Delivery Fee</Label>
                 <Input
                   type="number"
-                  value={bookingToRender.deliveryFee}
+                  value={formatMoneyInputValue(bookingToRender.deliveryFee)}
                   disabled={!isEditing}
                   onChange={(e) =>
                     updateDraft("deliveryFee", Number(e.target.value))
@@ -409,7 +518,7 @@ export default function BookingCardSection({
                 <Label>Mileage Fee</Label>
                 <Input
                   type="number"
-                  value={bookingToRender.mileageFee}
+                  value={formatMoneyInputValue(bookingToRender.mileageFee)}
                   disabled={!isEditing}
                   onChange={(e) =>
                     updateDraft("mileageFee", Number(e.target.value))
@@ -421,7 +530,7 @@ export default function BookingCardSection({
                 <Label>Extra Days Fee</Label>
                 <Input
                   type="number"
-                  value={bookingToRender.extraDaysFee}
+                  value={formatMoneyInputValue(bookingToRender.extraDaysFee)}
                   disabled={!isEditing}
                   onChange={(e) =>
                     updateDraft("extraDaysFee", Number(e.target.value))
@@ -433,7 +542,7 @@ export default function BookingCardSection({
                 <Label>Overage Fee</Label>
                 <Input
                   type="number"
-                  value={bookingToRender.overageFee}
+                  value={formatMoneyInputValue(bookingToRender.overageFee)}
                   disabled={!isEditing}
                   onChange={(e) =>
                     updateDraft("overageFee", Number(e.target.value))
@@ -445,11 +554,9 @@ export default function BookingCardSection({
                 <Label>Total</Label>
                 <Input
                   type="number"
-                  value={bookingToRender.total}
+                  value={formatMoneyInputValue(bookingToRender.total)}
                   disabled={!isEditing}
-                  onChange={(e) =>
-                    updateDraft("total", Number(e.target.value))
-                  }
+                  onChange={(e) => updateDraft("total", Number(e.target.value))}
                 />
               </div>
             </div>
@@ -477,6 +584,26 @@ export default function BookingCardSection({
               </p>
               <p className="mt-1 text-sm font-medium text-gray-900">
                 {formatDateTime(bookingToRender.updatedAt)}
+              </p>
+            </div>
+
+            <div className="rounded-xl bg-gray-50 p-3">
+              <p className="text-xs uppercase tracking-wide text-gray-500">
+                Quoted
+              </p>
+              <p className="mt-1 text-sm font-medium text-gray-900">
+                {bookingToRender.quotedAt
+                  ? formatDateTime(bookingToRender.quotedAt)
+                  : "—"}
+              </p>
+            </div>
+
+            <div className="rounded-xl bg-gray-50 p-3">
+              <p className="text-xs uppercase tracking-wide text-gray-500">
+                Booking Number
+              </p>
+              <p className="mt-1 text-sm font-medium text-gray-900">
+                {bookingToRender.bookingNumber || "—"}
               </p>
             </div>
           </div>

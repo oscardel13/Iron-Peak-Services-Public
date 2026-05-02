@@ -993,7 +993,6 @@ export const BookingScalarFieldEnum = {
   dumpsterSize: 'dumpsterSize',
   dumpsterLabel: 'dumpsterLabel',
   material: 'material',
-  productCode: 'productCode',
   serviceType: 'serviceType',
   projectType: 'projectType',
   customerName: 'customerName',

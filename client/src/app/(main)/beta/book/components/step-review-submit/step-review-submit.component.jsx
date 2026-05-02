@@ -35,16 +35,31 @@ function formatPlacement(placement) {
   return placement.charAt(0).toUpperCase() + placement.slice(1);
 }
 
+function formatProjectType(projectType) {
+  if (!projectType) return "";
+  return projectType
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 function formatCurrency(value) {
   return `$${(value || 0).toFixed(2)}`;
+}
+
+// pretend this exists for now
+function getDistanceFromWarehouse(address) {
+  return address.distanceFromWarehouse ?? null;
 }
 
 export default function StepReviewSubmit({
   bookingForm,
   goToPreviousStep,
   goToStep,
-  onSubmit
+  onSubmit,
 }) {
+  const distanceFromWarehouse = getDistanceFromWarehouse(bookingForm.address);
+
   return (
     <StepShell
       title="Review and submit"
@@ -72,6 +87,18 @@ export default function StepReviewSubmit({
             <Row label="City" value={bookingForm.address.city} />
             <Row label="State" value={bookingForm.address.state} />
             <Row label="ZIP" value={bookingForm.address.zip} />
+            <Row
+              label="Project Type"
+              value={formatProjectType(bookingForm.address.projectType)}
+            />
+            <Row
+              label="Distance from Warehouse"
+              value={
+                distanceFromWarehouse != null
+                  ? `${distanceFromWarehouse} miles`
+                  : ""
+              }
+            />
           </div>
 
           <div className="rounded-2xl border border-gray-200 p-4">
@@ -90,10 +117,7 @@ export default function StepReviewSubmit({
               label="Material"
               value={formatMaterial(bookingForm.dumpster.material)}
             />
-            <Row
-              label="Dumpster"
-              value={bookingForm.dumpster.productLabel}
-            />
+            <Row label="Dumpster" value={bookingForm.dumpster.productLabel} />
             <Row
               label="Size"
               value={
@@ -166,7 +190,9 @@ export default function StepReviewSubmit({
 
           <div className="rounded-2xl border border-gray-200 p-4">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900">Location + Customer</h3>
+              <h3 className="font-semibold text-gray-900">
+                Location + Customer
+              </h3>
               <button
                 type="button"
                 onClick={() => goToStep(4)}

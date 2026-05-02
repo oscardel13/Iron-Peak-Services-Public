@@ -4,8 +4,9 @@ import {
   HttpGetDumpsterById,
   HttpCreateDumpster,
   HttpUpdateDumpster,
+  HttpGetAvailableDumpstersByDates,
   // HttpDeleteDumpster,
-  // HttpGetAddons,
+  HttpGetAddons,
   // HttpGetAddonById,
   // HttpCreateAddon,
   // HttpUpdateAddon,
@@ -21,6 +22,9 @@ router.get('/dumpsters', HttpGetDumpsters);
 // POST /api/v1/admin/inventory/dumpsters
 router.post('/dumpsters', HttpCreateDumpster);
 
+// GET /api/v1/admin/inventory/dumpsters/available?deliveryDate=2024-10-01&pickupDate=2024-10-05`
+router.get('/dumpsters/available', HttpGetAvailableDumpstersByDates);
+
 // GET /api/v1/admin/inventory/dumpsters/:id
 router.get('/dumpsters/:id', HttpGetDumpsterById);
 
@@ -31,8 +35,8 @@ router.put('/dumpsters/:id', HttpUpdateDumpster);
 // router.delete('/dumpsters/:id', HttpDeleteDumpster);
 
 // // Addon routes
-// // GET /api/v1/admin/inventory/addons
-// router.get('/addons', HttpGetAddons);
+// GET /api/v1/admin/inventory/addons
+router.get('/addons', HttpGetAddons);
 
 // // POST /api/v1/admin/inventory/addons
 // router.post('/addons', HttpCreateAddon);

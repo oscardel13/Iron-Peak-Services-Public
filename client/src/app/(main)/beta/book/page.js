@@ -9,7 +9,6 @@ import StepVerifyLocation from "./components/step-verify-location/step-verify-lo
 import StepCustomerPayment from "./components/step-customer-payment/step-customer-payment.component";
 import StepReviewSubmit from "./components/step-review-submit/step-review-submit.component";
 
-import { ADDON_PRICING, DUMPSTER_PRODUCTS } from "./utils/booking-data";
 import { INITIAL_BOOKING_FORM } from "./utils/booking-form";
 
 import { getAPI } from "@/utils/api";
@@ -23,8 +22,8 @@ import {
 
 const BOOKING_STEPS = [
   { id: 1, key: "address", title: "Start Address", shortTitle: "Address" },
-  { id: 2, key: "dumpster", title: "Dumpster Details", shortTitle: "Dumpster" },
-  { id: 3, key: "schedule", title: "Schedule", shortTitle: "Date" },
+  { id: 2, key: "schedule", title: "Schedule", shortTitle: "Date" },
+  { id: 3, key: "dumpster", title: "Dumpster Details", shortTitle: "Dumpster" },
   { id: 4, key: "location", title: "Verify Location", shortTitle: "Location" },
   { id: 5, key: "customer", title: "Customer & Payment", shortTitle: "Info" },
   { id: 6, key: "review", title: "Review & Submit", shortTitle: "Review" },
@@ -34,20 +33,30 @@ export default function BookPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [bookingForm, setBookingForm] = useState(INITIAL_BOOKING_FORM);
   const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
-  const [dumpsters, setDumpsters] = useState(DUMPSTER_PRODUCTS);
+  const [dumpsters, setDumpsters] = useState(null);
+  const [addons, setAddons] = useState(null);
 
   useEffect(() => {
     const fetchDumpsters = async () => {
       try {
         const response = await getAPI("/inventory/dumpsters");
         setDumpsters(response.data);
-        console.log("Fetched dumpsters:", response.data);
       } catch (error) {
         console.error("Failed to fetch dumpsters:", error);
       }
     };
 
+    const fetchAddons = async () => {
+      try {
+        const response = await getAPI("/inventory/addons");
+        setAddons(response.data);
+      } catch (error) {
+        console.error("Failed to fetch addons:", error);
+      }
+    };
+
     fetchDumpsters();
+    fetchAddons();
   }, []);
 
   const availableProducts = dumpsters ?? [];
@@ -98,7 +107,7 @@ export default function BookPage() {
       next.dumpster.includedWeightText = product.includedWeightText;
 
       next.pricing.basePrice = product.basePrice;
-      next.pricing.materialSurcharge = materialSurcharge;
+      next.pricing.materialSurcharge = product.concretePrice || materialSurcharge;
       next.pricing.total = calculateBookingTotal(next);
 
       return next;
@@ -110,20 +119,25 @@ export default function BookPage() {
       const next = structuredClone(prev);
 
       next.addons[key] = checked;
+      const selectedAddons = addons.find((addon) => addon.code === key);
+      console.log("addons in toggleAddon:", selectedAddons, "key:", key, "checked:", checked);
+
+      
 
       if (key === "drivewayProtection") {
         next.pricing.drivewayProtectionFee = checked
-          ? ADDON_PRICING.drivewayProtection
+          ? Number(selectedAddons.price)
           : 0;
       }
 
       if (key === "priorityDelivery") {
         next.pricing.priorityDeliveryFee = checked
-          ? ADDON_PRICING.priorityDelivery
+          ? Number(selectedAddons.price)
           : 0;
       }
 
       next.pricing.total = calculateBookingTotal(next);
+      console.log("Updated booking form in toggleAddon:", next);
 
       return next;
     });
@@ -193,8 +207,9 @@ export default function BookPage() {
         city: bookingForm.address.city,
         state: bookingForm.address.state,
         zip: bookingForm.address.zip,
-        placement: bookingForm.address.placement || null,
-        instructions: bookingForm.address.instructions || null,
+        projectType: bookingForm.address.projectType || null,
+        placement: bookingForm.location.placement || null,
+        instructions: bookingForm.location.instructions || null,
         customerNotes: bookingForm.customer.notes || null,
 
         locationVerified: Boolean(bookingForm.location?.verified),
@@ -210,12 +225,18 @@ export default function BookPage() {
         bookingStatus: "QUOTE",
         paymentStatus: "UNPAID",
 
+        concretePrice: bookingForm.dumpster.concretePrice,
+        rentalDays: bookingForm.schedule.rentalDays,
+
         basePrice: Number(bookingForm.pricing.basePrice || 0),
         deliveryFee: Number(bookingForm.pricing.deliveryFee || 0),
         mileageFee: Number(bookingForm.pricing.mileageFee || 0),
         extraDaysFee: Number(bookingForm.pricing.extraDaysFee || 0),
         overageFee: Number(bookingForm.pricing.overageFee || 0),
-        addonsTotal: Number(bookingForm.pricing.addonsTotal || 0),
+        addons: {
+          drivewayProtection: bookingForm.addons.drivewayProtection,
+          priorityDelivery: bookingForm.addons.priorityDelivery,
+        },
         total: Number(bookingForm.pricing.total || 0),
       };
 
@@ -239,8 +260,8 @@ export default function BookPage() {
 
       console.log("Booking created:", data);
 
-      setCurrentStep(1);
-      setBookingForm(INITIAL_BOOKING_FORM);
+      // setCurrentStep(1);
+      // setBookingForm(INITIAL_BOOKING_FORM);
 
       alert("Booking submitted successfully!");
     } catch (error) {
@@ -262,12 +283,9 @@ export default function BookPage() {
 
       case 2:
         return (
-          <StepDumpsterDetails
+          <StepSchedule
             bookingForm={bookingForm}
-            updateBookingForm={updateBookingForm}
-            setSelectedProduct={setSelectedProduct}
-            toggleAddon={toggleAddon}
-            availableProducts={availableProducts}
+            updateScheduleField={updateScheduleField}
             goToNextStep={goToNextStep}
             goToPreviousStep={goToPreviousStep}
           />
@@ -275,9 +293,12 @@ export default function BookPage() {
 
       case 3:
         return (
-          <StepSchedule
+          <StepDumpsterDetails
             bookingForm={bookingForm}
-            updateScheduleField={updateScheduleField}
+            updateBookingForm={updateBookingForm}
+            setSelectedProduct={setSelectedProduct}
+            toggleAddon={toggleAddon}
+            availableProducts={availableProducts}
             goToNextStep={goToNextStep}
             goToPreviousStep={goToPreviousStep}
           />

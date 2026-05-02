@@ -84,7 +84,6 @@ model Booking {
   dumpsterSize              Int
   dumpsterLabel             String?
   material                  String?
-  productCode               String?
 
   serviceType               ServiceType    @default(DUMPSTER_RENTAL)
   projectType               String?

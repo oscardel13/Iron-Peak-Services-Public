@@ -1,10 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { MATERIAL_OPTIONS } from "../../utils/booking-data";
-import {
-  getMaterialLabel,
-  getMaterialSurcharge,
-} from "../../utils/booking-helpers";
+import { getAPI } from "@/utils/api";
 import StepShell from "../step-shell/step-shell.component";
 
 function SectionTitle({ children }) {
@@ -16,11 +14,56 @@ export default function StepDumpsterDetails({
   updateBookingForm,
   setSelectedProduct,
   toggleAddon,
-  availableProducts,
   goToNextStep,
   goToPreviousStep,
 }) {
-  const concreteSurcharge = getMaterialSurcharge(bookingForm.dumpster.material);
+  const [availableProducts, setAvailableProducts] = useState([]);
+  const [isLoadingDumpsters, setIsLoadingDumpsters] = useState(false);
+  const [dumpstersError, setDumpstersError] = useState("");
+
+  useEffect(() => {
+    async function fetchAvailableDumpsters() {
+      const deliveryDate = bookingForm.schedule.deliveryDate;
+      const pickupDate = bookingForm.schedule.pickupDate;
+      const unknownPickup = bookingForm.schedule.unknownPickup;
+      console.log("Fetching available dumpsters for deliveryDate:", deliveryDate, " pickupDate:", pickupDate, " unknownPickup:", unknownPickup);
+
+      if (!deliveryDate) {
+        setAvailableProducts([]);
+        return;
+      }
+
+      try {
+        setIsLoadingDumpsters(true);
+        setDumpstersError("");
+
+        const params = new URLSearchParams();
+        params.set("deliveryDate", deliveryDate);
+
+        if (!unknownPickup && pickupDate) {
+          params.set("pickupDate", pickupDate);
+        }
+
+        const response = await getAPI(
+          `/inventory/dumpsters/available?${params.toString()}`
+        );
+
+        setAvailableProducts(response.data || []);
+      } catch (error) {
+        console.error("Failed to fetch available dumpsters:", error);
+        setAvailableProducts([]);
+        setDumpstersError("Could not load available dumpsters.");
+      } finally {
+        setIsLoadingDumpsters(false);
+      }
+    }
+
+    fetchAvailableDumpsters();
+  }, [
+    bookingForm.schedule.deliveryDate,
+    bookingForm.schedule.pickupDate,
+    bookingForm.schedule.unknownPickup,
+  ]);
 
   return (
     <StepShell
@@ -65,11 +108,6 @@ export default function StepDumpsterDetails({
               <p className="font-semibold text-amber-800">
                 Concrete disposal surcharge applies
               </p>
-              <p className="mt-1 text-sm text-amber-700">
-                Concrete costs more to dump, so a frontend surcharge of $
-                {concreteSurcharge.toFixed(2)} has been added for now. Final
-                pricing will be confirmed by the backend.
-              </p>
             </div>
           )}
         </div>
@@ -77,9 +115,19 @@ export default function StepDumpsterDetails({
         <div className="space-y-4">
           <SectionTitle>Available dumpsters</SectionTitle>
 
-          {availableProducts.length === 0 ? (
+          {!bookingForm.schedule.deliveryDate ? (
             <p className="text-sm text-gray-500">
-              No dumpsters are currently available.
+              Choose a delivery date first so we can check dumpster availability.
+            </p>
+          ) : isLoadingDumpsters ? (
+            <p className="text-sm text-gray-500">
+              Checking available dumpsters...
+            </p>
+          ) : dumpstersError ? (
+            <p className="text-sm text-red-600">{dumpstersError}</p>
+          ) : availableProducts.length === 0 ? (
+            <p className="text-sm text-gray-500">
+              No dumpsters are available for the selected dates.
             </p>
           ) : (
             <div className="grid gap-4">
@@ -105,21 +153,23 @@ export default function StepDumpsterDetails({
                         <p className="mt-1 text-sm text-gray-500">
                           Size: {product.size} yd
                         </p>
+                        {product.includedWeightText && (
+                          <p className="mt-1 text-sm text-gray-500">
+                            Included: {product.includedWeightText}
+                          </p>
+                        )}
                         <p className="mt-1 text-sm text-gray-500">
-                          Included: {product.includedWeightText}
-                        </p>
-                        <p className="mt-1 text-sm text-gray-500">
-                          {product.includedDays} days included, then $25/day
+                          {product.includedDays || 7} days included, then $25/day
                         </p>
                       </div>
 
                       <div className="text-left md:text-right">
                         <p className="text-xl font-semibold text-gray-900">
-                          ${product.basePrice.toFixed(2)}
+                          ${Number(product.basePrice || 0).toFixed(2)}
                         </p>
                         {bookingForm.dumpster.material === "concrete" && (
                           <p className="mt-1 text-sm text-amber-700">
-                            + ${concreteSurcharge.toFixed(2)} concrete fee
+                            + ${Number(product.concretePrice || 0).toFixed(2)} concrete fee
                           </p>
                         )}
                       </div>
@@ -137,18 +187,14 @@ export default function StepDumpsterDetails({
           <div className="grid gap-4">
             <label className="flex cursor-pointer items-start justify-between gap-4 rounded-2xl border border-gray-200 bg-white p-4">
               <div>
-                <p className="font-semibold text-gray-900">
-                  Priority Delivery
-                </p>
+                <p className="font-semibold text-gray-900">Priority Delivery</p>
                 <p className="mt-1 text-sm text-gray-500">
                   Move your delivery up in scheduling priority.
                 </p>
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-900">
-                  $49.99
-                </span>
+                <span className="text-sm font-medium text-gray-900">$49.99</span>
                 <input
                   type="checkbox"
                   checked={bookingForm.addons.priorityDelivery}
@@ -171,9 +217,7 @@ export default function StepDumpsterDetails({
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-900">
-                  $29.99
-                </span>
+                <span className="text-sm font-medium text-gray-900">$29.99</span>
                 <input
                   type="checkbox"
                   checked={bookingForm.addons.drivewayProtection}

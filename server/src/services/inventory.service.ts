@@ -8,6 +8,67 @@ export const getDumpsters = async (query: any) => {
   });
 };
 
+function addDays(date: Date, days: number) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+}
+
+// TODO: gets available dumpsters for given dates or if 
+// no dates provided, gets dumpster available now
+export const getDumpstersFilteredByDates = async (query: any) => {
+  const deliveryDate = query.deliveryDate
+    ? new Date(query.deliveryDate)
+    : new Date();
+
+  const pickupDate = query.pickupDate
+    ? new Date(query.pickupDate)
+    : addDays(deliveryDate, 14);
+
+  const dumpsters = await getDumpsters(query);
+
+  const usableDumpsters = dumpsters.filter(
+    (dumpster) =>
+      dumpster.status !== "MAINTENANCE" &&
+      dumpster.status !== "OUT_OF_SERVICE"
+  );
+
+  const conflictingBookings = await prisma.booking.findMany({
+    where: {
+      dumpsterId: {
+        not: null,
+      },
+      deliveryDate: {
+        lte: pickupDate,
+      },
+      OR: [
+        {
+          pickupDate: {
+            gte: deliveryDate,
+          },
+        },
+        {
+          pickupDateUnknown: true,
+        },
+      ],
+    },
+    select: {
+      dumpsterId: true,
+    },
+  });
+
+  const unavailableDumpsterIds = new Set(
+    conflictingBookings
+      .map((booking) => booking.dumpsterId)
+      .filter(Boolean)
+  );
+
+  return usableDumpsters.filter(
+    (dumpster) => !unavailableDumpsterIds.has(dumpster.id)
+  );
+};
+
+
 export const getDumpsterById = async (id: string) => {
   return await prisma.dumpster.findUnique({
     where: { id },

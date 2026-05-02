@@ -22,7 +22,6 @@ export default function BookingsPage() {
   useEffect(() => {
     const fetchBookings = async () => {
       try{
-        console.log("Fetching bookings...");
         const response = await getAPI("/bookings");
         console.log("Fetched bookings:", response.data);
         setBookings(response.data);

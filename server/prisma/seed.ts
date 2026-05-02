@@ -8,8 +8,24 @@ const prisma = new PrismaClient({
   }),
 });
 
+const addons = [
+  {
+    code: "drivewayProtection",
+    name: "Driveway Surface Protection",
+    description: "Protective boards for driveway contact points.",
+    price: 29.99,
+    isActive: true,
+  },
+  {
+    code: "priorityDelivery",
+    name: "Priority Delivery",
+    description: "Move your delivery up in scheduling priority.",
+    price: 49.99,
+    isActive: true,
+  },
+];
+
 const dumpsters = [
-  // ===== 17 YARD (3 total) =====
   {
     id: "dumpster-17-1",
     label: "17 Yard Dumpster #1",
@@ -49,8 +65,6 @@ const dumpsters = [
     notes: "Available and ready.",
     isActive: true,
   },
-
-  // ===== 22 YARD (2 total) =====
   {
     id: "dumpster-22-1",
     label: "22 Yard Dumpster #1",
@@ -92,10 +106,27 @@ async function main() {
         serialNumber: dumpster.serialNumber,
         color: dumpster.color,
         status: dumpster.status,
+        basePrice: dumpster.basePrice,
+        concretePrice: dumpster.concretePrice,
         notes: dumpster.notes,
         isActive: dumpster.isActive,
       },
       create: dumpster,
+    });
+  }
+
+  console.log("Seeding addons...");
+
+  for (const addon of addons) {
+    await prisma.addon.upsert({
+      where: { code: addon.code },
+      update: {
+        name: addon.name,
+        description: addon.description,
+        price: addon.price,
+        isActive: addon.isActive,
+      },
+      create: addon,
     });
   }
 
