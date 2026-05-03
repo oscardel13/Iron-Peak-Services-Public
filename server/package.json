@@ -7,16 +7,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsx src/server.ts",
-    "watch": "nodemon --exec tsx src/server.ts", 
-
+    "watch": "nodemon --exec tsx src/server.ts",
     "db:start": "docker run -d --name ironpeak-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=ironpeak -p 5432:5432 postgres:16",
     "db:stop": "docker stop ironpeak-postgres",
     "db:logs": "docker logs -f ironpeak-postgres",
-
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "tsx prisma/seed.ts", 
+    "prisma:seed": "tsx prisma/seed.ts",
     "prisma:reset": "prisma migrate reset --force --skip-seed && tsx prisma/seed.ts",
     "prisma:studio": "prisma studio"
   },
@@ -44,6 +42,7 @@
     "express": "^5.2.1",
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
+    "node-cron": "^4.2.1",
     "pg": "^8.20.0"
   }
 }

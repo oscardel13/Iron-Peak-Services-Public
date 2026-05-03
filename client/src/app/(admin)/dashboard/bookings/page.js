@@ -116,14 +116,14 @@ export default function BookingsPage() {
 
       console.log("Updated booking response:", response.data);
 
-      // setBookings((prev) =>
-      //   prev.map((booking) =>
-      //     booking.id === draft.id ? response.data : booking
-      //   )
-      // );
+      setBookings((prev) =>
+        prev.map((booking) =>
+          booking.id === draft.id ? response.data : booking
+        )
+      );
 
-      // setDraft(response.data);
-      // setIsEditing(false);
+      setDraft(response.data);
+      setIsEditing(false);
   } catch (error) {
       console.error("Failed to update booking:", error);
   }
