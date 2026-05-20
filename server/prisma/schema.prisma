@@ -97,6 +97,11 @@ model Booking {
   city                      String
   state                     String
   zip                       String
+
+  latitude                  Decimal?       @db.Decimal(10, 7)
+  longitude                 Decimal?       @db.Decimal(10, 7)
+  distanceFromWarehouse     Decimal?       @db.Decimal(10, 2)
+
   placement                 String?
   instructions              String?
   customerNotes             String?
@@ -143,6 +148,7 @@ model Booking {
   @@index([dumpsterId])
   @@index([customerEmail])
   @@index([bookingNumber])
+  @@index([zip])
 }
 
 model Addon {
@@ -225,4 +231,62 @@ model CustomerAccessToken {
 
   @@index([bookingId])
   @@index([expiresAt])
+}
+
+enum AccessLevel {
+  CLIENT
+  DRIVER
+  WORKER
+  ADMIN
+  OWNER
+}
+
+enum AuthProviderType {
+  GOOGLE
+  META
+  X
+  EMAIL
+}
+
+model User {
+  id           String       @id @default(cuid())
+
+  name         String?
+  email        String?      @unique
+  phone        String?
+  picture      String?
+
+  accessLevel  AccessLevel  @default(CLIENT)
+  isActive     Boolean      @default(true)
+
+  authProviders UserAuthProvider[]
+
+  lastLoginAt  DateTime?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@index([email])
+  @@index([accessLevel])
+  @@index([isActive])
+}
+
+model UserAuthProvider {
+  id                 String           @id @default(cuid())
+
+  userId             String
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  provider           AuthProviderType
+  providerAccountId  String
+  email              String?
+  username           String?
+  name               String?
+  picture            String?
+
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@index([email])
 }

@@ -25,6 +25,8 @@
     "@types/cors": "^2.8.19",
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.5.0",
+    "@types/passport": "^1.0.17",
+    "@types/passport-google-oauth20": "^2.0.17",
     "@types/pg": "^8.18.0",
     "dotenv": "^17.3.1",
     "nodemon": "^3.1.14",
@@ -43,6 +45,9 @@
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
     "node-cron": "^4.2.1",
+    "nodemailer": "^8.0.7",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "pg": "^8.20.0"
   }
 }

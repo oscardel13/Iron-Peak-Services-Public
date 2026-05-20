@@ -54,6 +54,10 @@ export default function BookingSummaryCard({ bookingForm }) {
                 : ""
             }
           />
+          <Row
+            label="Mileage Fee"
+            value={`$${(bookingForm.pricing.mileageFee || 0).toFixed(2)}`}
+          />
         </div>
       </div>
 

@@ -1,8 +1,12 @@
 import { prisma } from '../libs/prisma.ts';
 import { Prisma, BookingStatus, PaymentStatus, ServiceType } from "../generated/prisma/client.js";
-import { calculateBookingPricing, getSelectedAddons } from '../helpers/bookings.helper.ts';
+import {
+  calculateBookingPricing,
+  calculateDistanceFromWarehouse,
+  calculateMileageFee,
+  getSelectedAddons,
+} from "../helpers/bookings.helper.ts";
 import { buildBookingUpdateData } from '../utils/helper.ts';
-
 
 const generateBookingNumber = () => {
   const now = new Date();
@@ -45,13 +49,17 @@ export const getBookingById = async (id: string) => {
   });
 };
 
+
+
 export const createBooking = async (data: any) => {
   try {
     const bookingNumber = generateBookingNumber();
 
     const dumpster = data.dumpsterId
       ? await prisma.dumpster.findUnique({
-          where: { id: data.dumpsterId },
+          where: {
+            id: data.dumpsterId,
+          },
         })
       : null;
 
@@ -59,22 +67,26 @@ export const createBooking = async (data: any) => {
       throw new Error("A valid dumpsterId is required to create a booking.");
     }
 
-    const selectedAddonCodes = Object.entries(data.addons ?? {})
-      .filter(([, selected]) => Boolean(selected))
-      .map(([code]) => code);
+    const { selectedAddons, addonsTotal } = await getSelectedAddons(
+      data.addons ?? {}
+    );
 
-    const selectedAddons = selectedAddonCodes.length
-      ? await prisma.addon.findMany({
-          where: {
-            code: { in: selectedAddonCodes },
-            isActive: true,
-          },
-        })
-      : [];
+    const latitude =
+      data.latitude !== null && data.latitude !== undefined
+        ? Number(data.latitude)
+        : null;
 
-    const addonsTotal = selectedAddons.reduce((sum, addon) => {
-      return sum + Number(addon.price);
-    }, 0);
+    const longitude =
+      data.longitude !== null && data.longitude !== undefined
+        ? Number(data.longitude)
+        : null;
+
+    const distanceFromWarehouse = calculateDistanceFromWarehouse(
+      latitude,
+      longitude
+    );
+
+    const mileageFee = calculateMileageFee(distanceFromWarehouse);
 
     const pricing = calculateBookingPricing({
       basePrice: dumpster.basePrice,
@@ -85,7 +97,7 @@ export const createBooking = async (data: any) => {
       rentalDaysIncluded: data.rentalDaysIncluded ?? 7,
 
       deliveryFee: data.deliveryFee ?? 0,
-      mileageFee: data.mileageFee ?? 0,
+      mileageFee,
       overageFee: data.overageFee ?? 0,
 
       addonsTotal,
@@ -112,6 +124,18 @@ export const createBooking = async (data: any) => {
         city: data.city,
         state: data.state,
         zip: data.zip,
+
+        latitude:
+          latitude !== null ? new Prisma.Decimal(latitude) : null,
+
+        longitude:
+          longitude !== null ? new Prisma.Decimal(longitude) : null,
+
+        distanceFromWarehouse:
+          distanceFromWarehouse !== null
+            ? new Prisma.Decimal(distanceFromWarehouse)
+            : null,
+
         placement: data.placement ?? null,
         instructions: data.instructions ?? null,
         customerNotes: data.customerNotes ?? null,

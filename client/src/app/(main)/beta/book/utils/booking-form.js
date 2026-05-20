@@ -6,8 +6,8 @@ export const INITIAL_BOOKING_FORM = {
     city: "",
     state: "",
     zip: "",
-    lat: null,
-    lng: null,
+    latitude: null,
+    longitude: null,
     projectType: "residential",
     distanceFromWarehouse: null,
   },
@@ -54,6 +54,7 @@ export const INITIAL_BOOKING_FORM = {
     drivewayProtectionFee: 0,
     priorityDeliveryFee: 0,
     extraDaysFee: 0,
+    mileageFee: 0,
     total: 0,
-  },
+  }
 };

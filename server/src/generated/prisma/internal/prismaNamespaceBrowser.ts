@@ -57,7 +57,9 @@ export const ModelName = {
   BookingAddon: 'BookingAddon',
   BookingNote: 'BookingNote',
   BookingHistory: 'BookingHistory',
-  CustomerAccessToken: 'CustomerAccessToken'
+  CustomerAccessToken: 'CustomerAccessToken',
+  User: 'User',
+  UserAuthProvider: 'UserAuthProvider'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -112,6 +114,9 @@ export const BookingScalarFieldEnum = {
   city: 'city',
   state: 'state',
   zip: 'zip',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  distanceFromWarehouse: 'distanceFromWarehouse',
   placement: 'placement',
   instructions: 'instructions',
   customerNotes: 'customerNotes',
@@ -208,6 +213,38 @@ export const CustomerAccessTokenScalarFieldEnum = {
 } as const
 
 export type CustomerAccessTokenScalarFieldEnum = (typeof CustomerAccessTokenScalarFieldEnum)[keyof typeof CustomerAccessTokenScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  picture: 'picture',
+  accessLevel: 'accessLevel',
+  isActive: 'isActive',
+  lastLoginAt: 'lastLoginAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const UserAuthProviderScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  email: 'email',
+  username: 'username',
+  name: 'name',
+  picture: 'picture',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserAuthProviderScalarFieldEnum = (typeof UserAuthProviderScalarFieldEnum)[keyof typeof UserAuthProviderScalarFieldEnum]
 
 
 export const SortOrder = {

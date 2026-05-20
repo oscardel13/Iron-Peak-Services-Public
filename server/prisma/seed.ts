@@ -130,6 +130,24 @@ async function main() {
     });
   }
 
+  console.log("Seeding admin user...");
+
+  await prisma.user.upsert({
+    where: {
+      email: "admin@example.com",
+    },
+    update: {
+      accessLevel: "OWNER",
+      isActive: true,
+    },
+    create: {
+      email: "admin@example.com",
+      name: "Oscar",
+      accessLevel: "OWNER",
+      isActive: true,
+    },
+  });
+
   console.log("✅ Seed complete");
 }
 

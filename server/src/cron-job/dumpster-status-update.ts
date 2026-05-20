@@ -5,6 +5,52 @@ import {
 } from "../generated/prisma/client.js";
 import { prisma } from "../libs/prisma.ts";
 
+function startOfDay(date: Date) {
+  const next = new Date(date);
+  next.setHours(0, 0, 0, 0);
+  return next;
+}
+
+async function updateBookingStatuses() {
+  console.log("Updating booking statuses...", new Date().toISOString());
+
+  const today = startOfDay(new Date());
+
+  try {
+    await prisma.booking.updateMany({
+      where: {
+        bookingStatus: BookingStatus.SCHEDULED,
+        deliveryDate: {
+          lte: today,
+        },
+      },
+      data: {
+        bookingStatus: BookingStatus.ACTIVE,
+        deliveredAt: new Date(),
+      },
+    });
+
+    await prisma.booking.updateMany({
+      where: {
+        bookingStatus: BookingStatus.ACTIVE,
+        pickupDateUnknown: false,
+        pickupDate: {
+          lt: today,
+        },
+      },
+      data: {
+        bookingStatus: BookingStatus.COMPLETED,
+        completedAt: new Date(),
+        pickedUpAt: new Date(),
+      },
+    });
+
+    console.log("Booking status update complete.");
+  } catch (error) {
+    console.error("Failed to update booking statuses:", error);
+  }
+}
+
 async function updateDumpsterStatus() {
   console.log("Updating dumpster statuses...", new Date().toISOString());
 
@@ -70,20 +116,23 @@ async function updateDumpsterStatus() {
   }
 }
 
-export function startDumpsterStatusCronJob() {
+async function runDailyStatusUpdates() {
+  await updateBookingStatuses();
+  await updateDumpsterStatus();
+}
 
-// 🔥 Run immediately on server start
-  updateDumpsterStatus();
+export function startStatusCronJobs() {
+  runDailyStatusUpdates().catch((err) => {
+    console.error("Initial daily status update failed:", err);
+  });
 
-  // Run every day at 6:00 AM
-  cron.schedule("0 6 * * *", updateDumpsterStatus, {
+  cron.schedule("0 6 * * *", runDailyStatusUpdates, {
     timezone: "America/Denver",
   });
 
-  // Run every day at 7:00 AM as backup
-  cron.schedule("0 7 * * *", updateDumpsterStatus, {
+  cron.schedule("0 7 * * *", runDailyStatusUpdates, {
     timezone: "America/Denver",
   });
 
-  console.log("Dumpster status cron jobs scheduled for 6 AM and 7 AM.");
+  console.log("Status cron jobs scheduled for 6 AM and 7 AM.");
 }

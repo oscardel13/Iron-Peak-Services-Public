@@ -9,11 +9,11 @@ if (!process.env.DATABASE_URL) {
 }
 
 const globalForPrisma = globalThis as typeof globalThis & {
-  prisma?: PrismaClient;
+  __prisma?: PrismaClient;
 };
 
 export const prisma =
-  globalForPrisma.prisma ??
+  globalForPrisma.__prisma ??
   new PrismaClient({
     adapter: new PrismaPg({
       connectionString: process.env.DATABASE_URL,
@@ -21,5 +21,5 @@ export const prisma =
   });
 
 if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
+  globalForPrisma.__prisma = prisma;
 }

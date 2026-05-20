@@ -265,6 +265,19 @@ export default function StepReviewSubmit({
             value={formatCurrency(bookingForm.pricing.extraDaysFee)}
           />
           <Row
+            label="Distance from Warehouse"
+            value={
+              bookingForm.address.distanceFromWarehouse != null
+                ? `${bookingForm.address.distanceFromWarehouse} miles`
+                : ""
+            }
+          />
+
+          <Row
+            label="Mileage Fee"
+            value={`$${(bookingForm.pricing.mileageFee || 0).toFixed(2)}`}
+          />
+          <Row
             label="Final Total"
             value={formatCurrency(bookingForm.pricing.total)}
             bold

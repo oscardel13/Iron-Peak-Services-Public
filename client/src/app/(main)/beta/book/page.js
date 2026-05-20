@@ -86,6 +86,10 @@ export default function BookPage() {
 
       current[keys[keys.length - 1]] = value;
 
+      if (path === "pricing.mileageFee") {
+        next.pricing.total = calculateBookingTotal(next);
+      }
+
       if (path === "dumpster.material") {
         next.pricing.materialSurcharge = getMaterialSurcharge(value);
         next.pricing.total = calculateBookingTotal(next);
@@ -120,8 +124,6 @@ export default function BookPage() {
 
       next.addons[key] = checked;
       const selectedAddons = addons.find((addon) => addon.code === key);
-      console.log("addons in toggleAddon:", selectedAddons, "key:", key, "checked:", checked);
-
       
 
       if (key === "drivewayProtection") {
@@ -137,7 +139,6 @@ export default function BookPage() {
       }
 
       next.pricing.total = calculateBookingTotal(next);
-      console.log("Updated booking form in toggleAddon:", next);
 
       return next;
     });
@@ -178,8 +179,6 @@ export default function BookPage() {
 
   async function submitBooking() {
     try {
-      console.log("Submitting booking:", bookingForm);
-
       const customerName = [
         bookingForm.customer.firstName,
         bookingForm.customer.lastName,
@@ -207,6 +206,8 @@ export default function BookPage() {
         city: bookingForm.address.city,
         state: bookingForm.address.state,
         zip: bookingForm.address.zip,
+        latitude: bookingForm.address.latitude,
+        longitude: bookingForm.address.longitude,
         projectType: bookingForm.address.projectType || null,
         placement: bookingForm.location.placement || null,
         instructions: bookingForm.location.instructions || null,
@@ -240,25 +241,27 @@ export default function BookPage() {
         total: Number(bookingForm.pricing.total || 0),
       };
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/bookings`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      console.log("Submitting booking with payload:", payload);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || "Failed to submit booking");
-      }
+      // const response = await fetch(
+      //   `${process.env.NEXT_PUBLIC_API_URL}/bookings`,
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(payload),
+      //   }
+      // );
 
-      const data = await response.json();
+      // if (!response.ok) {
+      //   const errorText = await response.text();
+      //   throw new Error(errorText || "Failed to submit booking");
+      // }
 
-      console.log("Booking created:", data);
+      // const data = await response.json();
+
+      // console.log("Booking created:", data);
 
       // setCurrentStep(1);
       // setBookingForm(INITIAL_BOOKING_FORM);

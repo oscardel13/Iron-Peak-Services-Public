@@ -68,3 +68,24 @@ export const BookingActorType = {
 } as const
 
 export type BookingActorType = (typeof BookingActorType)[keyof typeof BookingActorType]
+
+
+export const AccessLevel = {
+  CLIENT: 'CLIENT',
+  DRIVER: 'DRIVER',
+  WORKER: 'WORKER',
+  ADMIN: 'ADMIN',
+  OWNER: 'OWNER'
+} as const
+
+export type AccessLevel = (typeof AccessLevel)[keyof typeof AccessLevel]
+
+
+export const AuthProviderType = {
+  GOOGLE: 'GOOGLE',
+  META: 'META',
+  X: 'X',
+  EMAIL: 'EMAIL'
+} as const
+
+export type AuthProviderType = (typeof AuthProviderType)[keyof typeof AuthProviderType]

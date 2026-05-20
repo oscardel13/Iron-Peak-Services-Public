@@ -24,7 +24,6 @@ export default function BookingsPage() {
     const fetchBookings = async () => {
       try{
         const response = await getAPI("/bookings");
-        console.log("Fetched bookings:", response.data);
         setBookings(response.data);
       }
       catch(error){

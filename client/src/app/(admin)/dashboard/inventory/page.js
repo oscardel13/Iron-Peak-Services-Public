@@ -2,8 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { MOCK_INVENTORY } from "@/data/inventory";  
-
 import InventorySummaryCards from "../components/inventory-summary-cards/inventory-summary-cards.component";
 import InventoryListSection from "../components/inventory-list-section/inventory-list-section.component";
 import InventoryCardSection from "../components/inventory-card-section/inventory-card-section.component";
@@ -19,9 +17,7 @@ export default function InventoryPage() {
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        console.log("Fetching inventory...");
         const response = await getAPI("/inventory/dumpsters");
-        console.log("Fetched inventory:", response.data);
 
         const nextInventory = Array.isArray(response.data)
           ? response.data

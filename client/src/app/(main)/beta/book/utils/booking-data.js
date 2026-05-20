@@ -47,3 +47,8 @@ export const ADDON_PRICING = {
   drivewayProtection: 29.99,
   priorityDelivery: 49.99,
 };
+
+export const WAREHOUSE_LOCATION = {
+  longitude: -104.9903,
+  latitude: 39.7392,
+};

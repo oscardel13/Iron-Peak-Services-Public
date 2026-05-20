@@ -76,3 +76,13 @@ export type BookingHistory = Prisma.BookingHistoryModel
  * 
  */
 export type CustomerAccessToken = Prisma.CustomerAccessTokenModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model UserAuthProvider
+ * 
+ */
+export type UserAuthProvider = Prisma.UserAuthProviderModel

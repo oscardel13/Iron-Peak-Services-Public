@@ -28,6 +28,9 @@ export type AggregateBooking = {
 
 export type BookingAvgAggregateOutputType = {
   dumpsterSize: number | null
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
+  distanceFromWarehouse: runtime.Decimal | null
   rentalDaysIncluded: number | null
   basePrice: runtime.Decimal | null
   deliveryFee: runtime.Decimal | null
@@ -40,6 +43,9 @@ export type BookingAvgAggregateOutputType = {
 
 export type BookingSumAggregateOutputType = {
   dumpsterSize: number | null
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
+  distanceFromWarehouse: runtime.Decimal | null
   rentalDaysIncluded: number | null
   basePrice: runtime.Decimal | null
   deliveryFee: runtime.Decimal | null
@@ -67,6 +73,9 @@ export type BookingMinAggregateOutputType = {
   city: string | null
   state: string | null
   zip: string | null
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
+  distanceFromWarehouse: runtime.Decimal | null
   placement: string | null
   instructions: string | null
   customerNotes: string | null
@@ -112,6 +121,9 @@ export type BookingMaxAggregateOutputType = {
   city: string | null
   state: string | null
   zip: string | null
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
+  distanceFromWarehouse: runtime.Decimal | null
   placement: string | null
   instructions: string | null
   customerNotes: string | null
@@ -157,6 +169,9 @@ export type BookingCountAggregateOutputType = {
   city: number
   state: number
   zip: number
+  latitude: number
+  longitude: number
+  distanceFromWarehouse: number
   placement: number
   instructions: number
   customerNotes: number
@@ -189,6 +204,9 @@ export type BookingCountAggregateOutputType = {
 
 export type BookingAvgAggregateInputType = {
   dumpsterSize?: true
+  latitude?: true
+  longitude?: true
+  distanceFromWarehouse?: true
   rentalDaysIncluded?: true
   basePrice?: true
   deliveryFee?: true
@@ -201,6 +219,9 @@ export type BookingAvgAggregateInputType = {
 
 export type BookingSumAggregateInputType = {
   dumpsterSize?: true
+  latitude?: true
+  longitude?: true
+  distanceFromWarehouse?: true
   rentalDaysIncluded?: true
   basePrice?: true
   deliveryFee?: true
@@ -228,6 +249,9 @@ export type BookingMinAggregateInputType = {
   city?: true
   state?: true
   zip?: true
+  latitude?: true
+  longitude?: true
+  distanceFromWarehouse?: true
   placement?: true
   instructions?: true
   customerNotes?: true
@@ -273,6 +297,9 @@ export type BookingMaxAggregateInputType = {
   city?: true
   state?: true
   zip?: true
+  latitude?: true
+  longitude?: true
+  distanceFromWarehouse?: true
   placement?: true
   instructions?: true
   customerNotes?: true
@@ -318,6 +345,9 @@ export type BookingCountAggregateInputType = {
   city?: true
   state?: true
   zip?: true
+  latitude?: true
+  longitude?: true
+  distanceFromWarehouse?: true
   placement?: true
   instructions?: true
   customerNotes?: true
@@ -450,6 +480,9 @@ export type BookingGroupByOutputType = {
   city: string
   state: string
   zip: string
+  latitude: runtime.Decimal | null
+  longitude: runtime.Decimal | null
+  distanceFromWarehouse: runtime.Decimal | null
   placement: string | null
   instructions: string | null
   customerNotes: string | null
@@ -518,6 +551,9 @@ export type BookingWhereInput = {
   city?: Prisma.StringFilter<"Booking"> | string
   state?: Prisma.StringFilter<"Booking"> | string
   zip?: Prisma.StringFilter<"Booking"> | string
+  latitude?: Prisma.DecimalNullableFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.DecimalNullableFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.StringNullableFilter<"Booking"> | string | null
   instructions?: Prisma.StringNullableFilter<"Booking"> | string | null
   customerNotes?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -568,6 +604,9 @@ export type BookingOrderByWithRelationInput = {
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
   zip?: Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  distanceFromWarehouse?: Prisma.SortOrderInput | Prisma.SortOrder
   placement?: Prisma.SortOrderInput | Prisma.SortOrder
   instructions?: Prisma.SortOrderInput | Prisma.SortOrder
   customerNotes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -621,6 +660,9 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   city?: Prisma.StringFilter<"Booking"> | string
   state?: Prisma.StringFilter<"Booking"> | string
   zip?: Prisma.StringFilter<"Booking"> | string
+  latitude?: Prisma.DecimalNullableFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.DecimalNullableFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.StringNullableFilter<"Booking"> | string | null
   instructions?: Prisma.StringNullableFilter<"Booking"> | string | null
   customerNotes?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -671,6 +713,9 @@ export type BookingOrderByWithAggregationInput = {
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
   zip?: Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  distanceFromWarehouse?: Prisma.SortOrderInput | Prisma.SortOrder
   placement?: Prisma.SortOrderInput | Prisma.SortOrder
   instructions?: Prisma.SortOrderInput | Prisma.SortOrder
   customerNotes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -724,6 +769,9 @@ export type BookingScalarWhereWithAggregatesInput = {
   city?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   state?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   zip?: Prisma.StringWithAggregatesFilter<"Booking"> | string
+  latitude?: Prisma.DecimalNullableWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.DecimalNullableWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   instructions?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   customerNotes?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
@@ -768,6 +816,9 @@ export type BookingCreateInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -818,6 +869,9 @@ export type BookingUncheckedCreateInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -866,6 +920,9 @@ export type BookingUpdateInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -916,6 +973,9 @@ export type BookingUncheckedUpdateInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -965,6 +1025,9 @@ export type BookingCreateManyInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -1009,6 +1072,9 @@ export type BookingUpdateManyMutationInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1054,6 +1120,9 @@ export type BookingUncheckedUpdateManyInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1109,6 +1178,9 @@ export type BookingCountOrderByAggregateInput = {
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
   zip?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  distanceFromWarehouse?: Prisma.SortOrder
   placement?: Prisma.SortOrder
   instructions?: Prisma.SortOrder
   customerNotes?: Prisma.SortOrder
@@ -1139,6 +1211,9 @@ export type BookingCountOrderByAggregateInput = {
 
 export type BookingAvgOrderByAggregateInput = {
   dumpsterSize?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  distanceFromWarehouse?: Prisma.SortOrder
   rentalDaysIncluded?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
   deliveryFee?: Prisma.SortOrder
@@ -1166,6 +1241,9 @@ export type BookingMaxOrderByAggregateInput = {
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
   zip?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  distanceFromWarehouse?: Prisma.SortOrder
   placement?: Prisma.SortOrder
   instructions?: Prisma.SortOrder
   customerNotes?: Prisma.SortOrder
@@ -1211,6 +1289,9 @@ export type BookingMinOrderByAggregateInput = {
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
   zip?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  distanceFromWarehouse?: Prisma.SortOrder
   placement?: Prisma.SortOrder
   instructions?: Prisma.SortOrder
   customerNotes?: Prisma.SortOrder
@@ -1241,6 +1322,9 @@ export type BookingMinOrderByAggregateInput = {
 
 export type BookingSumOrderByAggregateInput = {
   dumpsterSize?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  distanceFromWarehouse?: Prisma.SortOrder
   rentalDaysIncluded?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
   deliveryFee?: Prisma.SortOrder
@@ -1300,6 +1384,14 @@ export type BookingUncheckedUpdateManyWithoutDumpsterNestedInput = {
 
 export type EnumServiceTypeFieldUpdateOperationsInput = {
   set?: $Enums.ServiceType
+}
+
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -1394,6 +1486,9 @@ export type BookingCreateWithoutDumpsterInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -1442,6 +1537,9 @@ export type BookingUncheckedCreateWithoutDumpsterInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -1520,6 +1618,9 @@ export type BookingScalarWhereInput = {
   city?: Prisma.StringFilter<"Booking"> | string
   state?: Prisma.StringFilter<"Booking"> | string
   zip?: Prisma.StringFilter<"Booking"> | string
+  latitude?: Prisma.DecimalNullableFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.DecimalNullableFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.DecimalNullableFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.StringNullableFilter<"Booking"> | string | null
   instructions?: Prisma.StringNullableFilter<"Booking"> | string | null
   customerNotes?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -1564,6 +1665,9 @@ export type BookingCreateWithoutAddonsInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -1613,6 +1717,9 @@ export type BookingUncheckedCreateWithoutAddonsInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -1676,6 +1783,9 @@ export type BookingUpdateWithoutAddonsInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1725,6 +1835,9 @@ export type BookingUncheckedUpdateWithoutAddonsInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1772,6 +1885,9 @@ export type BookingCreateWithoutNotesInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -1821,6 +1937,9 @@ export type BookingUncheckedCreateWithoutNotesInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -1884,6 +2003,9 @@ export type BookingUpdateWithoutNotesInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1933,6 +2055,9 @@ export type BookingUncheckedUpdateWithoutNotesInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1980,6 +2105,9 @@ export type BookingCreateWithoutHistoryInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -2029,6 +2157,9 @@ export type BookingUncheckedCreateWithoutHistoryInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -2092,6 +2223,9 @@ export type BookingUpdateWithoutHistoryInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2141,6 +2275,9 @@ export type BookingUncheckedUpdateWithoutHistoryInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2188,6 +2325,9 @@ export type BookingCreateWithoutAccessTokensInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -2237,6 +2377,9 @@ export type BookingUncheckedCreateWithoutAccessTokensInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -2300,6 +2443,9 @@ export type BookingUpdateWithoutAccessTokensInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2349,6 +2495,9 @@ export type BookingUncheckedUpdateWithoutAccessTokensInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2396,6 +2545,9 @@ export type BookingCreateManyDumpsterInput = {
   city: string
   state: string
   zip: string
+  latitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: string | null
   instructions?: string | null
   customerNotes?: string | null
@@ -2440,6 +2592,9 @@ export type BookingUpdateWithoutDumpsterInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2488,6 +2643,9 @@ export type BookingUncheckedUpdateWithoutDumpsterInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2536,6 +2694,9 @@ export type BookingUncheckedUpdateManyWithoutDumpsterInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zip?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  longitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  distanceFromWarehouse?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   placement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2639,6 +2800,9 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   city?: boolean
   state?: boolean
   zip?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  distanceFromWarehouse?: boolean
   placement?: boolean
   instructions?: boolean
   customerNotes?: boolean
@@ -2690,6 +2854,9 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   city?: boolean
   state?: boolean
   zip?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  distanceFromWarehouse?: boolean
   placement?: boolean
   instructions?: boolean
   customerNotes?: boolean
@@ -2736,6 +2903,9 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   city?: boolean
   state?: boolean
   zip?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  distanceFromWarehouse?: boolean
   placement?: boolean
   instructions?: boolean
   customerNotes?: boolean
@@ -2782,6 +2952,9 @@ export type BookingSelectScalar = {
   city?: boolean
   state?: boolean
   zip?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  distanceFromWarehouse?: boolean
   placement?: boolean
   instructions?: boolean
   customerNotes?: boolean
@@ -2810,7 +2983,7 @@ export type BookingSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bookingNumber" | "dumpsterId" | "dumpsterSize" | "dumpsterLabel" | "material" | "serviceType" | "projectType" | "customerName" | "customerPhone" | "customerEmail" | "address1" | "address2" | "city" | "state" | "zip" | "placement" | "instructions" | "customerNotes" | "locationVerified" | "locationVerificationNote" | "deliveryDate" | "pickupDate" | "pickupDateUnknown" | "rentalDaysIncluded" | "bookingStatus" | "paymentStatus" | "basePrice" | "deliveryFee" | "mileageFee" | "extraDaysFee" | "overageFee" | "addonsTotal" | "total" | "quotedAt" | "scheduledAt" | "deliveredAt" | "pickedUpAt" | "cancelledAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bookingNumber" | "dumpsterId" | "dumpsterSize" | "dumpsterLabel" | "material" | "serviceType" | "projectType" | "customerName" | "customerPhone" | "customerEmail" | "address1" | "address2" | "city" | "state" | "zip" | "latitude" | "longitude" | "distanceFromWarehouse" | "placement" | "instructions" | "customerNotes" | "locationVerified" | "locationVerificationNote" | "deliveryDate" | "pickupDate" | "pickupDateUnknown" | "rentalDaysIncluded" | "bookingStatus" | "paymentStatus" | "basePrice" | "deliveryFee" | "mileageFee" | "extraDaysFee" | "overageFee" | "addonsTotal" | "total" | "quotedAt" | "scheduledAt" | "deliveredAt" | "pickedUpAt" | "cancelledAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   dumpster?: boolean | Prisma.Booking$dumpsterArgs<ExtArgs>
   addons?: boolean | Prisma.Booking$addonsArgs<ExtArgs>
@@ -2852,6 +3025,9 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     city: string
     state: string
     zip: string
+    latitude: runtime.Decimal | null
+    longitude: runtime.Decimal | null
+    distanceFromWarehouse: runtime.Decimal | null
     placement: string | null
     instructions: string | null
     customerNotes: string | null
@@ -3322,6 +3498,9 @@ export interface BookingFieldRefs {
   readonly city: Prisma.FieldRef<"Booking", 'String'>
   readonly state: Prisma.FieldRef<"Booking", 'String'>
   readonly zip: Prisma.FieldRef<"Booking", 'String'>
+  readonly latitude: Prisma.FieldRef<"Booking", 'Decimal'>
+  readonly longitude: Prisma.FieldRef<"Booking", 'Decimal'>
+  readonly distanceFromWarehouse: Prisma.FieldRef<"Booking", 'Decimal'>
   readonly placement: Prisma.FieldRef<"Booking", 'String'>
   readonly instructions: Prisma.FieldRef<"Booking", 'String'>
   readonly customerNotes: Prisma.FieldRef<"Booking", 'String'>
