@@ -90,7 +90,6 @@ export default function StepStartAddress({
     });
 
     const mileageFee = calculateMileageFee(distanceFromWarehouse);
-    console.log("calculated Milage Fee:", mileageFee, "Distance from Warehouse:", distanceFromWarehouse);
 
     updateBookingForm("address.query", suggestion.fullAddress);
     updateBookingForm("address.fullAddress", suggestion.fullAddress);

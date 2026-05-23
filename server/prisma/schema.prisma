@@ -114,6 +114,10 @@ model Booking {
   pickupDateUnknown         Boolean        @default(false)
   rentalDaysIncluded        Int            @default(7)
 
+  priorityDelivery          Boolean   @default(false)
+  deliveryTime              DateTime?
+  priorityDeliveryNote      String?
+
   bookingStatus             BookingStatus  @default(QUOTE)
   paymentStatus             PaymentStatus  @default(UNPAID)
 

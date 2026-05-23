@@ -1,60 +1,70 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { MOCK_BOOKINGS } from "@/data/mock-bookings";
-import { MOCK_INVENTORY } from "@/data/inventory";
 
 import DashboardSummaryCards from "./components/dashboard-summary-cards/dashboard-summary-cards.component";
 import DashboardQuickActions from "./components/dashboard-quick-actions/dashboard-quick-actions.component";
-import DashboardTodayBoard from "./components/dashboard-today-board/dashboard-today-board.component";
 import DashboardAttentionSection from "./components/dashboard-attention-section/dashboard-attention-section.component";
 import DashboardRecentBookings from "./components/dashboard-recent-bookings/dashboard-recent-bookings.component";
+import BookingCalendar from "./components/booking-calendar/booking-calendar.component";
 
 import { getAPI } from "@/utils/api";
+
+function formatDateKey(value) {
+  if (!value) return null;
+
+  const date = new Date(value);
+
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
 
 export default function DashboardPage() {
   const [bookings, setBookings] = useState([]);
   const [inventory, setInventory] = useState([]);
 
   useEffect(() => {
-      const fetchBookings = async () => {
-        try{
-          console.log("Fetching bookings...");
-          const response = await getAPI("/bookings");
-          console.log("Fetched bookings:", response.data);
-          setBookings(response.data);
-        }
-        catch(error){
-          console.error("Failed to fetch bookings:", error);
-        }
-      };
-      const fetchInventory = async () => {
-            try {
-              console.log("Fetching inventory...");
-              const response = await getAPI("/inventory/dumpsters");
-              console.log("Fetched inventory:", response.data);
-      
-              const nextInventory = Array.isArray(response.data)
-                ? response.data
-                : response.data?.dumpsters ?? response.data?.inventory ?? [];
-      
-              setInventory(nextInventory);
-      
-              if (nextInventory.length > 0) {
-                setSelectedId((prev) => prev ?? nextInventory[0].id);
-                setDraft((prev) => prev ?? nextInventory[0]);
-              }
-            } catch (error) {
-              console.error("Failed to fetch inventory:", error);
-            }
-          };
-      fetchBookings();
-      fetchInventory();
-    }, []);
-  
+    const fetchBookings = async () => {
+      try {
+        console.log("Fetching bookings...");
+        const response = await getAPI("/bookings");
+        console.log("Fetched bookings:", response.data);
+
+        const nextBookings = Array.isArray(response.data)
+          ? response.data
+          : response.data?.bookings ?? [];
+
+        setBookings(nextBookings);
+      } catch (error) {
+        console.error("Failed to fetch bookings:", error);
+      }
+    };
+
+    const fetchInventory = async () => {
+      try {
+        console.log("Fetching inventory...");
+        const response = await getAPI("/inventory/dumpsters");
+        console.log("Fetched inventory:", response.data);
+
+        const nextInventory = Array.isArray(response.data)
+          ? response.data
+          : response.data?.dumpsters ?? response.data?.inventory ?? [];
+
+        setInventory(nextInventory);
+      } catch (error) {
+        console.error("Failed to fetch inventory:", error);
+      }
+    };
+
+    fetchBookings();
+    fetchInventory();
+  }, []);
+
   const dashboardData = useMemo(() => {
-    const today = new Date();
-    const todayKey = today.toISOString().slice(0, 10);
+    const todayKey = formatDateKey(new Date());
 
     const activeBookings = bookings.filter(
       (booking) => booking.bookingStatus === "ACTIVE"
@@ -71,11 +81,14 @@ export default function DashboardPage() {
     );
 
     const deliveriesToday = bookings.filter(
-      (booking) => booking.deliveryDate === todayKey
+      (booking) => formatDateKey(booking.deliveryDate) === todayKey
     );
 
     const pickupsToday = bookings.filter(
-      (booking) => booking.pickupDate === todayKey
+      (booking) =>
+        booking.pickupDate &&
+        !booking.pickupDateUnknown &&
+        formatDateKey(booking.pickupDate) === todayKey
     );
 
     const availableInventory = inventory.filter(
@@ -130,7 +143,16 @@ export default function DashboardPage() {
       <DashboardSummaryCards dashboardData={dashboardData} />
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <DashboardTodayBoard dashboardData={dashboardData} />
+        <BookingCalendar
+          bookings={bookings}
+          allowedViews={["day", "week"]}
+          defaultView="day"
+          title="Today’s Schedule"
+          description="Deliveries and pickups for the day."
+          compact
+          showDayDetails
+        />
+
         <DashboardQuickActions />
       </div>
 

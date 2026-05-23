@@ -243,25 +243,25 @@ export default function BookPage() {
 
       console.log("Submitting booking with payload:", payload);
 
-      // const response = await fetch(
-      //   `${process.env.NEXT_PUBLIC_API_URL}/bookings`,
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(payload),
-      //   }
-      // );
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/bookings`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
-      // if (!response.ok) {
-      //   const errorText = await response.text();
-      //   throw new Error(errorText || "Failed to submit booking");
-      // }
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to submit booking");
+      }
 
-      // const data = await response.json();
+      const data = await response.json();
 
-      // console.log("Booking created:", data);
+      console.log("Booking created:", data);
 
       // setCurrentStep(1);
       // setBookingForm(INITIAL_BOOKING_FORM);

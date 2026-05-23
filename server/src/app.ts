@@ -23,6 +23,7 @@ app.use(
       "http://localhost:3000",
       "https://iron-peak-services.com",
       "https://beta.iron-peak-services.com",
+      "https://2dgw7x0h-3000.usw3.devtunnels.ms"
     ],
     credentials: true,
   }),

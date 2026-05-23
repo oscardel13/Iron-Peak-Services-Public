@@ -14,6 +14,9 @@ import {
   // removeBookingAddon,
 } from '../../services/bookings.service.ts';
 
+import { sendBookingConfirmationEmail } from "../../emails/templates/booking-confirmation.template.ts";
+
+
 // TODO: Add validation, error handling, pagination, etc.
 // Consider using a library like Joi or Yup for request validation (research this)
 // Should be admin-only 
@@ -48,6 +51,7 @@ export const HttpGetBookingById = async (req: Request, res: Response) => {
 export const HttpCreateBooking = async (req: Request, res: Response) => {
   try {
     const booking = await createBooking(req.body);
+    await sendBookingConfirmationEmail(booking);
     res.status(201).json(booking);
   } catch (error) {
     res.status(500).json({ error: 'Failed to create booking' });

@@ -7,8 +7,9 @@ import { X } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard", label: "Overview" },
-  { href: "/dashboard/bookings", label: "bookings" },
-  { href: "/dashboard/inventory", label: "inventory" },
+  { href: "/dashboard/bookings", label: "Bookings" },
+  { href: "/dashboard/calendar", label: "Calendar" },
+  { href: "/dashboard/inventory", label: "Inventory" },
 ];
 
 function isActive(pathname, href) {
