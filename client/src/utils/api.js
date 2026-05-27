@@ -1,10 +1,13 @@
 import axios from 'axios';
 
 const API = axios.create({
+    headers: {
+    "X-Tunnel-Skip-AntiPhishing-Page": "True",
+  },
     // withCredentials: true,
   });
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.iron-peak-services.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 // const API_URL = process.env.REACT_APP_API_URL || "http://192.168.86.44:8000";
 
 

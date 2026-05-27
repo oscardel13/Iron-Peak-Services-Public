@@ -2,6 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { MOCK_BOOKINGS } from "@/data/mock-bookings";
+import { MOCK_INVENTORY } from "@/data/inventory";
+
 import DashboardSummaryCards from "./components/dashboard-summary-cards/dashboard-summary-cards.component";
 import DashboardQuickActions from "./components/dashboard-quick-actions/dashboard-quick-actions.component";
 import DashboardAttentionSection from "./components/dashboard-attention-section/dashboard-attention-section.component";
@@ -23,8 +26,8 @@ function formatDateKey(value) {
 }
 
 export default function DashboardPage() {
-  const [bookings, setBookings] = useState([]);
-  const [inventory, setInventory] = useState([]);
+  const [bookings, setBookings] = useState(MOCK_BOOKINGS);
+  const [inventory, setInventory] = useState(MOCK_INVENTORY);
 
   useEffect(() => {
     const fetchBookings = async () => {

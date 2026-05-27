@@ -10,7 +10,7 @@ import { configureGooglePassport } from "./google.passport.js";
 // import { configureFacebookPassport } from "./facebook.passport.js";
 // import { configureXPassport } from "./x.passport.js";
 
-const authRouter = Router();
+export const authRouter = Router();
 
 configureGooglePassport();
 // configureFacebookPassport();
@@ -108,5 +108,3 @@ authRouter.get("/logout", (req: Request, res: Response, next: NextFunction) => {
     }
   });
 });
-
-export default authRouter;

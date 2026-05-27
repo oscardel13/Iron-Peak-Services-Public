@@ -111,7 +111,7 @@ export default function BookPage() {
       next.dumpster.includedWeightText = product.includedWeightText;
 
       next.pricing.basePrice = product.basePrice;
-      next.pricing.materialSurcharge = product.concretePrice || materialSurcharge;
+      next.pricing.materialSurcharge = next.dumpster.material === "concrete" ? Number(product.concretePrice) || 0 : 0;
       next.pricing.total = calculateBookingTotal(next);
 
       return next;
@@ -241,7 +241,6 @@ export default function BookPage() {
         total: Number(bookingForm.pricing.total || 0),
       };
 
-      console.log("Submitting booking with payload:", payload);
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/bookings`,

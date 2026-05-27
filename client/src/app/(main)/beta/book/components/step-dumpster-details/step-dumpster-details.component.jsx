@@ -26,7 +26,6 @@ export default function StepDumpsterDetails({
       const deliveryDate = bookingForm.schedule.deliveryDate;
       const pickupDate = bookingForm.schedule.pickupDate;
       const unknownPickup = bookingForm.schedule.unknownPickup;
-      console.log("Fetching available dumpsters for deliveryDate:", deliveryDate, " pickupDate:", pickupDate, " unknownPickup:", unknownPickup);
 
       if (!deliveryDate) {
         setAvailableProducts([]);
