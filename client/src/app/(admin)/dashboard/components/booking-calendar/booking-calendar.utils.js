@@ -1,13 +1,21 @@
 export function formatDateKey(value) {
   if (!value) return null;
 
+  if (typeof value === "string") {
+    const datePart = value.split("T")[0];
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(datePart)) {
+      return datePart;
+    }
+  }
+
   const date = new Date(value);
 
-  const year = date.getFullYear();
-  const month = `${date.getMonth() + 1}`.padStart(2, "0");
-  const day = `${date.getDate()}`.padStart(2, "0");
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
 
-  return `${year}-${month}-${day}`;
+  return date.toISOString().split("T")[0];
 }
 
 export function formatTime(value) {

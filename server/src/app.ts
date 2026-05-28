@@ -6,8 +6,8 @@ import morgan from "morgan";
 import helmet from"helmet";
 import api from "./routes/api.ts";
 
-import cookieSession from "cookie-session";
-// import { passport, config } from "./routes/auth/passport.ts";
+import session from "express-session";
+import { passport, config } from "./routes/auth/passport.ts";
 
 const app = express();
 
@@ -17,30 +17,41 @@ app.use(
   }),
 );
 
+const allowedOrigins = process.env.ORIGIN_WHITELIST?.split(",") || [];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://iron-peak-services.com",
-      "https://beta.iron-peak-services.com",
-      "https://2dgw7x0h-3000.usw3.devtunnels.ms"
-    ],
+    origin: allowedOrigins,
     credentials: true,
   }),
 );
 
-// app.use(
-//   cookieSession({
-//     name: "session",
-//     maxAge: config.COOKIE_MAX_AGE,
-//     keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
-//     sameSite: false,
-//     // secure: true // enable in HTTPS
-//   }),
-// );
+const COOKIE_KEYS = (() => {
+  const k1 = config.COOKIE_KEY_1;
+  const k2 = config.COOKIE_KEY_2;
+  if (!k1 || !k2) {
+    throw new Error("Missing COOKIE_KEY_1 or COOKIE_KEY_2 in config");
+  }
+  return [k1, k2];
+})();
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(
+  session({
+    name: "ironpeak.sid",
+    secret: COOKIE_KEYS,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: config.COOKIE_MAX_AGE,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(morgan("combined"));
 

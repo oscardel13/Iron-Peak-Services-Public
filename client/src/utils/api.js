@@ -4,7 +4,7 @@ const API = axios.create({
     headers: {
     "X-Tunnel-Skip-AntiPhishing-Page": "True",
   },
-    // withCredentials: true,
+    withCredentials: true,
   });
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";

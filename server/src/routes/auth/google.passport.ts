@@ -5,7 +5,7 @@ import type { Profile, VerifyCallback } from "passport-google-oauth20";
 import {
   passport,
   config,
-  findAdminFromProvider,
+  findOrCreateAdminFromProvider,
 } from "./passport.ts";
 
 const AUTH_OPTIONS = {
@@ -51,10 +51,12 @@ async function verifyGoogleCallback(
       });
     }
 
-    const user = await findAdminFromProvider({
+    const user = await findOrCreateAdminFromProvider({
       provider: "google",
       providerId: sub,
-      email
+      email,
+      // name: json.name,
+      // picture: json.picture,
     });
 
     return done(null, user);

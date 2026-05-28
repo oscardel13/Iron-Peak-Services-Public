@@ -6,6 +6,12 @@ export function checkLoggedIn(
   res: Response,
   next: NextFunction
 ) {
+    console.log("AUTH DEBUG ----------------");
+  console.log("Origin:", req.headers.origin);
+  console.log("Cookie header:", req.headers.cookie);
+  console.log("Session ID:", req.sessionID);
+  console.log("Session:", req.session);
+  console.log("User:", req.user);
   const isLoggedIn =
     typeof req.isAuthenticated === "function" &&
     req.isAuthenticated() &&

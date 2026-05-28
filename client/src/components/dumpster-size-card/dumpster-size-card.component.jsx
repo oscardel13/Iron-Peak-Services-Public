@@ -4,11 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function DumpsterCard({ size, description, path, image }) {
-  console.log("Rendering DumpsterCard with props:", {
-    size,
-    description,
-    path,
-  });
   return (
     <div className="relative flex flex-col flex-shrink-0 rounded-2xl shadow-md overflow-hidden w-full min-w-[280px] h-130 bg-alabaster-grey snap-start">
       <Image

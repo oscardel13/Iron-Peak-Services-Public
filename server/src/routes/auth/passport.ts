@@ -43,21 +43,54 @@ const providerMap: Record<Provider, AuthProviderType> = {
   x: AuthProviderType.X,
 };
 
+const ALLOWED_ADMIN_EMAILS: Record<string, AccessLevel> = {
+  [process.env.ADMIN_EMAILS as string]: AccessLevel.ADMIN,
+  [process.env.OWNER_EMAILS as string]: AccessLevel.OWNER,
+};
+
+function normalizeEmail(email?: string | null) {
+  return email?.trim().toLowerCase() || null;
+}
+
 function isAdminUser(accessLevel: AccessLevel) {
   return accessLevel === AccessLevel.ADMIN || accessLevel === AccessLevel.OWNER;
 }
 
-export async function findAdminFromProvider({
+function getAllowedAccessLevel(email?: string | null) {
+  const normalizedEmail = normalizeEmail(email);
+
+  if (!normalizedEmail) return null;
+
+  return ALLOWED_ADMIN_EMAILS[normalizedEmail] ?? null;
+}
+
+export async function findOrCreateAdminFromProvider({
   provider,
   providerId,
   email,
+  name,
+  picture,
+  username,
 }: ProviderInput) {
   if (!providerId) {
     throw new Error(`Missing providerId for ${provider}`);
   }
 
+  const normalizedEmail = normalizeEmail(email);
+
+  if (!normalizedEmail) {
+    throw new Error("Email is required for admin login.");
+  }
+
+  const allowedAccessLevel = getAllowedAccessLevel(normalizedEmail);
+
+  if (!allowedAccessLevel) {
+    throw new Error("This email is not allowed to access the admin dashboard.");
+  }
+
   const providerType = providerMap[provider];
 
+  // 1. Try finding by OAuth provider account first.
   let user = await prisma.user.findFirst({
     where: {
       isActive: true,
@@ -73,57 +106,110 @@ export async function findAdminFromProvider({
     },
   });
 
-  // Optional fallback: allow login by matching email
-  // This helps when you manually create admin users before linking Google.
-  if (!user && email) {
+  // 2. If no provider match, try finding by email.
+  if (!user) {
     user = await prisma.user.findUnique({
       where: {
-        email,
+        email: normalizedEmail,
+      },
+      include: {
+        authProviders: true,
+      },
+    });
+  }
+
+  // 3. If still no user, create one — only because email is allowlisted.
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        email: normalizedEmail,
+        name: name ?? null,
+        picture: picture ?? null,
+        accessLevel: allowedAccessLevel,
+        isActive: true,
+        lastLoginAt: new Date(),
+        authProviders: {
+          create: {
+            provider: providerType,
+            providerAccountId: providerId,
+            email: normalizedEmail,
+            username: username ?? null,
+            name: name ?? null,
+            picture: picture ?? null,
+          },
+        },
       },
       include: {
         authProviders: true,
       },
     });
 
-    if (user && user.isActive && isAdminUser(user.accessLevel)) {
-      await prisma.userAuthProvider.upsert({
-        where: {
-          provider_providerAccountId: {
-            provider: providerType,
-            providerAccountId: providerId,
-          },
-        },
-        update: {
-          email,
-        },
-        create: {
-          userId: user.id,
-          provider: providerType,
-          providerAccountId: providerId,
-          email,
-        },
-      });
-    }
+    return user;
   }
 
-  if (!user) {
-    throw new Error("No admin account found for this login.");
-  }
-
+  // 4. Existing user must be active.
   if (!user.isActive) {
     throw new Error("This account is inactive.");
   }
 
+  // 5. Force allowed access level from allowlist.
+  // This is useful while bootstrapping auth.
+  if (user.accessLevel !== allowedAccessLevel) {
+    user = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        accessLevel: allowedAccessLevel,
+      },
+      include: {
+        authProviders: true,
+      },
+    });
+  }
+
+  // 6. Existing user must still be admin/owner.
   if (!isAdminUser(user.accessLevel)) {
     throw new Error("You do not have admin access.");
   }
 
-  await prisma.user.update({
+  // 7. Make sure OAuth provider is linked.
+  await prisma.userAuthProvider.upsert({
+    where: {
+      provider_providerAccountId: {
+        provider: providerType,
+        providerAccountId: providerId,
+      },
+    },
+    update: {
+      email: normalizedEmail,
+      username: username ?? null,
+      name: name ?? null,
+      picture: picture ?? null,
+    },
+    create: {
+      userId: user.id,
+      provider: providerType,
+      providerAccountId: providerId,
+      email: normalizedEmail,
+      username: username ?? null,
+      name: name ?? null,
+      picture: picture ?? null,
+    },
+  });
+
+  // 8. Update user profile/login metadata.
+  user = await prisma.user.update({
     where: {
       id: user.id,
     },
     data: {
+      name: user.name ?? name ?? null,
+      picture: user.picture ?? picture ?? null,
       lastLoginAt: new Date(),
+    },
+    include: {
+      authProviders: true,
     },
   });
 

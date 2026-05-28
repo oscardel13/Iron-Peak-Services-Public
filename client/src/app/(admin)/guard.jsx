@@ -1,37 +1,55 @@
-// components/dashboard/dashboard-guard.jsx
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-export default function DashboardGuard({ children }) {
-  return children;
+import { getAPI } from "@/utils/api";
+
+export default function AdminGuard({ children }) {
   const router = useRouter();
-  const pathname = usePathname();
-  const [checkingAuth, setCheckingAuth] = useState(true);
-  const [authorized, setAuthorized] = useState(true);
+
+  const [status, setStatus] = useState("loading");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    async function checkAuth() {
+      try {
+        setStatus("");
+        return;
+        const res = await getAPI(`/auth/me`);
 
-    if (!token) {
-      // router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
-      return;
+        if (res.statusText !== "OK") {
+          router.replace("/login");
+          return;
+        }
+
+        const data = await res.data;
+        const user = data.user;
+
+        const isAdmin =
+          user?.accessLevel === "ADMIN" || user?.accessLevel === "OWNER";
+
+        if (!isAdmin) {
+          router.replace("/");
+          return;
+        }
+
+        setStatus("authenticated");
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        // router.replace("/");
+      }
     }
 
-    setAuthorized(true);
-    setCheckingAuth(false);
-  }, [router, pathname]);
+    checkAuth();
+  }, [router]);
 
-  if (checkingAuth) {
+  if (status === "loading") {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        Checking auth...
+      <div className="flex min-h-screen items-center justify-center text-sm text-gray-500">
+        Checking access...
       </div>
     );
   }
-
-  if (!authorized) return null;
 
   return children;
 }

@@ -71,11 +71,27 @@ function toNumber(value: unknown): number {
 function formatDate(value: string | Date | null | undefined): string {
   if (!value) return "Not scheduled";
 
-  return new Date(value).toLocaleDateString("en-US", {
+  let date: Date;
+
+  if (typeof value === "string") {
+    const [datePart = ""] = value.split("T");
+    const [year, month, day] = datePart.split("-").map(Number);
+
+    date = new Date(Date.UTC(year || 0, (month || 1) - 1, day || 1));
+  } else {
+    date = value;
+  }
+
+  if (Number.isNaN(date.getTime())) {
+    return "Not scheduled";
+  }
+
+  return date.toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: "UTC",
   });
 }
 
