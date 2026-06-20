@@ -13,13 +13,54 @@ function Input(props) {
   );
 }
 
+function getDateInputValueFromDate(date) {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function getTomorrowDateInputValue() {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  return getDateInputValueFromDate(tomorrow);
+}
+
+function addDaysToDateInputValue(dateValue, days) {
+  if (!dateValue) return "";
+
+  const [year, month, day] = dateValue.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+
+  date.setDate(date.getDate() + days);
+
+  return getDateInputValueFromDate(date);
+}
+
 export default function StepSchedule({
   bookingForm,
   updateScheduleField,
   goToNextStep,
   goToPreviousStep,
+  formErrors = {},
 }) {
   const hasExtraDaysFee = bookingForm.schedule.extraDays > 0;
+  const minDate = getTomorrowDateInputValue();
+
+  function handleDeliveryDateChange(value) {
+    updateScheduleField("schedule.deliveryDate", value);
+
+    if (!bookingForm.schedule.unknownPickup && value) {
+      const defaultPickupDate = addDaysToDateInputValue(value, 7);
+      updateScheduleField("schedule.pickupDate", defaultPickupDate);
+    }
+  }
+
+  function handlePickupDateChange(value) {
+    updateScheduleField("schedule.pickupDate", value);
+  }
 
   return (
     <StepShell
@@ -27,6 +68,7 @@ export default function StepSchedule({
       description="Pick your delivery date and expected pickup date."
       onNext={goToNextStep}
       onBack={goToPreviousStep}
+      errors={formErrors}
     >
       <div className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2">
@@ -36,11 +78,14 @@ export default function StepSchedule({
             </label>
             <Input
               type="date"
+              min={minDate}
               value={bookingForm.schedule.deliveryDate}
-              onChange={(e) =>
-                updateScheduleField("schedule.deliveryDate", e.target.value)
-              }
+              onChange={(e) => handleDeliveryDateChange(e.target.value)}
             />
+            <p className="mt-2 text-xs text-gray-500">
+              Online booking starts tomorrow. For same-day delivery, please call
+              us.
+            </p>
           </div>
 
           <div>
@@ -49,16 +94,19 @@ export default function StepSchedule({
             </label>
             <Input
               type="date"
+              min={bookingForm.schedule.deliveryDate || minDate}
               value={bookingForm.schedule.pickupDate}
               disabled={bookingForm.schedule.unknownPickup}
-              onChange={(e) =>
-                updateScheduleField("schedule.pickupDate", e.target.value)
-              }
+              onChange={(e) => handlePickupDateChange(e.target.value)}
             />
+            <p className="mt-2 text-xs text-gray-500">
+              Pickup is automatically set 7 days after delivery, but you can
+              change it.
+            </p>
           </div>
         </div>
 
-        <label className="flex items-start gap-3 rounded-2xl border border-gray-200 bg-gray-50 p-4">
+        {/* <label className="flex items-start gap-3 rounded-2xl border border-gray-200 bg-gray-50 p-4">
           <input
             type="checkbox"
             checked={bookingForm.schedule.unknownPickup}
@@ -73,7 +121,7 @@ export default function StepSchedule({
               You can leave pickup open-ended for now.
             </p>
           </div>
-        </label>
+        </label> */}
 
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-2xl border border-gray-200 bg-white p-4">

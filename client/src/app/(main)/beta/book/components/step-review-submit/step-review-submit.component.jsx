@@ -44,10 +44,19 @@ function formatProjectType(projectType) {
 }
 
 function formatCurrency(value) {
-  return `$${(value || 0).toFixed(2)}`;
+  return `$${Number(value || 0).toFixed(2)}`;
 }
 
-// pretend this exists for now
+function formatDate(value) {
+  if (!value) return "";
+
+  if (typeof value === "string") {
+    return value.split("T")[0];
+  }
+
+  return value.toISOString().split("T")[0];
+}
+
 function getDistanceFromWarehouse(address) {
   return address.distanceFromWarehouse ?? null;
 }
@@ -57,6 +66,7 @@ export default function StepReviewSubmit({
   goToPreviousStep,
   goToStep,
   onSubmit,
+  formErrors = {},
 }) {
   const distanceFromWarehouse = getDistanceFromWarehouse(bookingForm.address);
 
@@ -67,6 +77,7 @@ export default function StepReviewSubmit({
       onBack={goToPreviousStep}
       hideNext
       backLabel="Back"
+      errors={formErrors}
     >
       <div className="space-y-6">
         <div className="grid gap-6 xl:grid-cols-2">
@@ -103,10 +114,58 @@ export default function StepReviewSubmit({
 
           <div className="rounded-2xl border border-gray-200 p-4">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900">Dumpster Details</h3>
+              <h3 className="font-semibold text-gray-900">Schedule</h3>
               <button
                 type="button"
                 onClick={() => goToStep(2)}
+                className="text-sm font-medium text-indigo-600 underline"
+              >
+                Edit
+              </button>
+            </div>
+
+            <Row
+              label="Delivery Date"
+              value={formatDate(bookingForm.schedule.deliveryDate)}
+            />
+            <Row
+              label="Pickup Date"
+              value={
+                bookingForm.schedule.unknownPickup
+                  ? "I don't know yet"
+                  : formatDate(bookingForm.schedule.pickupDate)
+              }
+            />
+            <Row
+              label="Rental Days"
+              value={
+                bookingForm.schedule.unknownPickup
+                  ? "Open-ended"
+                  : bookingForm.schedule.rentalDays
+                    ? `${bookingForm.schedule.rentalDays} days`
+                    : ""
+              }
+            />
+            <Row
+              label="Extra Days"
+              value={
+                bookingForm.schedule.unknownPickup
+                  ? "—"
+                  : `${bookingForm.schedule.extraDays || 0}`
+              }
+            />
+            <Row
+              label="Extra Days Fee"
+              value={formatCurrency(bookingForm.pricing.extraDaysFee)}
+            />
+          </div>
+
+          <div className="rounded-2xl border border-gray-200 p-4">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="font-semibold text-gray-900">Dumpster Details</h3>
+              <button
+                type="button"
+                onClick={() => goToStep(3)}
                 className="text-sm font-medium text-indigo-600 underline"
               >
                 Edit
@@ -142,54 +201,6 @@ export default function StepReviewSubmit({
 
           <div className="rounded-2xl border border-gray-200 p-4">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900">Schedule</h3>
-              <button
-                type="button"
-                onClick={() => goToStep(3)}
-                className="text-sm font-medium text-indigo-600 underline"
-              >
-                Edit
-              </button>
-            </div>
-
-            <Row
-              label="Delivery Date"
-              value={bookingForm.schedule.deliveryDate}
-            />
-            <Row
-              label="Pickup Date"
-              value={
-                bookingForm.schedule.unknownPickup
-                  ? "I don't know yet"
-                  : bookingForm.schedule.pickupDate
-              }
-            />
-            <Row
-              label="Rental Days"
-              value={
-                bookingForm.schedule.unknownPickup
-                  ? "Open-ended"
-                  : bookingForm.schedule.rentalDays
-                  ? `${bookingForm.schedule.rentalDays} days`
-                  : ""
-              }
-            />
-            <Row
-              label="Extra Days"
-              value={
-                bookingForm.schedule.unknownPickup
-                  ? "—"
-                  : `${bookingForm.schedule.extraDays || 0}`
-              }
-            />
-            <Row
-              label="Extra Days Fee"
-              value={formatCurrency(bookingForm.pricing.extraDaysFee)}
-            />
-          </div>
-
-          <div className="rounded-2xl border border-gray-200 p-4">
-            <div className="mb-4 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900">
                 Location + Customer
               </h3>
@@ -198,7 +209,7 @@ export default function StepReviewSubmit({
                 onClick={() => goToStep(4)}
                 className="text-sm font-medium text-indigo-600 underline"
               >
-                Edit
+                Edit Location
               </button>
             </div>
 
@@ -220,6 +231,14 @@ export default function StepReviewSubmit({
             />
             <Row label="Phone" value={bookingForm.customer.phone} />
             <Row label="Email" value={bookingForm.customer.email} />
+
+            <button
+              type="button"
+              onClick={() => goToStep(5)}
+              className="mt-4 text-sm font-medium text-indigo-600 underline"
+            >
+              Edit Customer
+            </button>
           </div>
         </div>
 
@@ -237,7 +256,7 @@ export default function StepReviewSubmit({
             <h3 className="font-semibold text-gray-900">Pricing</h3>
             <button
               type="button"
-              onClick={() => goToStep(2)}
+              onClick={() => goToStep(3)}
               className="text-sm font-medium text-indigo-600 underline"
             >
               Edit
@@ -272,10 +291,9 @@ export default function StepReviewSubmit({
                 : ""
             }
           />
-
           <Row
             label="Mileage Fee"
-            value={`$${(bookingForm.pricing.mileageFee || 0).toFixed(2)}`}
+            value={formatCurrency(bookingForm.pricing.mileageFee)}
           />
           <Row
             label="Final Total"
@@ -296,7 +314,7 @@ export default function StepReviewSubmit({
             <button
               onClick={onSubmit}
               type="button"
-              className="rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white"
+              className="rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700"
             >
               Confirm Booking
             </button>

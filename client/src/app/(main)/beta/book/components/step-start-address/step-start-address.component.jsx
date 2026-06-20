@@ -36,6 +36,7 @@ export default function StepStartAddress({
   bookingForm,
   updateBookingForm,
   goToNextStep,
+  formErrors = {},
 }) {
   const [addressSuggestions, setAddressSuggestions] = useState([]);
   const [isSearchingAddress, setIsSearchingAddress] = useState(false);
@@ -111,6 +112,7 @@ export default function StepStartAddress({
       description="Enter the delivery address and project type to begin your booking."
       onNext={goToNextStep}
       hideBack
+      errors={formErrors}
     >
       <div className="space-y-4">
         <div className="relative">
@@ -189,7 +191,9 @@ export default function StepStartAddress({
             </label>
             <Input
               value={bookingForm.address.city}
-              onChange={(e) => updateBookingForm("address.city", e.target.value)}
+              onChange={(e) =>
+                updateBookingForm("address.city", e.target.value)
+              }
             />
           </div>
 

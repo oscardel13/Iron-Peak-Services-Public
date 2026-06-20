@@ -44,8 +44,8 @@ export const DUMPSTER_PRODUCTS = [
 ];
 
 export const ADDON_PRICING = {
-  drivewayProtection: 29.99,
-  priorityDelivery: 49.99,
+  drivewayProtection: 30,
+  // priorityDelivery: 50,
 };
 
 export const WAREHOUSE_LOCATION = {

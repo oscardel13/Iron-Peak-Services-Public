@@ -18,6 +18,7 @@ export default function StepCustomerPayment({
   updateBookingForm,
   goToNextStep,
   goToPreviousStep,
+  formErrors = {},
 }) {
   return (
     <StepShell
@@ -26,6 +27,7 @@ export default function StepCustomerPayment({
       onNext={goToNextStep}
       onBack={goToPreviousStep}
       nextLabel="Review Booking"
+      errors={formErrors}
     >
       <div className="space-y-8">
         <div className="space-y-4">
@@ -106,6 +108,7 @@ export default function StepCustomerPayment({
                 Email
               </label>
               <Input
+                type="email"
                 value={bookingForm.customer.email}
                 onChange={(e) =>
                   updateBookingForm("customer.email", e.target.value)
@@ -122,7 +125,7 @@ export default function StepCustomerPayment({
               onChange={(e) =>
                 updateBookingForm(
                   "payment.billingSameAsCustomer",
-                  e.target.checked
+                  e.target.checked,
                 )
               }
               className="mt-1 h-5 w-5"

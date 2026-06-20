@@ -16,6 +16,7 @@ export default function StepDumpsterDetails({
   toggleAddon,
   goToNextStep,
   goToPreviousStep,
+  formErrors = {},
 }) {
   const [availableProducts, setAvailableProducts] = useState([]);
   const [isLoadingDumpsters, setIsLoadingDumpsters] = useState(false);
@@ -44,7 +45,7 @@ export default function StepDumpsterDetails({
         }
 
         const response = await getAPI(
-          `/inventory/dumpsters/available?${params.toString()}`
+          `/inventory/dumpsters/available?${params.toString()}`,
         );
 
         setAvailableProducts(response.data || []);
@@ -64,12 +65,23 @@ export default function StepDumpsterDetails({
     bookingForm.schedule.unknownPickup,
   ]);
 
+  function handleMaterialSelect(materialValue) {
+    updateBookingForm("dumpster.material", materialValue);
+    updateBookingForm("dumpster.productId", "");
+    updateBookingForm("dumpster.productLabel", "");
+    updateBookingForm("dumpster.size", "");
+    updateBookingForm("dumpster.basePrice", 0);
+    updateBookingForm("dumpster.concretePrice", 0);
+    updateBookingForm("dumpster.includedWeightText", "");
+  }
+
   return (
     <StepShell
       title="Choose your dumpster"
       description="Select the material for pricing, then choose your dumpster."
       onNext={goToNextStep}
       onBack={goToPreviousStep}
+      errors={formErrors}
     >
       <div className="space-y-8">
         <div className="space-y-4">
@@ -83,13 +95,7 @@ export default function StepDumpsterDetails({
                 <button
                   key={option.value}
                   type="button"
-                  onClick={() => {
-                    updateBookingForm("dumpster.material", option.value);
-                    updateBookingForm("dumpster.productId", "");
-                    updateBookingForm("dumpster.productLabel", "");
-                    updateBookingForm("dumpster.size", "");
-                    updateBookingForm("dumpster.includedWeightText", "");
-                  }}
+                  onClick={() => handleMaterialSelect(option.value)}
                   className={`rounded-2xl border px-4 py-4 text-left transition ${
                     isSelected
                       ? "border-indigo-600 bg-indigo-50 text-indigo-700"
@@ -116,7 +122,8 @@ export default function StepDumpsterDetails({
 
           {!bookingForm.schedule.deliveryDate ? (
             <p className="text-sm text-gray-500">
-              Choose a delivery date first so we can check dumpster availability.
+              Choose a delivery date first so we can check dumpster
+              availability.
             </p>
           ) : isLoadingDumpsters ? (
             <p className="text-sm text-gray-500">
@@ -131,7 +138,8 @@ export default function StepDumpsterDetails({
           ) : (
             <div className="grid gap-4">
               {availableProducts.map((product) => {
-                const isSelected = bookingForm.dumpster.productId === product.id;
+                const isSelected =
+                  bookingForm.dumpster.productId === product.id;
 
                 return (
                   <button
@@ -149,16 +157,20 @@ export default function StepDumpsterDetails({
                         <p className="text-lg font-semibold text-gray-900">
                           {product.label}
                         </p>
+
                         <p className="mt-1 text-sm text-gray-500">
                           Size: {product.size} yd
                         </p>
+
                         {product.includedWeightText && (
                           <p className="mt-1 text-sm text-gray-500">
                             Included: {product.includedWeightText}
                           </p>
                         )}
+
                         <p className="mt-1 text-sm text-gray-500">
-                          {product.includedDays || 7} days included, then $25/day
+                          {product.includedDays || 7} days included, then
+                          $25/day
                         </p>
                       </div>
 
@@ -166,9 +178,11 @@ export default function StepDumpsterDetails({
                         <p className="text-xl font-semibold text-gray-900">
                           ${Number(product.basePrice || 0).toFixed(2)}
                         </p>
+
                         {bookingForm.dumpster.material === "concrete" && (
                           <p className="mt-1 text-sm text-amber-700">
-                            + ${Number(product.concretePrice || 0).toFixed(2)} concrete fee
+                            + ${Number(product.concretePrice || 0).toFixed(2)}{" "}
+                            concrete fee
                           </p>
                         )}
                       </div>
@@ -184,7 +198,7 @@ export default function StepDumpsterDetails({
           <SectionTitle>Add-ons</SectionTitle>
 
           <div className="grid gap-4">
-            <label className="flex cursor-pointer items-start justify-between gap-4 rounded-2xl border border-gray-200 bg-white p-4">
+            {/* <label className="flex cursor-pointer items-start justify-between gap-4 rounded-2xl border border-gray-200 bg-white p-4">
               <div>
                 <p className="font-semibold text-gray-900">Priority Delivery</p>
                 <p className="mt-1 text-sm text-gray-500">
@@ -193,7 +207,9 @@ export default function StepDumpsterDetails({
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-900">$49.99</span>
+                <span className="text-sm font-medium text-gray-900">
+                  $49.99
+                </span>
                 <input
                   type="checkbox"
                   checked={bookingForm.addons.priorityDelivery}
@@ -203,7 +219,7 @@ export default function StepDumpsterDetails({
                   className="h-5 w-5"
                 />
               </div>
-            </label>
+            </label> */}
 
             <label className="flex cursor-pointer items-start justify-between gap-4 rounded-2xl border border-gray-200 bg-white p-4">
               <div>
@@ -216,7 +232,9 @@ export default function StepDumpsterDetails({
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-900">$29.99</span>
+                <span className="text-sm font-medium text-gray-900">
+                  $30.00
+                </span>
                 <input
                   type="checkbox"
                   checked={bookingForm.addons.drivewayProtection}

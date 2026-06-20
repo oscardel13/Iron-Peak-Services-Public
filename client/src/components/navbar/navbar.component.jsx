@@ -42,6 +42,15 @@ export default function Navbar() {
           visible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
+        {/* Desktop Dashboard Button */}
+        <button
+          type="button"
+          onClick={openDashboardPopup}
+          className="absolute right-6 top-5 hidden text-sm font-semibold text-white/80 transition hover:text-white lg:inline-flex"
+        >
+          Dashboard
+        </button>
+
         <div className="w-full flex justify-center px-4 lg:px-8 pt-4">
           <nav className="w-full max-w-5xl rounded-xl bg-graphite shadow-lg px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between gap-2">
@@ -92,16 +101,8 @@ export default function Navbar() {
                 </NavLink>
               </div>
 
-              {/* Desktop Actions */}
-              <div className="hidden lg:flex shrink-0 items-center gap-3">
-                <button
-                  type="button"
-                  onClick={openDashboardPopup}
-                  className="inline-flex h-12 items-center rounded-xl border border-white/20 px-5 text-sm font-semibold text-white transition hover:bg-white/10"
-                >
-                  Dashboard
-                </button>
-
+              {/* Desktop CTA */}
+              <div className="hidden lg:flex shrink-0">
                 <Link
                   href="/book"
                   className="inline-flex items-center gap-3 rounded-xl h-12 bg-brand-primary px-8 py-4 text-white font-semibold text-lg hover:bg-brand-primary-hover transition"
@@ -121,7 +122,7 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Mobile menu */}
+            {/* Mobile Menu */}
             {isOpen && (
               <div className="lg:hidden mt-5 flex flex-col gap-3 border-t border-gray-200 pt-5">
                 <NavDropdown
@@ -177,9 +178,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {signInOpen && (
-        <SignInPopup closeTrigger={() => setSignInOpen(false)} />
-      )}
+      {signInOpen && <SignInPopup closeTrigger={() => setSignInOpen(false)} />}
     </>
   );
 }

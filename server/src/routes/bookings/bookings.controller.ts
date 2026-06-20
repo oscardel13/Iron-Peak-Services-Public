@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { Request, Response } from "express";
 import {
   getBookings,
   getBookingById,
@@ -12,20 +12,26 @@ import {
   // getBookingAddons,
   // addBookingAddon,
   // removeBookingAddon,
-} from '../../services/bookings.service.ts';
+} from "../../services/bookings.service.ts";
+
+import {
+  validateCreateBookingInput,
+  validatePatchBookingInput,
+  getHttpErrorStatus,
+  getHttpErrorMessage,
+} from "../../helpers/bookings.helper.ts";
 
 import { sendBookingConfirmationEmail } from "../../emails/templates/booking-confirmation.template.ts";
 
-
 // TODO: Add validation, error handling, pagination, etc.
 // Consider using a library like Joi or Yup for request validation (research this)
-// Should be admin-only 
+// Should be admin-only
 export const HttpGetBookings = async (req: Request, res: Response) => {
   try {
     const bookings = await getBookings(req.query);
     res.json(bookings);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch bookings' });
+    res.status(500).json({ error: "Failed to fetch bookings" });
   }
 };
 
@@ -35,26 +41,36 @@ export const HttpGetBookingById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (!id) {
-      return res.status(400).json({ error: 'Booking ID is required' });
+      return res.status(400).json({ error: "Booking ID is required" });
     }
     const booking = await getBookingById(id as string);
     if (!booking) {
-      return res.status(404).json({ error: 'Booking not found' });
+      return res.status(404).json({ error: "Booking not found" });
     }
     res.json(booking);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch booking' });
+    res.status(500).json({ error: "Failed to fetch booking" });
   }
 };
 
 // TODO: Add validation, error handling, etc.
 export const HttpCreateBooking = async (req: Request, res: Response) => {
   try {
-    const booking = await createBooking(req.body);
+    const bookingInput = validateCreateBookingInput(req.body);
+
+    const booking = await createBooking(bookingInput);
+
     await sendBookingConfirmationEmail(booking);
+
     res.status(201).json(booking);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create booking' });
+    console.error("Error creating booking:", error);
+
+    const statusCode = getHttpErrorStatus(error);
+
+    res.status(statusCode === 500 ? 500 : statusCode).json({
+      error: getHttpErrorMessage(error, "Failed to create booking"),
+    });
   }
 };
 
@@ -64,19 +80,34 @@ export const HttpCreateBooking = async (req: Request, res: Response) => {
 // or having 2 separate endpoints for admin and customer updates with different allowed fields.
 export const HttpPatchBooking = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const rawId = req.params.id;
+    const id = Array.isArray(rawId) ? rawId[0] : rawId;
+
     if (!id) {
-      return res.status(400).json({ error: 'Booking ID is required' });
+      return res.status(400).json({
+        error: "Booking ID is required",
+      });
     }
-    const booking = await patchBooking(id as string, req.body);
+
+    const bookingInput = await validatePatchBookingInput(id, req.body);
+
+    const booking = await patchBooking(id, bookingInput);
 
     if (!booking) {
-      return res.status(404).json({ error: 'Booking not found' });
+      return res.status(404).json({
+        error: "Booking not found",
+      });
     }
+
     res.json(booking);
   } catch (error) {
-    console.log('Error patching booking:', error);
-    res.status(500).json({ error: 'Failed to update booking' });
+    console.error("Error patching booking:", error);
+
+    const statusCode = getHttpErrorStatus(error);
+
+    res.status(statusCode === 500 ? 500 : statusCode).json({
+      error: getHttpErrorMessage(error, "Failed to update booking"),
+    });
   }
 };
 
@@ -86,15 +117,15 @@ export const HttpDeleteBooking = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (!id) {
-      return res.status(400).json({ error: 'Booking ID is required' });
+      return res.status(400).json({ error: "Booking ID is required" });
     }
     const success = await deleteBooking(id as string);
     if (!success) {
-      return res.status(404).json({ error: 'Booking not found' });
+      return res.status(404).json({ error: "Booking not found" });
     }
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete booking' });
+    res.status(500).json({ error: "Failed to delete booking" });
   }
 };
 
@@ -105,12 +136,12 @@ export const HttpGetBookingHistory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (!id) {
-      return res.status(400).json({ error: 'Booking ID is required' });
+      return res.status(400).json({ error: "Booking ID is required" });
     }
     const history = await getBookingHistory();
     res.json(history);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch booking history' });
+    res.status(500).json({ error: "Failed to fetch booking history" });
   }
 };
 
