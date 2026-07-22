@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {
   HttpGetBookings,
   HttpGetBookingById,
@@ -6,51 +6,57 @@ import {
   // HttpUpdateBooking,
   HttpDeleteBooking,
   HttpPatchBooking,
+  HttpCreateCheckoutDraftBooking,
+  HttpUpdateCheckoutDraftBooking,
   // HttpGetBookingHistory,
   // HttpGetBookingNotes,
   // HttpAddBookingNote,
   // HttpGetBookingAddons,
   // HttpAddBookingAddon,
   // HttpRemoveBookingAddon,
-}  from './bookings.controller.ts';
+} from "./bookings.controller.ts";
 
-const router = express.Router();
+const BookingsRouter = express.Router();
 
 // GET /api/v1/admin/bookings
 // need admin auth for this route
-router.get('/', HttpGetBookings);
+BookingsRouter.get("/", HttpGetBookings);
 
 // POST /api/v1/admin/bookings
-router.post('/', HttpCreateBooking);
+BookingsRouter.post("/", HttpCreateBooking);
+
+BookingsRouter.post("/checkout-draft", HttpCreateCheckoutDraftBooking);
+
+BookingsRouter.put("/:id/checkout-draft", HttpUpdateCheckoutDraftBooking);
 
 // // GET /api/v1/admin/bookings/:id/history
-// router.get('/history', HttpGetBookingHistory);
+// BookingsRouter.get('/history', HttpGetBookingHistory);
 
 // GET /api/v1/admin/bookings/:id
 // need admin auth for this route
-router.get('/:id', HttpGetBookingById);
+BookingsRouter.get("/:id", HttpGetBookingById);
 
 // PATCH /api/v1/admin/bookings/:id
 // need admin auth for this route
-router.patch('/:id', HttpPatchBooking);
+BookingsRouter.patch("/:id", HttpPatchBooking);
 
 // DELETE /api/v1/admin/bookings/:id
 // need admin auth for this route
-router.delete('/:id', HttpDeleteBooking);
+BookingsRouter.delete("/:id", HttpDeleteBooking);
 
 // // GET /api/v1/admin/bookings/:id/notes
-// router.get('/:id/notes', HttpGetBookingNotes);
+// BookingsRouter.get('/:id/notes', HttpGetBookingNotes);
 
 // // POST /api/v1/admin/bookings/:id/notes
-// router.post('/:id/notes', HttpAddBookingNote);
+// BookingsRouter.post('/:id/notes', HttpAddBookingNote);
 
 // // GET /api/v1/admin/bookings/:id/addons
-// router.get('/:id/addons', HttpGetBookingAddons);
+// BookingsRouter.get('/:id/addons', HttpGetBookingAddons);
 
 // // POST /api/v1/admin/bookings/:id/addons
-// router.post('/:id/addons', HttpAddBookingAddon);
+// BookingsRouter.post('/:id/addons', HttpAddBookingAddon);
 
 // // DELETE /api/v1/admin/bookings/:id/addons/:addonId
-// router.delete('/:id/addons/:addonId', HttpRemoveBookingAddon);
+// BookingsRouter.delete('/:id/addons/:addonId', HttpRemoveBookingAddon);
 
-export { router as bookingsRouter };
+export default BookingsRouter;

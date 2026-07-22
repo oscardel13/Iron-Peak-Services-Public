@@ -12,7 +12,7 @@ import { configureGooglePassport } from "./google.passport.js";
 
 const allowedClientOrigins = process.env.ORIGIN_WHITELIST?.split(",") || [];
 
-export const authRouter = Router();
+const AuthRouter = Router();
 
 configureGooglePassport();
 // configureFacebookPassport();
@@ -70,7 +70,7 @@ function getSafeRedirectPath(path: unknown) {
 }
 
 // ---------- GOOGLE LOGIN ----------
-authRouter.get(
+AuthRouter.get(
   "/user/google",
   (req: Request, res: Response, next: NextFunction) => {
     const redirectPath = getSafeRedirectPath(req.query.path);
@@ -85,10 +85,10 @@ authRouter.get(
       scope: ["email", "profile"],
       state,
     })(req, res, next);
-  }
+  },
 );
 
-authRouter.get(
+AuthRouter.get(
   "/user/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/auth/failure",
@@ -109,13 +109,13 @@ authRouter.get(
     const redirectUrl = new URL(redirectPath, clientOrigin).toString();
 
     res.redirect(redirectUrl);
-  }
+  },
 );
 
 // ---------- FACEBOOK LOGIN ----------
 // Uncomment once you add configureFacebookPassport()
 
-// authRouter.get(
+// AuthRouter.get(
 //   "/user/facebook",
 //   stashRedirect,
 //   passport.authenticate("facebook", {
@@ -140,19 +140,19 @@ authRouter.get(
 // );
 
 // ---------- ME ----------
-authRouter.get("/me", checkLoggedIn, (req: Request, res: Response) => {
+AuthRouter.get("/me", checkLoggedIn, (req: Request, res: Response) => {
   res.status(200).json({
     user: req.user,
   });
 });
 
 // ---------- FAILURE ----------
-authRouter.get("/failure", (req: Request, res: Response) => {
+AuthRouter.get("/failure", (req: Request, res: Response) => {
   res.status(401).send("Failed to log in");
 });
 
 // ---------- LOGOUT ----------
-authRouter.get("/logout", (req: Request, res: Response, next: NextFunction) => {
+AuthRouter.get("/logout", (req: Request, res: Response, next: NextFunction) => {
   req.logout((err) => {
     if (err) {
       return next(err);
@@ -169,3 +169,5 @@ authRouter.get("/logout", (req: Request, res: Response, next: NextFunction) => {
     }
   });
 });
+
+export default AuthRouter;

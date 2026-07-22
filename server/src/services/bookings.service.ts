@@ -1,25 +1,277 @@
-import { prisma } from '../libs/prisma.ts';
-import { Prisma, BookingStatus, PaymentStatus, ServiceType } from "../generated/prisma/client.js";
+import { prisma } from "../libs/prisma.ts";
+import {
+  Prisma,
+  BookingStatus,
+  PaymentStatus,
+  ServiceType,
+} from "../generated/prisma/client.js";
+
 import {
   calculateBookingPricing,
   calculateDistanceFromWarehouse,
   calculateMileageFee,
   getSelectedAddons,
 } from "../helpers/bookings.helper.ts";
-import { buildBookingUpdateData } from '../utils/helper.ts';
+
+import {
+  createStripePaymentIntentForBooking,
+  updateStripePaymentIntentForBooking,
+} from "./stripe.service.ts";
+
+import { buildBookingUpdateData } from "../utils/helper.ts";
 
 const generateBookingNumber = () => {
   const now = new Date();
   const yyyy = now.getUTCFullYear();
-  const mm = String(now.getUTCMonth() + 1).padStart(2, '0');
-  const dd = String(now.getUTCDate()).padStart(2, '0');
+  const mm = String(now.getUTCMonth() + 1).padStart(2, "0");
+  const dd = String(now.getUTCDate()).padStart(2, "0");
   const rand = Math.floor(1000 + Math.random() * 9000);
+
   return `BK-${yyyy}${mm}${dd}-${rand}`;
 };
 
-// TODO: Implement filtering, pagination, etc.
+function createServiceError(message: string, statusCode = 400) {
+  const error = new Error(message) as Error & { statusCode?: number };
+  error.statusCode = statusCode;
+  return error;
+}
+
+function toCents(value: unknown) {
+  return Math.round(Number(value || 0) * 100);
+}
+
+function normalizeBookingForCheckout(booking: any) {
+  return {
+    ...booking,
+    basePrice: Number(booking.basePrice || 0),
+    deliveryFee: Number(booking.deliveryFee || 0),
+    mileageFee: Number(booking.mileageFee || 0),
+    extraDaysFee: Number(booking.extraDaysFee || 0),
+    overageFee: Number(booking.overageFee || 0),
+    addonsTotal: Number(booking.addonsTotal || 0),
+    total: Number(booking.total || 0),
+    latitude: booking.latitude != null ? Number(booking.latitude) : null,
+    longitude: booking.longitude != null ? Number(booking.longitude) : null,
+    distanceFromWarehouse:
+      booking.distanceFromWarehouse != null
+        ? Number(booking.distanceFromWarehouse)
+        : null,
+  };
+}
+
+async function getRequiredDumpster(dumpsterId?: string | null) {
+  if (!dumpsterId) {
+    throw createServiceError("A valid dumpsterId is required.", 400);
+  }
+
+  const dumpster = await prisma.dumpster.findUnique({
+    where: {
+      id: dumpsterId,
+    },
+  });
+
+  if (!dumpster) {
+    throw createServiceError("A valid dumpsterId is required.", 400);
+  }
+
+  return dumpster;
+}
+
+async function buildBookingPricingData(data: any) {
+  const dumpster = await getRequiredDumpster(data.dumpsterId);
+
+  const { selectedAddons, addonsTotal } = await getSelectedAddons(
+    data.addons ?? {},
+  );
+
+  const latitude =
+    data.latitude !== null && data.latitude !== undefined
+      ? Number(data.latitude)
+      : null;
+
+  const longitude =
+    data.longitude !== null && data.longitude !== undefined
+      ? Number(data.longitude)
+      : null;
+
+  const distanceFromWarehouse = calculateDistanceFromWarehouse(
+    latitude,
+    longitude,
+  );
+
+  const mileageFee = calculateMileageFee(distanceFromWarehouse);
+
+  const pricing = calculateBookingPricing({
+    basePrice: dumpster.basePrice,
+    concretePrice: dumpster.concretePrice,
+    material: data.material,
+
+    rentalDays: data.rentalDays,
+    rentalDaysIncluded: data.rentalDaysIncluded ?? 7,
+
+    deliveryFee: data.deliveryFee ?? 0,
+    mileageFee,
+    overageFee: data.overageFee ?? 0,
+
+    addonsTotal,
+  });
+
+  return {
+    dumpster,
+    selectedAddons,
+    latitude,
+    longitude,
+    distanceFromWarehouse,
+    pricing,
+  };
+}
+
+function buildBookingCreateData({
+  data,
+  bookingNumber,
+  dumpster,
+  selectedAddons,
+  latitude,
+  longitude,
+  distanceFromWarehouse,
+  pricing,
+}: any) {
+  return {
+    bookingNumber,
+
+    dumpsterId: dumpster.id,
+    dumpsterSize: dumpster.size,
+    dumpsterLabel: dumpster.label,
+    material: data.material ?? null,
+
+    serviceType: data.serviceType ?? ServiceType.DUMPSTER_RENTAL,
+    projectType: data.projectType ?? null,
+
+    customerName: data.customerName,
+    customerPhone: data.customerPhone,
+    customerEmail: data.customerEmail ?? null,
+
+    address1: data.address1,
+    address2: data.address2 ?? null,
+    city: data.city,
+    state: data.state,
+    zip: data.zip,
+
+    latitude: latitude !== null ? new Prisma.Decimal(latitude) : null,
+    longitude: longitude !== null ? new Prisma.Decimal(longitude) : null,
+
+    distanceFromWarehouse:
+      distanceFromWarehouse !== null
+        ? new Prisma.Decimal(distanceFromWarehouse)
+        : null,
+
+    placement: data.placement ?? null,
+    instructions: data.instructions ?? null,
+    customerNotes: data.customerNotes ?? null,
+
+    locationVerified: Boolean(data.locationVerified),
+    locationVerificationNote: data.locationVerificationNote ?? null,
+
+    deliveryDate: new Date(data.deliveryDate),
+    pickupDate: data.pickupDate ? new Date(data.pickupDate) : null,
+    pickupDateUnknown: Boolean(data.pickupDateUnknown),
+    rentalDaysIncluded: Number(data.rentalDaysIncluded ?? 7),
+
+    bookingStatus: data.bookingStatus ?? BookingStatus.QUOTE,
+    paymentStatus: data.paymentStatus ?? PaymentStatus.UNPAID,
+
+    quotedAt: new Date(),
+
+    basePrice: new Prisma.Decimal(pricing.basePrice),
+    deliveryFee: new Prisma.Decimal(pricing.deliveryFee),
+    mileageFee: new Prisma.Decimal(pricing.mileageFee),
+    extraDaysFee: new Prisma.Decimal(pricing.extraDaysFee),
+    overageFee: new Prisma.Decimal(pricing.overageFee),
+    addonsTotal: new Prisma.Decimal(pricing.addonsTotal),
+    total: new Prisma.Decimal(pricing.total),
+
+    addons: {
+      create: selectedAddons.map((addon: any) => ({
+        addonId: addon.id,
+        addonCodeSnapshot: addon.code,
+        addonNameSnapshot: addon.name,
+        addonPriceSnapshot: addon.price,
+        quantity: 1,
+      })),
+    },
+  };
+}
+
+function buildCheckoutDraftUpdateData({
+  data,
+  dumpster,
+  latitude,
+  longitude,
+  distanceFromWarehouse,
+  pricing,
+}: any) {
+  return {
+    dumpsterId: dumpster.id,
+    dumpsterSize: dumpster.size,
+    dumpsterLabel: dumpster.label,
+    material: data.material ?? null,
+
+    serviceType: data.serviceType ?? ServiceType.DUMPSTER_RENTAL,
+    projectType: data.projectType ?? null,
+
+    customerName: data.customerName,
+    customerPhone: data.customerPhone,
+    customerEmail: data.customerEmail ?? null,
+
+    address1: data.address1,
+    address2: data.address2 ?? null,
+    city: data.city,
+    state: data.state,
+    zip: data.zip,
+
+    latitude: latitude !== null ? new Prisma.Decimal(latitude) : null,
+    longitude: longitude !== null ? new Prisma.Decimal(longitude) : null,
+
+    distanceFromWarehouse:
+      distanceFromWarehouse !== null
+        ? new Prisma.Decimal(distanceFromWarehouse)
+        : null,
+
+    placement: data.placement ?? null,
+    instructions: data.instructions ?? null,
+    customerNotes: data.customerNotes ?? null,
+
+    locationVerified: Boolean(data.locationVerified),
+    locationVerificationNote: data.locationVerificationNote ?? null,
+
+    deliveryDate: new Date(data.deliveryDate),
+    pickupDate: data.pickupDate ? new Date(data.pickupDate) : null,
+    pickupDateUnknown: Boolean(data.pickupDateUnknown),
+    rentalDaysIncluded: Number(data.rentalDaysIncluded ?? 7),
+
+    bookingStatus: BookingStatus.QUOTE,
+    paymentStatus: PaymentStatus.UNPAID,
+
+    basePrice: new Prisma.Decimal(pricing.basePrice),
+    deliveryFee: new Prisma.Decimal(pricing.deliveryFee),
+    mileageFee: new Prisma.Decimal(pricing.mileageFee),
+    extraDaysFee: new Prisma.Decimal(pricing.extraDaysFee),
+    overageFee: new Prisma.Decimal(pricing.overageFee),
+    addonsTotal: new Prisma.Decimal(pricing.addonsTotal),
+    total: new Prisma.Decimal(pricing.total),
+  };
+}
+
+const bookingInclude = {
+  dumpster: true,
+  addons: {
+    include: {
+      addon: true,
+    },
+  },
+};
+
 export const getBookings = async (query: any) => {
-  // TODO: Implement filtering, pagination, etc.
   return await prisma.booking.findMany({
     include: {
       dumpster: true,
@@ -49,136 +301,157 @@ export const getBookingById = async (id: string) => {
   });
 };
 
+export const createCheckoutDraftBooking = async (data: any) => {
+  const bookingNumber = generateBookingNumber();
 
+  const {
+    dumpster,
+    selectedAddons,
+    latitude,
+    longitude,
+    distanceFromWarehouse,
+    pricing,
+  } = await buildBookingPricingData(data);
+
+  const booking = await prisma.booking.create({
+    data: buildBookingCreateData({
+      data: {
+        ...data,
+        bookingStatus: BookingStatus.QUOTE,
+        paymentStatus: PaymentStatus.UNPAID,
+      },
+      bookingNumber,
+      dumpster,
+      selectedAddons,
+      latitude,
+      longitude,
+      distanceFromWarehouse,
+      pricing,
+    }),
+    include: bookingInclude,
+  });
+
+  const paymentIntent = await createStripePaymentIntentForBooking(booking);
+
+  const updatedBooking = await prisma.booking.update({
+    where: {
+      id: booking.id,
+    },
+    data: {
+      stripePaymentIntentId: paymentIntent.id,
+      stripePaymentStatus: paymentIntent.status,
+      paymentStatus: PaymentStatus.UNPAID,
+    },
+    include: bookingInclude,
+  });
+
+  return {
+    booking: normalizeBookingForCheckout(updatedBooking),
+    clientSecret: paymentIntent.client_secret,
+  };
+};
+
+export const updateCheckoutDraftBooking = async (id: string, data: any) => {
+  const existingBooking = await prisma.booking.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!existingBooking) {
+    throw createServiceError("Booking not found.", 404);
+  }
+
+  if (existingBooking.paymentStatus === PaymentStatus.PAID) {
+    throw createServiceError("Paid bookings cannot be edited.", 400);
+  }
+
+  const {
+    dumpster,
+    selectedAddons,
+    latitude,
+    longitude,
+    distanceFromWarehouse,
+    pricing,
+  } = await buildBookingPricingData(data);
+
+  await prisma.bookingAddon.deleteMany({
+    where: {
+      bookingId: id,
+    },
+  });
+
+  const booking = await prisma.booking.update({
+    where: {
+      id,
+    },
+    data: {
+      ...buildCheckoutDraftUpdateData({
+        data,
+        dumpster,
+        latitude,
+        longitude,
+        distanceFromWarehouse,
+        pricing,
+      }),
+      addons: {
+        create: selectedAddons.map((addon: any) => ({
+          addonId: addon.id,
+          addonCodeSnapshot: addon.code,
+          addonNameSnapshot: addon.name,
+          addonPriceSnapshot: addon.price,
+          quantity: 1,
+        })),
+      },
+    },
+    include: bookingInclude,
+  });
+
+  const paymentIntent = await updateStripePaymentIntentForBooking(booking);
+
+  const updatedBooking = await prisma.booking.update({
+    where: {
+      id,
+    },
+    data: {
+      stripePaymentIntentId: paymentIntent.id,
+      stripePaymentStatus: paymentIntent.status,
+      paymentStatus: PaymentStatus.UNPAID,
+    },
+    include: bookingInclude,
+  });
+
+  return {
+    booking: normalizeBookingForCheckout(updatedBooking),
+    clientSecret: paymentIntent.client_secret,
+  };
+};
 
 export const createBooking = async (data: any) => {
   try {
     const bookingNumber = generateBookingNumber();
 
-    const dumpster = data.dumpsterId
-      ? await prisma.dumpster.findUnique({
-          where: {
-            id: data.dumpsterId,
-          },
-        })
-      : null;
-
-    if (!dumpster) {
-      throw new Error("A valid dumpsterId is required to create a booking.");
-    }
-
-    const { selectedAddons, addonsTotal } = await getSelectedAddons(
-      data.addons ?? {}
-    );
-
-    const latitude =
-      data.latitude !== null && data.latitude !== undefined
-        ? Number(data.latitude)
-        : null;
-
-    const longitude =
-      data.longitude !== null && data.longitude !== undefined
-        ? Number(data.longitude)
-        : null;
-
-    const distanceFromWarehouse = calculateDistanceFromWarehouse(
+    const {
+      dumpster,
+      selectedAddons,
       latitude,
-      longitude
-    );
-
-    const mileageFee = calculateMileageFee(distanceFromWarehouse);
-
-    const pricing = calculateBookingPricing({
-      basePrice: dumpster.basePrice,
-      concretePrice: dumpster.concretePrice,
-      material: data.material,
-
-      rentalDays: data.rentalDays,
-      rentalDaysIncluded: data.rentalDaysIncluded ?? 7,
-
-      deliveryFee: data.deliveryFee ?? 0,
-      mileageFee,
-      overageFee: data.overageFee ?? 0,
-
-      addonsTotal,
-    });
+      longitude,
+      distanceFromWarehouse,
+      pricing,
+    } = await buildBookingPricingData(data);
 
     return await prisma.booking.create({
-      data: {
+      data: buildBookingCreateData({
+        data,
         bookingNumber,
-
-        dumpsterId: dumpster.id,
-        dumpsterSize: dumpster.size,
-        dumpsterLabel: dumpster.label,
-        material: data.material ?? null,
-
-        serviceType: data.serviceType ?? ServiceType.DUMPSTER_RENTAL,
-        projectType: data.projectType ?? null,
-
-        customerName: data.customerName,
-        customerPhone: data.customerPhone,
-        customerEmail: data.customerEmail ?? null,
-
-        address1: data.address1,
-        address2: data.address2 ?? null,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
-
-        latitude:
-          latitude !== null ? new Prisma.Decimal(latitude) : null,
-
-        longitude:
-          longitude !== null ? new Prisma.Decimal(longitude) : null,
-
-        distanceFromWarehouse:
-          distanceFromWarehouse !== null
-            ? new Prisma.Decimal(distanceFromWarehouse)
-            : null,
-
-        placement: data.placement ?? null,
-        instructions: data.instructions ?? null,
-        customerNotes: data.customerNotes ?? null,
-
-        locationVerified: Boolean(data.locationVerified),
-        locationVerificationNote: data.locationVerificationNote ?? null,
-
-        deliveryDate: new Date(data.deliveryDate),
-        pickupDate: data.pickupDate ? new Date(data.pickupDate) : null,
-        pickupDateUnknown: Boolean(data.pickupDateUnknown),
-        rentalDaysIncluded: Number(data.rentalDaysIncluded ?? 7),
-
-        bookingStatus: data.bookingStatus ?? BookingStatus.QUOTE,
-        paymentStatus: data.paymentStatus ?? PaymentStatus.UNPAID,
-
-        quotedAt: new Date(),
-
-        basePrice: new Prisma.Decimal(pricing.basePrice),
-        deliveryFee: new Prisma.Decimal(pricing.deliveryFee),
-        mileageFee: new Prisma.Decimal(pricing.mileageFee),
-        extraDaysFee: new Prisma.Decimal(pricing.extraDaysFee),
-        overageFee: new Prisma.Decimal(pricing.overageFee),
-        addonsTotal: new Prisma.Decimal(pricing.addonsTotal),
-        total: new Prisma.Decimal(pricing.total),
-
-        addons: {
-          create: selectedAddons.map((addon) => ({
-            addonId: addon.id,
-            addonCodeSnapshot: addon.code,
-            addonNameSnapshot: addon.name,
-            addonPriceSnapshot: addon.price,
-            quantity: 1,
-          })),
-        },
-      },
-      include: {
-        dumpster: true,
-        addons: {
-          include: {
-            addon: true,
-          },
-        },
-      },
+        dumpster,
+        selectedAddons,
+        latitude,
+        longitude,
+        distanceFromWarehouse,
+        pricing,
+      }),
+      include: bookingInclude,
     });
   } catch (error) {
     console.error("Error creating booking:", error);
@@ -198,29 +471,22 @@ export const patchBooking = async (id: string, data: any) => {
   return await prisma.booking.update({
     where: { id },
     data: updateData,
-    include: {
-      dumpster: true,
-      addons: {
-        include: {
-          addon: true,
-        },
-      },
-    },
+    include: bookingInclude,
   });
 };
 
 export const deleteBooking = async (id: string) => {
-  // TODO: Implement soft delete or check constraints
   await prisma.booking.delete({
     where: { id },
   });
+
   return true;
 };
 
 export const getBookingNotes = async (bookingId: string) => {
   return await prisma.bookingNote.findMany({
     where: { bookingId },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 };
 
@@ -235,7 +501,7 @@ export const addBookingNote = async (bookingId: string, data: any) => {
 
 export const getBookingHistory = async () => {
   return await prisma.bookingHistory.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 };
 
@@ -249,13 +515,12 @@ export const getBookingAddons = async (bookingId: string) => {
 };
 
 export const addBookingAddon = async (bookingId: string, data: any) => {
-  // TODO: Validate addon exists and is active
   const addon = await prisma.addon.findUnique({
     where: { id: data.addonId },
   });
 
   if (!addon || !addon.isActive) {
-    throw new Error('Addon not found or inactive');
+    throw new Error("Addon not found or inactive");
   }
 
   return await prisma.bookingAddon.create({
@@ -273,12 +538,16 @@ export const addBookingAddon = async (bookingId: string, data: any) => {
   });
 };
 
-export const removeBookingAddon = async (bookingId: string, addonId: string) => {
+export const removeBookingAddon = async (
+  bookingId: string,
+  addonId: string,
+) => {
   const deleted = await prisma.bookingAddon.deleteMany({
     where: {
       bookingId,
       id: addonId,
     },
   });
+
   return deleted.count > 0;
 };

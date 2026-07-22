@@ -3,6 +3,8 @@ import {
   getBookings,
   getBookingById,
   createBooking,
+  createCheckoutDraftBooking,
+  updateCheckoutDraftBooking,
   //updateBooking,
   deleteBooking,
   getBookingHistory,
@@ -107,6 +109,59 @@ export const HttpPatchBooking = async (req: Request, res: Response) => {
 
     res.status(statusCode === 500 ? 500 : statusCode).json({
       error: getHttpErrorMessage(error, "Failed to update booking"),
+    });
+  }
+};
+
+export const HttpCreateCheckoutDraftBooking = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const bookingInput = validateCreateBookingInput(req.body);
+    console.log("Creating checkout draft booking with input:", bookingInput);
+
+    const checkoutDraft = await createCheckoutDraftBooking(bookingInput);
+    console.log("Created checkout draft booking:", checkoutDraft);
+
+    res.status(201).json(checkoutDraft);
+  } catch (error) {
+    console.error("Error creating checkout draft booking:", error);
+
+    const statusCode = getHttpErrorStatus(error);
+
+    res.status(statusCode === 500 ? 500 : statusCode).json({
+      error: getHttpErrorMessage(error, "Failed to create checkout draft"),
+    });
+  }
+};
+
+export const HttpUpdateCheckoutDraftBooking = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const rawId = req.params.id;
+    const id = Array.isArray(rawId) ? rawId[0] : rawId;
+
+    if (!id) {
+      return res.status(400).json({
+        error: "Booking ID is required",
+      });
+    }
+
+    const bookingInput = await validatePatchBookingInput(id, req.body);
+
+    const checkoutDraft = await updateCheckoutDraftBooking(id, bookingInput);
+
+    res.json(checkoutDraft);
+  } catch (error) {
+    console.error("Error updating checkout draft booking:", error);
+
+    const statusCode = getHttpErrorStatus(error);
+
+    res.status(statusCode === 500 ? 500 : statusCode).json({
+      error: getHttpErrorMessage(error, "Failed to update checkout draft"),
     });
   }
 };
