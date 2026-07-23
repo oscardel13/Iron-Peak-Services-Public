@@ -460,8 +460,6 @@ export const createBooking = async (data: any) => {
 };
 
 export const patchBooking = async (id: string, data: any) => {
-  console.log(`Patching booking ${id} with data:`, data);
-
   const updateData = buildBookingUpdateData(data);
 
   if (Object.keys(updateData).length === 0) {

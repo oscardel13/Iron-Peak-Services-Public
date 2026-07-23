@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { buildCheckoutPayload } from "./utils/booking-checkout-payload";
 import StepSchedule from "./components/step-schedule/step-schedule.component";
 import BookingShell from "./components/booking-shell/booking-shell.component";
 import StepStartAddress from "./components/step-start-address/step-start-address.component";
-import StepReviewSubmit from "./components/step-review-submit/step-review-submit.component";
+import StepReviewSubmit from "./components/step-review-and-payment/step-review-and-payment.component";
 import StepVerifyLocation from "./components/step-verify-location/step-verify-location.component";
-import StepCustomerPayment from "./components/step-customer-payment/step-customer-payment.component";
+import StepCustomerInfo from "./components/step-customer-info/step-customer-info.component";
 import StepDumpsterDetails from "./components/step-dumpster-details/step-dumpster-details.component";
 
 import { INITIAL_BOOKING_FORM } from "./utils/booking-form";
@@ -19,7 +19,6 @@ import {
   calculateBookingTotal,
   calculateExtraDaysFee,
   calculateRentalDays,
-  getMaterialSurcharge,
 } from "./utils/booking-helpers";
 
 const BOOKING_STEPS = [
@@ -27,16 +26,12 @@ const BOOKING_STEPS = [
   { id: 2, key: "schedule", title: "Schedule", shortTitle: "Date" },
   { id: 3, key: "dumpster", title: "Dumpster Details", shortTitle: "Dumpster" },
   { id: 4, key: "location", title: "Verify Location", shortTitle: "Location" },
-  { id: 5, key: "customer", title: "Customer & Payment", shortTitle: "Info" },
-  { id: 6, key: "review", title: "Review & Submit", shortTitle: "Review" },
+  { id: 5, key: "customer", title: "Customer Info", shortTitle: "Info" },
+  { id: 6, key: "review", title: "Review & Payment", shortTitle: "Pay" },
 ];
 
 function hasValue(value) {
   return value !== null && value !== undefined && String(value).trim() !== "";
-}
-
-function getNestedValue(obj, path) {
-  return path.split(".").reduce((current, key) => current?.[key], obj);
 }
 
 export default function BookPage() {
@@ -52,6 +47,9 @@ export default function BookPage() {
   const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
   const [bookingForm, setBookingForm] = useState(INITIAL_BOOKING_FORM);
   const [isPreparingCheckout, setIsPreparingCheckout] = useState(false);
+
+  const bookingIdRef = useRef(null);
+  const checkoutRequestInFlightRef = useRef(false);
 
   useEffect(() => {
     const fetchDumpsters = async () => {
@@ -332,6 +330,7 @@ export default function BookPage() {
 
   function toggleAddon(key, checked) {
     markCheckoutDirty();
+
     setBookingForm((prev) => {
       const next = structuredClone(prev);
 
@@ -392,6 +391,10 @@ export default function BookPage() {
   }
 
   async function prepareCheckoutDraft() {
+    if (checkoutRequestInFlightRef.current) {
+      return;
+    }
+
     const invalidStep = getFirstInvalidStep(bookingForm);
 
     if (invalidStep) {
@@ -408,18 +411,22 @@ export default function BookPage() {
     }
 
     try {
+      checkoutRequestInFlightRef.current = true;
       setIsPreparingCheckout(true);
       setCheckoutError("");
 
       const payload = buildCheckoutPayload(bookingForm);
+      const currentBookingId = bookingIdRef.current || bookingId;
 
-      const response = bookingId
-        ? await putAPI(`/bookings/${bookingId}/checkout-draft`, payload)
+      const response = currentBookingId
+        ? await putAPI(`/bookings/${currentBookingId}/checkout-draft`, payload)
         : await postAPI("/bookings/checkout-draft", payload);
 
       const data = response.data;
 
       setBookingId(data.booking.id);
+      bookingIdRef.current = data.booking.id;
+
       setServerBooking(data.booking);
       setClientSecret(data.clientSecret);
     } catch (error) {
@@ -433,6 +440,7 @@ export default function BookPage() {
 
       setCheckoutError(apiMessage);
     } finally {
+      checkoutRequestInFlightRef.current = false;
       setIsPreparingCheckout(false);
     }
   }
@@ -492,7 +500,7 @@ export default function BookPage() {
 
       case 5:
         return (
-          <StepCustomerPayment
+          <StepCustomerInfo
             bookingForm={bookingForm}
             updateBookingForm={updateBookingForm}
             goToNextStep={goToNextStep}

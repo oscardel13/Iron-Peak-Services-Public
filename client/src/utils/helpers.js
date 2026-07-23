@@ -3,17 +3,17 @@ export const formatCurrency = (value) => {
     style: "currency",
     currency: "USD",
   }).format(value || 0);
-}
+};
 
 export const formatDate = (value) => {
   if (!value) return "—";
   return new Date(`${value}T00:00:00`).toLocaleDateString();
-}
+};
 
 export const formatDateTime = (value) => {
   if (!value) return "—";
   return new Date(value).toLocaleString();
-} 
+};
 
 export function getChangedFields(original, updated) {
   const changes = {};
@@ -29,9 +29,7 @@ export function getChangedFields(original, updated) {
         : originalValue;
 
     const u =
-      updatedValue instanceof Date
-        ? updatedValue.toISOString()
-        : updatedValue;
+      updatedValue instanceof Date ? updatedValue.toISOString() : updatedValue;
 
     // simple deep compare fallback
     if (JSON.stringify(o) !== JSON.stringify(u)) {
@@ -40,4 +38,24 @@ export function getChangedFields(original, updated) {
   }
 
   return changes;
+}
+
+export function getPhoneDigits(value) {
+  return String(value || "")
+    .replace(/\D/g, "")
+    .slice(0, 10);
+}
+
+export function formatPhoneNumber(value) {
+  const digits = getPhoneDigits(value);
+
+  if (digits.length <= 3) {
+    return digits;
+  }
+
+  if (digits.length <= 6) {
+    return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  }
+
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 }

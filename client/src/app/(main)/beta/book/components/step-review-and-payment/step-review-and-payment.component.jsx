@@ -13,6 +13,8 @@ import {
   getServerOrFormTotal,
 } from "../../utils/review-formatters";
 
+import { formatPhoneNumber } from "@/utils/helpers";
+
 function Row({ label, value, bold = false }) {
   return (
     <div className="flex items-start justify-between gap-4 border-b border-gray-100 py-3 last:border-b-0">
@@ -49,40 +51,59 @@ export default function StepReviewSubmit({
     bookingForm,
     "basePrice",
   );
+
   const materialSurcharge = getServerOrFormPrice(
     serverBooking,
     bookingForm,
     "materialSurcharge",
   );
+
   const priorityDeliveryFee = bookingForm.pricing.priorityDeliveryFee;
   const drivewayProtectionFee = bookingForm.pricing.drivewayProtectionFee;
+
   const extraDaysFee = getServerOrFormPrice(
     serverBooking,
     bookingForm,
     "extraDaysFee",
   );
+
   const mileageFee = getServerOrFormPrice(
     serverBooking,
     bookingForm,
     "mileageFee",
   );
+
   const total = getServerOrFormTotal(serverBooking, bookingForm);
 
   useEffect(() => {
-    prepareCheckoutDraft();
+    if (!paymentSucceeded) {
+      prepareCheckoutDraft();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <StepShell
-      title="Review and submit"
-      description="Make sure everything looks right before paying and confirming your booking."
+      title="Review & Payment"
+      description="Review your booking details, then complete payment to confirm your booking."
       onBack={goToPreviousStep}
       hideNext
       backLabel="Back"
       errors={formErrors}
     >
       <div className="space-y-6">
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm font-semibold text-amber-800">
+            Your booking is not confirmed yet.
+          </p>
+          <p className="mt-1 text-sm text-amber-700">
+            Payment is required to confirm online bookings. Once payment
+            succeeds, Stripe will notify our server and your booking will be
+            confirmed automatically.
+          </p>
+        </div>
+
         <div className="grid gap-6 xl:grid-cols-2">
           <div className="rounded-2xl border border-gray-200 p-4">
             <div className="mb-4 flex items-center justify-between">
@@ -202,7 +223,7 @@ export default function StepReviewSubmit({
           <div className="rounded-2xl border border-gray-200 p-4">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900">
-                Location + Customer
+                Location & Customer
               </h3>
               <button
                 type="button"
@@ -229,7 +250,10 @@ export default function StepReviewSubmit({
               label="Customer"
               value={`${bookingForm.customer.firstName} ${bookingForm.customer.lastName}`.trim()}
             />
-            <Row label="Phone" value={bookingForm.customer.phone} />
+            <Row
+              label="Phone"
+              value={formatPhoneNumber(bookingForm.customer.phone)}
+            />
             <Row label="Email" value={bookingForm.customer.email} />
 
             <button
@@ -244,7 +268,9 @@ export default function StepReviewSubmit({
 
         {bookingForm.location.instructions ? (
           <div className="rounded-2xl border border-gray-200 p-4">
-            <h3 className="mb-3 font-semibold text-gray-900">Instructions</h3>
+            <h3 className="mb-3 font-semibold text-gray-900">
+              Placement Instructions
+            </h3>
             <p className="text-sm text-gray-700">
               {bookingForm.location.instructions}
             </p>
@@ -291,7 +317,7 @@ export default function StepReviewSubmit({
 
         <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
           <div className="mb-5">
-            <p className="text-sm text-gray-500">Final Total</p>
+            <p className="text-sm text-gray-500">Amount Due Today</p>
             <p className="mt-1 text-2xl font-semibold text-gray-900">
               {formatCurrency(total)}
             </p>
@@ -333,7 +359,7 @@ export default function StepReviewSubmit({
               </p>
               <p className="mt-1 text-sm text-green-700">
                 Your booking is being confirmed. You should receive confirmation
-                once the payment webhook finishes processing.
+                once our system finishes processing the payment.
               </p>
             </div>
           ) : (

@@ -119,10 +119,8 @@ export const HttpCreateCheckoutDraftBooking = async (
 ) => {
   try {
     const bookingInput = validateCreateBookingInput(req.body);
-    console.log("Creating checkout draft booking with input:", bookingInput);
 
     const checkoutDraft = await createCheckoutDraftBooking(bookingInput);
-    console.log("Created checkout draft booking:", checkoutDraft);
 
     res.status(201).json(checkoutDraft);
   } catch (error) {
