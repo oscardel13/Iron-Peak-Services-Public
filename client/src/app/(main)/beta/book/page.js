@@ -1,23 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+import { buildCheckoutPayload } from "./utils/booking-checkout-payload";
+import StepSchedule from "./components/step-schedule/step-schedule.component";
 import BookingShell from "./components/booking-shell/booking-shell.component";
 import StepStartAddress from "./components/step-start-address/step-start-address.component";
-import StepDumpsterDetails from "./components/step-dumpster-details/step-dumpster-details.component";
-import StepSchedule from "./components/step-schedule/step-schedule.component";
+import StepReviewSubmit from "./components/step-review-and-payment/step-review-and-payment.component";
 import StepVerifyLocation from "./components/step-verify-location/step-verify-location.component";
-import StepCustomerPayment from "./components/step-customer-payment/step-customer-payment.component";
-import StepReviewSubmit from "./components/step-review-submit/step-review-submit.component";
+import StepCustomerInfo from "./components/step-customer-info/step-customer-info.component";
+import StepDumpsterDetails from "./components/step-dumpster-details/step-dumpster-details.component";
 
 import { INITIAL_BOOKING_FORM } from "./utils/booking-form";
 
-import { getAPI } from "@/utils/api";
+import { getAPI, postAPI, putAPI } from "@/utils/api";
 
 import {
   calculateBookingTotal,
   calculateExtraDaysFee,
   calculateRentalDays,
-  getMaterialSurcharge,
 } from "./utils/booking-helpers";
 
 const BOOKING_STEPS = [
@@ -25,25 +26,30 @@ const BOOKING_STEPS = [
   { id: 2, key: "schedule", title: "Schedule", shortTitle: "Date" },
   { id: 3, key: "dumpster", title: "Dumpster Details", shortTitle: "Dumpster" },
   { id: 4, key: "location", title: "Verify Location", shortTitle: "Location" },
-  { id: 5, key: "customer", title: "Customer & Payment", shortTitle: "Info" },
-  { id: 6, key: "review", title: "Review & Submit", shortTitle: "Review" },
+  { id: 5, key: "customer", title: "Customer Info", shortTitle: "Info" },
+  { id: 6, key: "review", title: "Review & Payment", shortTitle: "Pay" },
 ];
 
 function hasValue(value) {
   return value !== null && value !== undefined && String(value).trim() !== "";
 }
 
-function getNestedValue(obj, path) {
-  return path.split(".").reduce((current, key) => current?.[key], obj);
-}
-
 export default function BookPage() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [bookingForm, setBookingForm] = useState(INITIAL_BOOKING_FORM);
-  const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
-  const [dumpsters, setDumpsters] = useState(null);
   const [addons, setAddons] = useState(null);
+  const [dumpsters, setDumpsters] = useState(null);
   const [formErrors, setFormErrors] = useState({});
+  const [bookingId, setBookingId] = useState(null);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [clientSecret, setClientSecret] = useState("");
+  const [checkoutError, setCheckoutError] = useState("");
+  const [serverBooking, setServerBooking] = useState(null);
+  const [paymentSucceeded, setPaymentSucceeded] = useState(false);
+  const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
+  const [bookingForm, setBookingForm] = useState(INITIAL_BOOKING_FORM);
+  const [isPreparingCheckout, setIsPreparingCheckout] = useState(false);
+
+  const bookingIdRef = useRef(null);
+  const checkoutRequestInFlightRef = useRef(false);
 
   useEffect(() => {
     const fetchDumpsters = async () => {
@@ -115,6 +121,13 @@ export default function BookPage() {
 
       return changed ? nextErrors : prev;
     });
+  }
+
+  function markCheckoutDirty() {
+    setClientSecret("");
+    setServerBooking(null);
+    setCheckoutError("");
+    setPaymentSucceeded(false);
   }
 
   function validateStep(stepId, form) {
@@ -261,6 +274,7 @@ export default function BookPage() {
 
   function updateBookingForm(path, value) {
     clearError(path);
+    markCheckoutDirty();
 
     setBookingForm((prev) => {
       const next = structuredClone(prev);
@@ -290,6 +304,7 @@ export default function BookPage() {
 
   function setSelectedProduct(product) {
     clearErrors(["dumpster.productId"]);
+    markCheckoutDirty();
 
     setBookingForm((prev) => {
       const next = structuredClone(prev);
@@ -314,6 +329,8 @@ export default function BookPage() {
   }
 
   function toggleAddon(key, checked) {
+    markCheckoutDirty();
+
     setBookingForm((prev) => {
       const next = structuredClone(prev);
 
@@ -339,6 +356,7 @@ export default function BookPage() {
 
   function updateScheduleField(path, value) {
     clearError(path);
+    markCheckoutDirty();
 
     setBookingForm((prev) => {
       const next = structuredClone(prev);
@@ -372,7 +390,11 @@ export default function BookPage() {
     });
   }
 
-  async function submitBooking() {
+  async function prepareCheckoutDraft() {
+    if (checkoutRequestInFlightRef.current) {
+      return;
+    }
+
     const invalidStep = getFirstInvalidStep(bookingForm);
 
     if (invalidStep) {
@@ -389,99 +411,43 @@ export default function BookPage() {
     }
 
     try {
-      const customerName = [
-        bookingForm.customer.firstName,
-        bookingForm.customer.lastName,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .trim();
+      checkoutRequestInFlightRef.current = true;
+      setIsPreparingCheckout(true);
+      setCheckoutError("");
 
-      const payload = {
-        dumpsterId: bookingForm.dumpster.productId || null,
-        dumpsterSize: Number(bookingForm.dumpster.size),
-        dumpsterLabel: bookingForm.dumpster.productLabel || null,
-        material: bookingForm.dumpster.material || null,
-        productCode: bookingForm.dumpster.productCode || null,
+      const payload = buildCheckoutPayload(bookingForm);
+      const currentBookingId = bookingIdRef.current || bookingId;
 
-        serviceType: "DUMPSTER_RENTAL",
-        projectType: bookingForm.address.projectType || null,
+      const response = currentBookingId
+        ? await putAPI(`/bookings/${currentBookingId}/checkout-draft`, payload)
+        : await postAPI("/bookings/checkout-draft", payload);
 
-        customerName,
-        customerPhone: bookingForm.customer.phone,
-        customerEmail: bookingForm.customer.email || null,
+      const data = response.data;
 
-        address1: bookingForm.address.address1,
-        address2: bookingForm.address.address2 || null,
-        city: bookingForm.address.city,
-        state: bookingForm.address.state,
-        zip: bookingForm.address.zip,
-        latitude: bookingForm.address.latitude,
-        longitude: bookingForm.address.longitude,
+      setBookingId(data.booking.id);
+      bookingIdRef.current = data.booking.id;
 
-        placement: bookingForm.location.placement || null,
-        instructions: bookingForm.location.instructions || null,
-        customerNotes: bookingForm.customer.notes || null,
-
-        locationVerified: Boolean(bookingForm.location?.verified),
-        locationVerificationNote:
-          bookingForm.location?.verificationNote || null,
-
-        deliveryDate: bookingForm.schedule.deliveryDate,
-        pickupDate: bookingForm.schedule.unknownPickup
-          ? null
-          : bookingForm.schedule.pickupDate,
-        pickupDateUnknown: Boolean(bookingForm.schedule.unknownPickup),
-        rentalDaysIncluded: 7,
-
-        bookingStatus: "QUOTE",
-        paymentStatus: "UNPAID",
-
-        concretePrice: bookingForm.dumpster.concretePrice,
-        rentalDays: bookingForm.schedule.rentalDays,
-
-        basePrice: Number(bookingForm.pricing.basePrice || 0),
-        deliveryFee: Number(bookingForm.pricing.deliveryFee || 0),
-        mileageFee: Number(bookingForm.pricing.mileageFee || 0),
-        extraDaysFee: Number(bookingForm.pricing.extraDaysFee || 0),
-        overageFee: Number(bookingForm.pricing.overageFee || 0),
-
-        addons: {
-          drivewayProtection: bookingForm.addons.drivewayProtection,
-          priorityDelivery: bookingForm.addons.priorityDelivery,
-        },
-
-        total: Number(bookingForm.pricing.total || 0),
-      };
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/bookings`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        },
-      );
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || "Failed to submit booking");
-      }
-
-      const data = await response.json();
-
-      console.log("Booking created:", data);
-
-      setCurrentStep(1);
-      setBookingForm(INITIAL_BOOKING_FORM);
-
-      alert("Booking submitted successfully!");
+      setServerBooking(data.booking);
+      setClientSecret(data.clientSecret);
     } catch (error) {
       console.error(error);
-      alert("Something went wrong submitting the booking.");
+
+      const apiMessage =
+        error?.response?.data?.error ||
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong preparing checkout.";
+
+      setCheckoutError(apiMessage);
+    } finally {
+      checkoutRequestInFlightRef.current = false;
+      setIsPreparingCheckout(false);
     }
+  }
+
+  function handlePaymentSuccess(paymentIntent) {
+    console.log("Payment succeeded:", paymentIntent);
+    setPaymentSucceeded(true);
   }
 
   function renderStep() {
@@ -534,7 +500,7 @@ export default function BookPage() {
 
       case 5:
         return (
-          <StepCustomerPayment
+          <StepCustomerInfo
             bookingForm={bookingForm}
             updateBookingForm={updateBookingForm}
             goToNextStep={goToNextStep}
@@ -547,10 +513,17 @@ export default function BookPage() {
         return (
           <StepReviewSubmit
             bookingForm={bookingForm}
+            serverBooking={serverBooking}
+            bookingId={bookingId}
+            clientSecret={clientSecret}
+            isPreparingCheckout={isPreparingCheckout}
+            checkoutError={checkoutError}
+            paymentSucceeded={paymentSucceeded}
+            prepareCheckoutDraft={prepareCheckoutDraft}
+            handlePaymentSuccess={handlePaymentSuccess}
             goToPreviousStep={goToPreviousStep}
             goToStep={goToStep}
             formErrors={formErrors}
-            onSubmit={submitBooking}
           />
         );
 

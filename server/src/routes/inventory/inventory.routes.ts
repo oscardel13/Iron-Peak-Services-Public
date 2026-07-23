@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {
   HttpGetDumpsters,
   HttpGetDumpsterById,
@@ -11,43 +11,43 @@ import {
   // HttpCreateAddon,
   // HttpUpdateAddon,
   // HttpDeleteAddon,
-} from './inventory.controller.js';
+} from "./inventory.controller.js";
 
-const router = express.Router();
+const InventoryRouter = express.Router();
 
 // Dumpster routes
 // GET /api/v1/admin/inventory/dumpsters
-router.get('/dumpsters', HttpGetDumpsters);
+InventoryRouter.get("/dumpsters", HttpGetDumpsters);
 
 // POST /api/v1/admin/inventory/dumpsters
-router.post('/dumpsters', HttpCreateDumpster);
+InventoryRouter.post("/dumpsters", HttpCreateDumpster);
 
 // GET /api/v1/admin/inventory/dumpsters/available?deliveryDate=2024-10-01&pickupDate=2024-10-05`
-router.get('/dumpsters/available', HttpGetAvailableDumpstersByDates);
+InventoryRouter.get("/dumpsters/available", HttpGetAvailableDumpstersByDates);
 
 // GET /api/v1/admin/inventory/dumpsters/:id
-router.get('/dumpsters/:id', HttpGetDumpsterById);
+InventoryRouter.get("/dumpsters/:id", HttpGetDumpsterById);
 
 // PUT /api/v1/admin/inventory/dumpsters/:id
-router.put('/dumpsters/:id', HttpUpdateDumpster);
+InventoryRouter.put("/dumpsters/:id", HttpUpdateDumpster);
 
 // // DELETE /api/v1/admin/inventory/dumpsters/:id
-// router.delete('/dumpsters/:id', HttpDeleteDumpster);
+// InventoryRouter.delete('/dumpsters/:id', HttpDeleteDumpster);
 
 // // Addon routes
 // GET /api/v1/admin/inventory/addons
-router.get('/addons', HttpGetAddons);
+InventoryRouter.get("/addons", HttpGetAddons);
 
 // // POST /api/v1/admin/inventory/addons
-// router.post('/addons', HttpCreateAddon);
+// InventoryRouter.post('/addons', HttpCreateAddon);
 
 // // GET /api/v1/admin/inventory/addons/:id
-// router.get('/addons/:id', HttpGetAddonById);
+// InventoryRouter.get('/addons/:id', HttpGetAddonById);
 
 // // PUT /api/v1/admin/inventory/addons/:id
-// router.put('/addons/:id', HttpUpdateAddon);
+// InventoryRouter.put('/addons/:id', HttpUpdateAddon);
 
 // // DELETE /api/v1/admin/inventory/addons/:id
-// router.delete('/addons/:id', HttpDeleteAddon);
+// InventoryRouter.delete('/addons/:id', HttpDeleteAddon);
 
-export { router as inventoryRouter };
+export default InventoryRouter;
