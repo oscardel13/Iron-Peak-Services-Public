@@ -90,6 +90,10 @@ export type BookingMinAggregateOutputType = {
   priorityDeliveryNote: string | null
   bookingStatus: $Enums.BookingStatus | null
   paymentStatus: $Enums.PaymentStatus | null
+  stripePaymentIntentId: string | null
+  stripePaymentStatus: string | null
+  paidAt: Date | null
+  confirmedAt: Date | null
   basePrice: runtime.Decimal | null
   deliveryFee: runtime.Decimal | null
   mileageFee: runtime.Decimal | null
@@ -141,6 +145,10 @@ export type BookingMaxAggregateOutputType = {
   priorityDeliveryNote: string | null
   bookingStatus: $Enums.BookingStatus | null
   paymentStatus: $Enums.PaymentStatus | null
+  stripePaymentIntentId: string | null
+  stripePaymentStatus: string | null
+  paidAt: Date | null
+  confirmedAt: Date | null
   basePrice: runtime.Decimal | null
   deliveryFee: runtime.Decimal | null
   mileageFee: runtime.Decimal | null
@@ -192,6 +200,10 @@ export type BookingCountAggregateOutputType = {
   priorityDeliveryNote: number
   bookingStatus: number
   paymentStatus: number
+  stripePaymentIntentId: number
+  stripePaymentStatus: number
+  paidAt: number
+  confirmedAt: number
   basePrice: number
   deliveryFee: number
   mileageFee: number
@@ -275,6 +287,10 @@ export type BookingMinAggregateInputType = {
   priorityDeliveryNote?: true
   bookingStatus?: true
   paymentStatus?: true
+  stripePaymentIntentId?: true
+  stripePaymentStatus?: true
+  paidAt?: true
+  confirmedAt?: true
   basePrice?: true
   deliveryFee?: true
   mileageFee?: true
@@ -326,6 +342,10 @@ export type BookingMaxAggregateInputType = {
   priorityDeliveryNote?: true
   bookingStatus?: true
   paymentStatus?: true
+  stripePaymentIntentId?: true
+  stripePaymentStatus?: true
+  paidAt?: true
+  confirmedAt?: true
   basePrice?: true
   deliveryFee?: true
   mileageFee?: true
@@ -377,6 +397,10 @@ export type BookingCountAggregateInputType = {
   priorityDeliveryNote?: true
   bookingStatus?: true
   paymentStatus?: true
+  stripePaymentIntentId?: true
+  stripePaymentStatus?: true
+  paidAt?: true
+  confirmedAt?: true
   basePrice?: true
   deliveryFee?: true
   mileageFee?: true
@@ -515,6 +539,10 @@ export type BookingGroupByOutputType = {
   priorityDeliveryNote: string | null
   bookingStatus: $Enums.BookingStatus
   paymentStatus: $Enums.PaymentStatus
+  stripePaymentIntentId: string | null
+  stripePaymentStatus: string | null
+  paidAt: Date | null
+  confirmedAt: Date | null
   basePrice: runtime.Decimal
   deliveryFee: runtime.Decimal
   mileageFee: runtime.Decimal
@@ -589,6 +617,10 @@ export type BookingWhereInput = {
   priorityDeliveryNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   bookingStatus?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Booking"> | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.StringNullableFilter<"Booking"> | string | null
+  stripePaymentStatus?: Prisma.StringNullableFilter<"Booking"> | string | null
+  paidAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   basePrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -645,6 +677,10 @@ export type BookingOrderByWithRelationInput = {
   priorityDeliveryNote?: Prisma.SortOrderInput | Prisma.SortOrder
   bookingStatus?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
+  stripePaymentIntentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripePaymentStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   basePrice?: Prisma.SortOrder
   deliveryFee?: Prisma.SortOrder
   mileageFee?: Prisma.SortOrder
@@ -670,6 +706,7 @@ export type BookingOrderByWithRelationInput = {
 export type BookingWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   bookingNumber?: string
+  stripePaymentIntentId?: string
   AND?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   OR?: Prisma.BookingWhereInput[]
   NOT?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
@@ -704,6 +741,9 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   priorityDeliveryNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   bookingStatus?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Booking"> | $Enums.PaymentStatus
+  stripePaymentStatus?: Prisma.StringNullableFilter<"Booking"> | string | null
+  paidAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   basePrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -724,7 +764,7 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.BookingNoteListRelationFilter
   history?: Prisma.BookingHistoryListRelationFilter
   accessTokens?: Prisma.CustomerAccessTokenListRelationFilter
-}, "id" | "bookingNumber">
+}, "id" | "bookingNumber" | "stripePaymentIntentId">
 
 export type BookingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -760,6 +800,10 @@ export type BookingOrderByWithAggregationInput = {
   priorityDeliveryNote?: Prisma.SortOrderInput | Prisma.SortOrder
   bookingStatus?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
+  stripePaymentIntentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripePaymentStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   basePrice?: Prisma.SortOrder
   deliveryFee?: Prisma.SortOrder
   mileageFee?: Prisma.SortOrder
@@ -819,6 +863,10 @@ export type BookingScalarWhereWithAggregatesInput = {
   priorityDeliveryNote?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   bookingStatus?: Prisma.EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Booking"> | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  stripePaymentStatus?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
   basePrice?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -869,6 +917,10 @@ export type BookingCreateInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -925,6 +977,10 @@ export type BookingUncheckedCreateInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -979,6 +1035,10 @@ export type BookingUpdateInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1035,6 +1095,10 @@ export type BookingUncheckedUpdateInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1090,6 +1154,10 @@ export type BookingCreateManyInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1140,6 +1208,10 @@ export type BookingUpdateManyMutationInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1191,6 +1263,10 @@ export type BookingUncheckedUpdateManyInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1252,6 +1328,10 @@ export type BookingCountOrderByAggregateInput = {
   priorityDeliveryNote?: Prisma.SortOrder
   bookingStatus?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
+  stripePaymentIntentId?: Prisma.SortOrder
+  stripePaymentStatus?: Prisma.SortOrder
+  paidAt?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
   deliveryFee?: Prisma.SortOrder
   mileageFee?: Prisma.SortOrder
@@ -1318,6 +1398,10 @@ export type BookingMaxOrderByAggregateInput = {
   priorityDeliveryNote?: Prisma.SortOrder
   bookingStatus?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
+  stripePaymentIntentId?: Prisma.SortOrder
+  stripePaymentStatus?: Prisma.SortOrder
+  paidAt?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
   deliveryFee?: Prisma.SortOrder
   mileageFee?: Prisma.SortOrder
@@ -1369,6 +1453,10 @@ export type BookingMinOrderByAggregateInput = {
   priorityDeliveryNote?: Prisma.SortOrder
   bookingStatus?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
+  stripePaymentIntentId?: Prisma.SortOrder
+  stripePaymentStatus?: Prisma.SortOrder
+  paidAt?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
   basePrice?: Prisma.SortOrder
   deliveryFee?: Prisma.SortOrder
   mileageFee?: Prisma.SortOrder
@@ -1569,6 +1657,10 @@ export type BookingCreateWithoutDumpsterInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1623,6 +1715,10 @@ export type BookingUncheckedCreateWithoutDumpsterInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1707,6 +1803,10 @@ export type BookingScalarWhereInput = {
   priorityDeliveryNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   bookingStatus?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Booking"> | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.StringNullableFilter<"Booking"> | string | null
+  stripePaymentStatus?: Prisma.StringNullableFilter<"Booking"> | string | null
+  paidAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   basePrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1757,6 +1857,10 @@ export type BookingCreateWithoutAddonsInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1812,6 +1916,10 @@ export type BookingUncheckedCreateWithoutAddonsInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1881,6 +1989,10 @@ export type BookingUpdateWithoutAddonsInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1936,6 +2048,10 @@ export type BookingUncheckedUpdateWithoutAddonsInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1989,6 +2105,10 @@ export type BookingCreateWithoutNotesInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2044,6 +2164,10 @@ export type BookingUncheckedCreateWithoutNotesInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2113,6 +2237,10 @@ export type BookingUpdateWithoutNotesInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2168,6 +2296,10 @@ export type BookingUncheckedUpdateWithoutNotesInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2221,6 +2353,10 @@ export type BookingCreateWithoutHistoryInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2276,6 +2412,10 @@ export type BookingUncheckedCreateWithoutHistoryInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2345,6 +2485,10 @@ export type BookingUpdateWithoutHistoryInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2400,6 +2544,10 @@ export type BookingUncheckedUpdateWithoutHistoryInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2453,6 +2601,10 @@ export type BookingCreateWithoutAccessTokensInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2508,6 +2660,10 @@ export type BookingUncheckedCreateWithoutAccessTokensInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2577,6 +2733,10 @@ export type BookingUpdateWithoutAccessTokensInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2632,6 +2792,10 @@ export type BookingUncheckedUpdateWithoutAccessTokensInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2685,6 +2849,10 @@ export type BookingCreateManyDumpsterInput = {
   priorityDeliveryNote?: string | null
   bookingStatus?: $Enums.BookingStatus
   paymentStatus?: $Enums.PaymentStatus
+  stripePaymentIntentId?: string | null
+  stripePaymentStatus?: string | null
+  paidAt?: Date | string | null
+  confirmedAt?: Date | string | null
   basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2735,6 +2903,10 @@ export type BookingUpdateWithoutDumpsterInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2789,6 +2961,10 @@ export type BookingUncheckedUpdateWithoutDumpsterInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2843,6 +3019,10 @@ export type BookingUncheckedUpdateManyWithoutDumpsterInput = {
   priorityDeliveryNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bookingStatus?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  stripePaymentIntentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deliveryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mileageFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -2952,6 +3132,10 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   priorityDeliveryNote?: boolean
   bookingStatus?: boolean
   paymentStatus?: boolean
+  stripePaymentIntentId?: boolean
+  stripePaymentStatus?: boolean
+  paidAt?: boolean
+  confirmedAt?: boolean
   basePrice?: boolean
   deliveryFee?: boolean
   mileageFee?: boolean
@@ -3009,6 +3193,10 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   priorityDeliveryNote?: boolean
   bookingStatus?: boolean
   paymentStatus?: boolean
+  stripePaymentIntentId?: boolean
+  stripePaymentStatus?: boolean
+  paidAt?: boolean
+  confirmedAt?: boolean
   basePrice?: boolean
   deliveryFee?: boolean
   mileageFee?: boolean
@@ -3061,6 +3249,10 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   priorityDeliveryNote?: boolean
   bookingStatus?: boolean
   paymentStatus?: boolean
+  stripePaymentIntentId?: boolean
+  stripePaymentStatus?: boolean
+  paidAt?: boolean
+  confirmedAt?: boolean
   basePrice?: boolean
   deliveryFee?: boolean
   mileageFee?: boolean
@@ -3113,6 +3305,10 @@ export type BookingSelectScalar = {
   priorityDeliveryNote?: boolean
   bookingStatus?: boolean
   paymentStatus?: boolean
+  stripePaymentIntentId?: boolean
+  stripePaymentStatus?: boolean
+  paidAt?: boolean
+  confirmedAt?: boolean
   basePrice?: boolean
   deliveryFee?: boolean
   mileageFee?: boolean
@@ -3130,7 +3326,7 @@ export type BookingSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bookingNumber" | "dumpsterId" | "dumpsterSize" | "dumpsterLabel" | "material" | "serviceType" | "projectType" | "customerName" | "customerPhone" | "customerEmail" | "address1" | "address2" | "city" | "state" | "zip" | "latitude" | "longitude" | "distanceFromWarehouse" | "placement" | "instructions" | "customerNotes" | "locationVerified" | "locationVerificationNote" | "deliveryDate" | "pickupDate" | "pickupDateUnknown" | "rentalDaysIncluded" | "priorityDelivery" | "deliveryTime" | "priorityDeliveryNote" | "bookingStatus" | "paymentStatus" | "basePrice" | "deliveryFee" | "mileageFee" | "extraDaysFee" | "overageFee" | "addonsTotal" | "total" | "quotedAt" | "scheduledAt" | "deliveredAt" | "pickedUpAt" | "cancelledAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bookingNumber" | "dumpsterId" | "dumpsterSize" | "dumpsterLabel" | "material" | "serviceType" | "projectType" | "customerName" | "customerPhone" | "customerEmail" | "address1" | "address2" | "city" | "state" | "zip" | "latitude" | "longitude" | "distanceFromWarehouse" | "placement" | "instructions" | "customerNotes" | "locationVerified" | "locationVerificationNote" | "deliveryDate" | "pickupDate" | "pickupDateUnknown" | "rentalDaysIncluded" | "priorityDelivery" | "deliveryTime" | "priorityDeliveryNote" | "bookingStatus" | "paymentStatus" | "stripePaymentIntentId" | "stripePaymentStatus" | "paidAt" | "confirmedAt" | "basePrice" | "deliveryFee" | "mileageFee" | "extraDaysFee" | "overageFee" | "addonsTotal" | "total" | "quotedAt" | "scheduledAt" | "deliveredAt" | "pickedUpAt" | "cancelledAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   dumpster?: boolean | Prisma.Booking$dumpsterArgs<ExtArgs>
   addons?: boolean | Prisma.Booking$addonsArgs<ExtArgs>
@@ -3189,6 +3385,10 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     priorityDeliveryNote: string | null
     bookingStatus: $Enums.BookingStatus
     paymentStatus: $Enums.PaymentStatus
+    stripePaymentIntentId: string | null
+    stripePaymentStatus: string | null
+    paidAt: Date | null
+    confirmedAt: Date | null
     basePrice: runtime.Decimal
     deliveryFee: runtime.Decimal
     mileageFee: runtime.Decimal
@@ -3665,6 +3865,10 @@ export interface BookingFieldRefs {
   readonly priorityDeliveryNote: Prisma.FieldRef<"Booking", 'String'>
   readonly bookingStatus: Prisma.FieldRef<"Booking", 'BookingStatus'>
   readonly paymentStatus: Prisma.FieldRef<"Booking", 'PaymentStatus'>
+  readonly stripePaymentIntentId: Prisma.FieldRef<"Booking", 'String'>
+  readonly stripePaymentStatus: Prisma.FieldRef<"Booking", 'String'>
+  readonly paidAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly confirmedAt: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly basePrice: Prisma.FieldRef<"Booking", 'Decimal'>
   readonly deliveryFee: Prisma.FieldRef<"Booking", 'Decimal'>
   readonly mileageFee: Prisma.FieldRef<"Booking", 'Decimal'>

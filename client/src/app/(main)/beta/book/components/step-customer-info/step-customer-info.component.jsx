@@ -1,5 +1,7 @@
 "use client";
 
+import { getPhoneDigits, formatPhoneNumber } from "@/utils/helpers";
+
 import StepShell from "../step-shell/step-shell.component";
 
 function Input(props) {
@@ -13,7 +15,7 @@ function Input(props) {
   );
 }
 
-export default function StepCustomerPayment({
+export default function StepCustomerInfo({
   bookingForm,
   updateBookingForm,
   goToNextStep,
@@ -22,11 +24,11 @@ export default function StepCustomerPayment({
 }) {
   return (
     <StepShell
-      title="Customer and payment information"
-      description="Enter contact details and review the payment placeholder."
+      title="Customer Information"
+      description="Enter the contact details for this booking. Payment will be completed on the review step."
       onNext={goToNextStep}
       onBack={goToPreviousStep}
-      nextLabel="Review Booking"
+      nextLabel="Review & Payment"
       errors={formErrors}
     >
       <div className="space-y-8">
@@ -46,6 +48,9 @@ export default function StepCustomerPayment({
               }`}
             >
               <p className="font-semibold">Home</p>
+              <p className="mt-1 text-sm text-gray-500">
+                Residential service address
+              </p>
             </button>
 
             <button
@@ -60,6 +65,9 @@ export default function StepCustomerPayment({
               }`}
             >
               <p className="font-semibold">Business</p>
+              <p className="mt-1 text-sm text-gray-500">
+                Commercial service address
+              </p>
             </button>
           </div>
 
@@ -95,9 +103,14 @@ export default function StepCustomerPayment({
                 Phone Number
               </label>
               <Input
-                value={bookingForm.customer.phone}
+                type="tel"
+                inputMode="numeric"
+                value={formatPhoneNumber(bookingForm.customer.phone)}
                 onChange={(e) =>
-                  updateBookingForm("customer.phone", e.target.value)
+                  updateBookingForm(
+                    "customer.phone",
+                    getPhoneDigits(e.target.value),
+                  )
                 }
                 placeholder="(720) 555-0123"
               />
@@ -118,52 +131,11 @@ export default function StepCustomerPayment({
             </div>
           </div>
 
-          <label className="flex items-start gap-3 rounded-2xl border border-gray-200 bg-white p-4">
-            <input
-              type="checkbox"
-              checked={bookingForm.payment.billingSameAsCustomer}
-              onChange={(e) =>
-                updateBookingForm(
-                  "payment.billingSameAsCustomer",
-                  e.target.checked,
-                )
-              }
-              className="mt-1 h-5 w-5"
-            />
-            <div>
-              <p className="font-medium text-gray-900">
-                Billing information is the same as service contact information
-              </p>
-            </div>
-          </label>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Payment placeholder
-          </h3>
-
           <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
-            <p className="text-sm text-gray-700">
-              Payment UI will go here later. For now, this section acts as a
-              placeholder for card entry, pre-authorization, or final checkout.
+            <p className="text-sm text-gray-600">
+              Payment will be collected securely on the next step after you
+              review your booking details.
             </p>
-
-            <div className="mt-4 grid gap-3 md:grid-cols-2">
-              <div className="rounded-xl border border-gray-200 bg-white p-4">
-                <p className="text-sm text-gray-500">Payment Status</p>
-                <p className="mt-1 font-semibold text-gray-900">
-                  {bookingForm.payment.status || "pending"}
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-gray-200 bg-white p-4">
-                <p className="text-sm text-gray-500">Estimated Total</p>
-                <p className="mt-1 font-semibold text-gray-900">
-                  ${(bookingForm.pricing.total || 0).toFixed(2)}
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

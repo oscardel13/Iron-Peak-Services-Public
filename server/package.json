@@ -16,7 +16,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "tsx prisma/seed.ts",
     "prisma:reset": "prisma migrate reset --force --skip-seed && tsx prisma/seed.ts",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "stripe:listen": "stripe listen --forward-to localhost:8000/stripe/webhook"
   },
   "author": "",
   "license": "ISC",
@@ -51,6 +52,7 @@
     "nodemailer": "^8.0.7",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0",
+    "stripe": "^22.3.2"
   }
 }

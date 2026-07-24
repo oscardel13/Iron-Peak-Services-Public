@@ -1,6 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import StepShell from "../step-shell/step-shell.component";
+import BookingPayment from "../booking-payment/booking-payment.component";
+
+import {
+  formatCurrency,
+  formatDate,
+  formatLabel,
+  getDistanceFromWarehouse,
+  getServerOrFormPrice,
+  getServerOrFormTotal,
+} from "../../utils/review-formatters";
+
+import { formatPhoneNumber } from "@/utils/helpers";
 
 function Row({ label, value, bold = false }) {
   return (
@@ -17,69 +30,80 @@ function Row({ label, value, bold = false }) {
   );
 }
 
-function formatMaterial(material) {
-  if (!material) return "";
-  return material
-    .split("-")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
-
-function formatCustomerType(customerType) {
-  if (!customerType) return "";
-  return customerType.charAt(0).toUpperCase() + customerType.slice(1);
-}
-
-function formatPlacement(placement) {
-  if (!placement) return "";
-  return placement.charAt(0).toUpperCase() + placement.slice(1);
-}
-
-function formatProjectType(projectType) {
-  if (!projectType) return "";
-  return projectType
-    .split("-")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
-
-function formatCurrency(value) {
-  return `$${Number(value || 0).toFixed(2)}`;
-}
-
-function formatDate(value) {
-  if (!value) return "";
-
-  if (typeof value === "string") {
-    return value.split("T")[0];
-  }
-
-  return value.toISOString().split("T")[0];
-}
-
-function getDistanceFromWarehouse(address) {
-  return address.distanceFromWarehouse ?? null;
-}
-
 export default function StepReviewSubmit({
   bookingForm,
+  serverBooking,
+  bookingId,
+  clientSecret,
+  isPreparingCheckout,
+  checkoutError,
+  paymentSucceeded,
+  prepareCheckoutDraft,
+  handlePaymentSuccess,
   goToPreviousStep,
   goToStep,
-  onSubmit,
   formErrors = {},
 }) {
   const distanceFromWarehouse = getDistanceFromWarehouse(bookingForm.address);
 
+  const basePrice = getServerOrFormPrice(
+    serverBooking,
+    bookingForm,
+    "basePrice",
+  );
+
+  const materialSurcharge = getServerOrFormPrice(
+    serverBooking,
+    bookingForm,
+    "materialSurcharge",
+  );
+
+  const priorityDeliveryFee = bookingForm.pricing.priorityDeliveryFee;
+  const drivewayProtectionFee = bookingForm.pricing.drivewayProtectionFee;
+
+  const extraDaysFee = getServerOrFormPrice(
+    serverBooking,
+    bookingForm,
+    "extraDaysFee",
+  );
+
+  const mileageFee = getServerOrFormPrice(
+    serverBooking,
+    bookingForm,
+    "mileageFee",
+  );
+
+  const total = getServerOrFormTotal(serverBooking, bookingForm);
+
+  useEffect(() => {
+    if (!paymentSucceeded) {
+      prepareCheckoutDraft();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <StepShell
-      title="Review and submit"
-      description="Make sure everything looks right before confirming your booking."
+      title="Review & Payment"
+      description="Review your booking details, then complete payment to confirm your booking."
       onBack={goToPreviousStep}
       hideNext
       backLabel="Back"
       errors={formErrors}
     >
       <div className="space-y-6">
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm font-semibold text-amber-800">
+            Your booking is not confirmed yet.
+          </p>
+          <p className="mt-1 text-sm text-amber-700">
+            Payment is required to confirm online bookings. Once payment
+            succeeds, Stripe will notify our server and your booking will be
+            confirmed automatically.
+          </p>
+        </div>
+
         <div className="grid gap-6 xl:grid-cols-2">
           <div className="rounded-2xl border border-gray-200 p-4">
             <div className="mb-4 flex items-center justify-between">
@@ -100,7 +124,7 @@ export default function StepReviewSubmit({
             <Row label="ZIP" value={bookingForm.address.zip} />
             <Row
               label="Project Type"
-              value={formatProjectType(bookingForm.address.projectType)}
+              value={formatLabel(bookingForm.address.projectType)}
             />
             <Row
               label="Distance from Warehouse"
@@ -154,10 +178,7 @@ export default function StepReviewSubmit({
                   : `${bookingForm.schedule.extraDays || 0}`
               }
             />
-            <Row
-              label="Extra Days Fee"
-              value={formatCurrency(bookingForm.pricing.extraDaysFee)}
-            />
+            <Row label="Extra Days Fee" value={formatCurrency(extraDaysFee)} />
           </div>
 
           <div className="rounded-2xl border border-gray-200 p-4">
@@ -174,7 +195,7 @@ export default function StepReviewSubmit({
 
             <Row
               label="Material"
-              value={formatMaterial(bookingForm.dumpster.material)}
+              value={formatLabel(bookingForm.dumpster.material)}
             />
             <Row label="Dumpster" value={bookingForm.dumpster.productLabel} />
             <Row
@@ -202,7 +223,7 @@ export default function StepReviewSubmit({
           <div className="rounded-2xl border border-gray-200 p-4">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900">
-                Location + Customer
+                Location & Customer
               </h3>
               <button
                 type="button"
@@ -215,7 +236,7 @@ export default function StepReviewSubmit({
 
             <Row
               label="Placement"
-              value={formatPlacement(bookingForm.location.placement)}
+              value={formatLabel(bookingForm.location.placement)}
             />
             <Row
               label="Location Verified"
@@ -223,13 +244,16 @@ export default function StepReviewSubmit({
             />
             <Row
               label="Customer Type"
-              value={formatCustomerType(bookingForm.customer.customerType)}
+              value={formatLabel(bookingForm.customer.customerType)}
             />
             <Row
               label="Customer"
               value={`${bookingForm.customer.firstName} ${bookingForm.customer.lastName}`.trim()}
             />
-            <Row label="Phone" value={bookingForm.customer.phone} />
+            <Row
+              label="Phone"
+              value={formatPhoneNumber(bookingForm.customer.phone)}
+            />
             <Row label="Email" value={bookingForm.customer.email} />
 
             <button
@@ -244,7 +268,9 @@ export default function StepReviewSubmit({
 
         {bookingForm.location.instructions ? (
           <div className="rounded-2xl border border-gray-200 p-4">
-            <h3 className="mb-3 font-semibold text-gray-900">Instructions</h3>
+            <h3 className="mb-3 font-semibold text-gray-900">
+              Placement Instructions
+            </h3>
             <p className="text-sm text-gray-700">
               {bookingForm.location.instructions}
             </p>
@@ -263,26 +289,20 @@ export default function StepReviewSubmit({
             </button>
           </div>
 
-          <Row
-            label="Base Price"
-            value={formatCurrency(bookingForm.pricing.basePrice)}
-          />
+          <Row label="Base Price" value={formatCurrency(basePrice)} />
           <Row
             label="Material Surcharge"
-            value={formatCurrency(bookingForm.pricing.materialSurcharge)}
+            value={formatCurrency(materialSurcharge)}
           />
           <Row
             label="Priority Delivery"
-            value={formatCurrency(bookingForm.pricing.priorityDeliveryFee)}
+            value={formatCurrency(priorityDeliveryFee)}
           />
           <Row
             label="Driveway Protection"
-            value={formatCurrency(bookingForm.pricing.drivewayProtectionFee)}
+            value={formatCurrency(drivewayProtectionFee)}
           />
-          <Row
-            label="Extra Days Fee"
-            value={formatCurrency(bookingForm.pricing.extraDaysFee)}
-          />
+          <Row label="Extra Days Fee" value={formatCurrency(extraDaysFee)} />
           <Row
             label="Distance from Warehouse"
             value={
@@ -291,34 +311,66 @@ export default function StepReviewSubmit({
                 : ""
             }
           />
-          <Row
-            label="Mileage Fee"
-            value={formatCurrency(bookingForm.pricing.mileageFee)}
-          />
-          <Row
-            label="Final Total"
-            value={formatCurrency(bookingForm.pricing.total)}
-            bold
-          />
+          <Row label="Mileage Fee" value={formatCurrency(mileageFee)} />
+          <Row label="Final Total" value={formatCurrency(total)} bold />
         </div>
 
         <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-500">Final Total</p>
-              <p className="mt-1 text-2xl font-semibold text-gray-900">
-                {formatCurrency(bookingForm.pricing.total)}
+          <div className="mb-5">
+            <p className="text-sm text-gray-500">Amount Due Today</p>
+            <p className="mt-1 text-2xl font-semibold text-gray-900">
+              {formatCurrency(total)}
+            </p>
+
+            {serverBooking?.bookingNumber ? (
+              <p className="mt-2 text-sm text-gray-500">
+                Booking draft: {serverBooking.bookingNumber}
+              </p>
+            ) : null}
+          </div>
+
+          {isPreparingCheckout ? (
+            <div className="rounded-2xl border border-gray-200 bg-white p-4">
+              <p className="text-sm text-gray-600">
+                Preparing secure checkout...
               </p>
             </div>
+          ) : checkoutError ? (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-4">
+                <p className="text-sm font-semibold text-red-800">
+                  Could not prepare checkout.
+                </p>
+                <p className="mt-1 text-sm text-red-700">{checkoutError}</p>
+              </div>
 
-            <button
-              onClick={onSubmit}
-              type="button"
-              className="rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700"
-            >
-              Confirm Booking
-            </button>
-          </div>
+              <button
+                type="button"
+                onClick={prepareCheckoutDraft}
+                className="rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700"
+              >
+                Try Again
+              </button>
+            </div>
+          ) : paymentSucceeded ? (
+            <div className="rounded-2xl border border-green-200 bg-green-50 p-4">
+              <p className="text-sm font-semibold text-green-800">
+                Payment received.
+              </p>
+              <p className="mt-1 text-sm text-green-700">
+                Your booking is being confirmed. You should receive confirmation
+                once our system finishes processing the payment.
+              </p>
+            </div>
+          ) : (
+            <BookingPayment
+              clientSecret={clientSecret}
+              bookingId={bookingId}
+              bookingForm={bookingForm}
+              serverBooking={serverBooking}
+              onPaymentSuccess={handlePaymentSuccess}
+            />
+          )}
         </div>
       </div>
     </StepShell>
