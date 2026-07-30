@@ -32,6 +32,7 @@ export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
 
 
 export const PaymentStatus = {
+  PENDING: 'PENDING',
   UNPAID: 'UNPAID',
   AUTHORIZED: 'AUTHORIZED',
   DEPOSIT_PAID: 'DEPOSIT_PAID',
@@ -64,7 +65,7 @@ export type NoteVisibility = (typeof NoteVisibility)[keyof typeof NoteVisibility
 
 export const BookingActorType = {
   ADMIN: 'ADMIN',
-  CUSTOMER_LINK: 'CUSTOMER_LINK',
+  CLIENT: 'CLIENT',
   SYSTEM: 'SYSTEM'
 } as const
 

@@ -18,6 +18,31 @@ export { Prisma }
 export * as $Enums from './enums.ts'
 export * from './enums.ts';
 /**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model Client
+ * 
+ */
+export type Client = Prisma.ClientModel
+/**
+ * Model Driver
+ * 
+ */
+export type Driver = Prisma.DriverModel
+/**
+ * Model Worker
+ * 
+ */
+export type Worker = Prisma.WorkerModel
+/**
+ * Model UserAuthProvider
+ * 
+ */
+export type UserAuthProvider = Prisma.UserAuthProviderModel
+/**
  * Model Dumpster
  * 
  */
@@ -47,18 +72,3 @@ export type BookingNote = Prisma.BookingNoteModel
  * 
  */
 export type BookingHistory = Prisma.BookingHistoryModel
-/**
- * Model CustomerAccessToken
- * 
- */
-export type CustomerAccessToken = Prisma.CustomerAccessTokenModel
-/**
- * Model User
- * 
- */
-export type User = Prisma.UserModel
-/**
- * Model UserAuthProvider
- * 
- */
-export type UserAuthProvider = Prisma.UserAuthProviderModel

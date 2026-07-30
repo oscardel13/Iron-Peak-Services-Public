@@ -549,10 +549,6 @@ export type DumpsterNullableScalarRelationFilter = {
   isNot?: Prisma.DumpsterWhereInput | null
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -561,20 +557,8 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type EnumDumpsterStatusFieldUpdateOperationsInput = {
   set?: $Enums.DumpsterStatus
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
 }
 
 export type DumpsterCreateNestedOneWithoutBookingsInput = {

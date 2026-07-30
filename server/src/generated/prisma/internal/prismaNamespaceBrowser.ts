@@ -51,15 +51,17 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  User: 'User',
+  Client: 'Client',
+  Driver: 'Driver',
+  Worker: 'Worker',
+  UserAuthProvider: 'UserAuthProvider',
   Dumpster: 'Dumpster',
   Booking: 'Booking',
   Addon: 'Addon',
   BookingAddon: 'BookingAddon',
   BookingNote: 'BookingNote',
-  BookingHistory: 'BookingHistory',
-  CustomerAccessToken: 'CustomerAccessToken',
-  User: 'User',
-  UserAuthProvider: 'UserAuthProvider'
+  BookingHistory: 'BookingHistory'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -76,6 +78,71 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  picture: 'picture',
+  accessLevel: 'accessLevel',
+  isActive: 'isActive',
+  lastLoginAt: 'lastLoginAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const ClientScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  displayName: 'displayName',
+  email: 'email',
+  phone: 'phone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
+
+
+export const DriverScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DriverScalarFieldEnum = (typeof DriverScalarFieldEnum)[keyof typeof DriverScalarFieldEnum]
+
+
+export const WorkerScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WorkerScalarFieldEnum = (typeof WorkerScalarFieldEnum)[keyof typeof WorkerScalarFieldEnum]
+
+
+export const UserAuthProviderScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  email: 'email',
+  username: 'username',
+  name: 'name',
+  picture: 'picture',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserAuthProviderScalarFieldEnum = (typeof UserAuthProviderScalarFieldEnum)[keyof typeof UserAuthProviderScalarFieldEnum]
 
 
 export const DumpsterScalarFieldEnum = {
@@ -100,6 +167,7 @@ export type DumpsterScalarFieldEnum = (typeof DumpsterScalarFieldEnum)[keyof typ
 export const BookingScalarFieldEnum = {
   id: 'id',
   bookingNumber: 'bookingNumber',
+  clientId: 'clientId',
   dumpsterId: 'dumpsterId',
   dumpsterSize: 'dumpsterSize',
   dumpsterLabel: 'dumpsterLabel',
@@ -207,51 +275,6 @@ export const BookingHistoryScalarFieldEnum = {
 } as const
 
 export type BookingHistoryScalarFieldEnum = (typeof BookingHistoryScalarFieldEnum)[keyof typeof BookingHistoryScalarFieldEnum]
-
-
-export const CustomerAccessTokenScalarFieldEnum = {
-  id: 'id',
-  bookingId: 'bookingId',
-  tokenHash: 'tokenHash',
-  expiresAt: 'expiresAt',
-  lastUsedAt: 'lastUsedAt',
-  revokedAt: 'revokedAt',
-  createdAt: 'createdAt'
-} as const
-
-export type CustomerAccessTokenScalarFieldEnum = (typeof CustomerAccessTokenScalarFieldEnum)[keyof typeof CustomerAccessTokenScalarFieldEnum]
-
-
-export const UserScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email',
-  phone: 'phone',
-  picture: 'picture',
-  accessLevel: 'accessLevel',
-  isActive: 'isActive',
-  lastLoginAt: 'lastLoginAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-export const UserAuthProviderScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  provider: 'provider',
-  providerAccountId: 'providerAccountId',
-  email: 'email',
-  username: 'username',
-  name: 'name',
-  picture: 'picture',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserAuthProviderScalarFieldEnum = (typeof UserAuthProviderScalarFieldEnum)[keyof typeof UserAuthProviderScalarFieldEnum]
 
 
 export const SortOrder = {
