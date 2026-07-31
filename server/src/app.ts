@@ -3,10 +3,12 @@ import type { Request, Response, NextFunction } from "express";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import helmet from"helmet";
+import helmet from "helmet";
 import api from "./routes/api.ts";
 
 import session from "express-session";
+import pg from "pg";
+import connectPgSimple from "connect-pg-simple";
 import { passport, config } from "./routes/auth/passport.ts";
 
 const app = express();
@@ -35,19 +37,31 @@ const COOKIE_KEYS = (() => {
   return [k1, k2];
 })();
 
+const PgSession = connectPgSimple(session);
+
+const pgPool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
 app.use(
   session({
     name: "ironpeak.sid",
     secret: COOKIE_KEYS,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
       maxAge: config.COOKIE_MAX_AGE,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     },
-  })
+    store: new PgSession({
+      pool: pgPool,
+      tableName: "session",
+      createTableIfMissing: true,
+    }),
+  }),
 );
 
 app.use(passport.initialize());

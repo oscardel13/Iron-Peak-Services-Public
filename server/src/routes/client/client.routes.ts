@@ -1,21 +1,53 @@
-import express from "express";
-import {} from "./client.controller.ts";
+// routes/client/client.routes.ts
+import { Router } from "express";
 
-const ClientRouter = express.Router();
+import {
+  requireAdmin,
+  requireClientDashboard,
+  requireClientProfile,
+} from "./client.middleware.js";
 
-// client middleware
-// ClientRouter.get("/me");
-// ClientRouter.patch("/:id");
+import {
+  HttpGetClientMe,
+  HttpGetClientBookings,
+  HttpGetClientBookingById,
+  HttpCreateClientBookingNote,
+  HttpCreateClientBookingChangeRequest,
+  HttpGetClientById,
+} from "./client.controller.js";
 
-// admin middleware
-// ClientRouter.get("/:id"); MIGHT BE MOVED TO ADMIN ROUTES
+const ClientRouter = Router();
 
-// Client Booking routes
-// ClientRouter.get("/bookings");
-// ClientRouter.get("/bookings/:id");
-// ClientRouter.post("/bookings/:id/note");
-// ClientRouter.post("/bookings/:id/change-request");
+ClientRouter.get("/me", requireClientDashboard, HttpGetClientMe);
 
-// ClientRouter.patch("/bookings/:id");
+ClientRouter.get(
+  "/bookings",
+  requireClientDashboard,
+  requireClientProfile,
+  HttpGetClientBookings,
+);
+
+ClientRouter.get(
+  "/bookings/:id",
+  requireClientDashboard,
+  requireClientProfile,
+  HttpGetClientBookingById,
+);
+
+ClientRouter.post(
+  "/bookings/:id/notes",
+  requireClientDashboard,
+  requireClientProfile,
+  HttpCreateClientBookingNote,
+);
+
+ClientRouter.post(
+  "/bookings/:id/change-request",
+  requireClientDashboard,
+  requireClientProfile,
+  HttpCreateClientBookingChangeRequest,
+);
+
+ClientRouter.get("/:id", requireAdmin, HttpGetClientById);
 
 export default ClientRouter;

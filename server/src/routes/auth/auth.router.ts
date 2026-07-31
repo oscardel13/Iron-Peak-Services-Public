@@ -1,12 +1,16 @@
-// routes/auth/auth.router.ts
 import "dotenv/config";
 import { Router } from "express";
 import type { Request, Response, NextFunction } from "express";
 
 import { passport, config } from "./passport.js";
 import { checkLoggedIn } from "./middleware.js";
+import {
+  configureGooglePassport,
+  GOOGLE_SCOPE_PROFILE_FIELDS,
+} from "./google.passport.js";
 
-import { configureGooglePassport } from "./google.passport.js";
+import { HttpAuthFailure, HttpGetMe, HttpLogout } from "./auth.controller.js";
+
 // import { configureFacebookPassport } from "./facebook.passport.js";
 // import { configureXPassport } from "./x.passport.js";
 
@@ -69,105 +73,78 @@ function getSafeRedirectPath(path: unknown) {
   return path;
 }
 
-// ---------- GOOGLE LOGIN ----------
+function buildOAuthState(req: Request) {
+  const redirectPath = getSafeRedirectPath(req.query.path);
+  const clientOrigin = getSafeClientOrigin(req);
+
+  return encodeOAuthState({
+    redirectPath,
+    clientOrigin,
+  });
+}
+
+function handleOAuthRedirect(req: Request, res: Response) {
+  const state = decodeOAuthState(req.query.state) as {
+    redirectPath?: string;
+    clientOrigin?: string;
+  } | null;
+
+  const clientOrigin =
+    state?.clientOrigin && allowedClientOrigins.includes(state.clientOrigin)
+      ? state.clientOrigin
+      : config.CLIENT_URL;
+
+  const redirectPath = getSafeRedirectPath(state?.redirectPath);
+  const redirectUrl = new URL(redirectPath, clientOrigin).toString();
+
+  res.redirect(redirectUrl);
+}
+
+// ---------- ADMIN GOOGLE LOGIN ----------
 AuthRouter.get(
-  "/user/google",
+  "/admin/google",
   (req: Request, res: Response, next: NextFunction) => {
-    const redirectPath = getSafeRedirectPath(req.query.path);
-    const clientOrigin = getSafeClientOrigin(req);
-
-    const state = encodeOAuthState({
-      redirectPath,
-      clientOrigin,
-    });
-
-    passport.authenticate("google", {
-      scope: ["email", "profile"],
-      state,
+    passport.authenticate("google-admin", {
+      scope: GOOGLE_SCOPE_PROFILE_FIELDS,
+      state: buildOAuthState(req),
     })(req, res, next);
   },
 );
 
 AuthRouter.get(
-  "/user/google/callback",
-  passport.authenticate("google", {
+  "/admin/google/callback",
+  passport.authenticate("google-admin", {
     failureRedirect: "/auth/failure",
   }),
-  (req: Request, res: Response) => {
-    const state = decodeOAuthState(req.query.state) as {
-      redirectPath?: string;
-      clientOrigin?: string;
-    } | null;
+  handleOAuthRedirect,
+);
 
-    const clientOrigin =
-      state?.clientOrigin && allowedClientOrigins.includes(state.clientOrigin)
-        ? state.clientOrigin
-        : config.CLIENT_URL;
-
-    const redirectPath = getSafeRedirectPath(state?.redirectPath);
-
-    const redirectUrl = new URL(redirectPath, clientOrigin).toString();
-
-    res.redirect(redirectUrl);
+// ---------- CLIENT GOOGLE LOGIN ----------
+AuthRouter.get(
+  "/client/google",
+  (req: Request, res: Response, next: NextFunction) => {
+    passport.authenticate("google-client", {
+      scope: GOOGLE_SCOPE_PROFILE_FIELDS,
+      state: buildOAuthState(req),
+    })(req, res, next);
   },
 );
 
-// ---------- FACEBOOK LOGIN ----------
-// Uncomment once you add configureFacebookPassport()
-
-// AuthRouter.get(
-//   "/user/facebook",
-//   stashRedirect,
-//   passport.authenticate("facebook", {
-//     scope: ["email", "public_profile"],
-//   })
-// );
-
-// authRouter.get(
-//   "/user/facebook/callback",
-//   passport.authenticate("facebook", {
-//     failureRedirect: "/auth/failure",
-//   }),
-//   (req: Request, res: Response) => {
-//     const clientOrigin = getSafeClientOrigin(req) || config.CLIENT_URL;
-//     const redirectPath = req.session?.redirectUrl || "/";
-//     const redirectUrl = new URL(redirectPath, clientOrigin).toString();
-
-//     delete req.session.redirectUrl;
-
-//     res.redirect(redirectUrl);
-//   }
-// );
+AuthRouter.get(
+  "/client/google/callback",
+  passport.authenticate("google-client", {
+    failureRedirect: "/auth/failure",
+  }),
+  handleOAuthRedirect,
+);
 
 // ---------- ME ----------
-AuthRouter.get("/me", checkLoggedIn, (req: Request, res: Response) => {
-  res.status(200).json({
-    user: req.user,
-  });
-});
+AuthRouter.get("/me", checkLoggedIn, HttpGetMe);
 
 // ---------- FAILURE ----------
-AuthRouter.get("/failure", (req: Request, res: Response) => {
-  res.status(401).send("Failed to log in");
-});
+AuthRouter.get("/failure", HttpAuthFailure);
 
 // ---------- LOGOUT ----------
-AuthRouter.get("/logout", (req: Request, res: Response, next: NextFunction) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-
-    if (req.session) {
-      req.session.destroy(() => {
-        res.clearCookie("connect.sid");
-        res.status(200).send("logged out");
-      });
-    } else {
-      res.clearCookie("connect.sid");
-      res.status(200).send("logged out");
-    }
-  });
-});
+AuthRouter.get("/logout", HttpLogout);
 
 export default AuthRouter;
