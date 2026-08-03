@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { getAPI, postAPI } from "@/utils/api";
 
-const TEST_BOOKING_ID = "test-booking-id";
+const TEST_BOOKING_ID = "cmsdsspam0003rcv1oo0ix8vg";
 
 function StatusPill({ label, type = "default" }) {
   const styles = {

@@ -1,5 +1,11 @@
 // routes/client/client.controller.ts
 import type { Request, Response } from "express";
+import {
+  createClientBookingChangeRequest,
+  createClientBookingNote,
+  getClientBookingById,
+  getClientBookings,
+} from "../../services/client.service.ts";
 
 function getHttpErrorStatus(error: unknown) {
   if (
@@ -26,6 +32,11 @@ function getRequestUser(req: Request) {
   return req.user as any;
 }
 
+function getRouteId(req: Request) {
+  const rawId = req.params.id;
+  return Array.isArray(rawId) ? rawId[0] : rawId;
+}
+
 // GET /client/me
 export async function HttpGetClientMe(req: Request, res: Response) {
   try {
@@ -49,10 +60,10 @@ export async function HttpGetClientBookings(req: Request, res: Response) {
   try {
     const user = getRequestUser(req);
 
+    const bookings = await getClientBookings(user);
+
     res.status(200).json({
-      message: "Client bookings route working.",
-      clientId: user?.client?.id ?? null,
-      bookings: [],
+      bookings,
     });
   } catch (error) {
     console.error("Error getting client bookings:", error);
@@ -67,13 +78,18 @@ export async function HttpGetClientBookings(req: Request, res: Response) {
 export async function HttpGetClientBookingById(req: Request, res: Response) {
   try {
     const user = getRequestUser(req);
-    const { id } = req.params;
+    const id = getRouteId(req);
+
+    if (!id) {
+      return res.status(400).json({
+        error: "Booking ID is required.",
+      });
+    }
+
+    const booking = await getClientBookingById(id, user);
 
     res.status(200).json({
-      message: "Client booking detail route working.",
-      clientId: user?.client?.id ?? null,
-      bookingId: id,
-      booking: null,
+      booking,
     });
   } catch (error) {
     console.error("Error getting client booking:", error);
@@ -88,16 +104,18 @@ export async function HttpGetClientBookingById(req: Request, res: Response) {
 export async function HttpCreateClientBookingNote(req: Request, res: Response) {
   try {
     const user = getRequestUser(req);
-    const { id } = req.params;
-    const { body } = req.body;
+    const id = getRouteId(req);
+
+    if (!id) {
+      return res.status(400).json({
+        error: "Booking ID is required.",
+      });
+    }
+
+    const note = await createClientBookingNote(id, req.body, user);
 
     res.status(201).json({
-      message: "Client booking note route working.",
-      clientId: user?.client?.id ?? null,
-      bookingId: id,
-      note: {
-        body: body ?? null,
-      },
+      note,
     });
   } catch (error) {
     console.error("Error creating client booking note:", error);
@@ -115,18 +133,22 @@ export async function HttpCreateClientBookingChangeRequest(
 ) {
   try {
     const user = getRequestUser(req);
-    const { id } = req.params;
+    const id = getRouteId(req);
+
+    if (!id) {
+      return res.status(400).json({
+        error: "Booking ID is required.",
+      });
+    }
+
+    const changeRequest = await createClientBookingChangeRequest(
+      id,
+      req.body,
+      user,
+    );
 
     res.status(201).json({
-      message: "Client booking change request route working.",
-      clientId: user?.client?.id ?? null,
-      bookingId: id,
-      changeRequest: {
-        type: req.body?.type ?? null,
-        message: req.body?.message ?? null,
-        requestedDeliveryDate: req.body?.requestedDeliveryDate ?? null,
-        requestedPickupDate: req.body?.requestedPickupDate ?? null,
-      },
+      changeRequest,
     });
   } catch (error) {
     console.error("Error creating client booking change request:", error);
@@ -143,7 +165,13 @@ export async function HttpCreateClientBookingChangeRequest(
 // GET /client/:id
 export async function HttpGetClientById(req: Request, res: Response) {
   try {
-    const { id } = req.params;
+    const id = getRouteId(req);
+
+    if (!id) {
+      return res.status(400).json({
+        error: "Client ID is required.",
+      });
+    }
 
     res.status(200).json({
       message: "Admin client detail route working.",
