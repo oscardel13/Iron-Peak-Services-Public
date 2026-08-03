@@ -60,7 +60,7 @@ export const HttpCreateBooking = async (req: Request, res: Response) => {
   try {
     const bookingInput = validateCreateBookingInput(req.body);
 
-    const booking = await createBooking(bookingInput);
+    const booking = await createBooking(bookingInput, req.user);
 
     await sendBookingConfirmationEmail(booking);
 
@@ -120,7 +120,10 @@ export const HttpCreateCheckoutDraftBooking = async (
   try {
     const bookingInput = validateCreateBookingInput(req.body);
 
-    const checkoutDraft = await createCheckoutDraftBooking(bookingInput);
+    const checkoutDraft = await createCheckoutDraftBooking(
+      bookingInput,
+      req.user,
+    );
 
     res.status(201).json(checkoutDraft);
   } catch (error) {
@@ -150,7 +153,11 @@ export const HttpUpdateCheckoutDraftBooking = async (
 
     const bookingInput = await validatePatchBookingInput(id, req.body);
 
-    const checkoutDraft = await updateCheckoutDraftBooking(id, bookingInput);
+    const checkoutDraft = await updateCheckoutDraftBooking(
+      id,
+      bookingInput,
+      req.user,
+    );
 
     res.json(checkoutDraft);
   } catch (error) {
@@ -185,18 +192,14 @@ export const HttpDeleteBooking = async (req: Request, res: Response) => {
 // TODO: Add validation, error handling, etc.
 // Should be accessible by admin and customer only (with restrictions on what can be viewed).
 // Ordered by delivery date (client can reorder if they like). Consider implementing pagination if history can be large.
-export const HttpGetBookingHistory = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({ error: "Booking ID is required" });
-    }
-    const history = await getBookingHistory();
-    res.json(history);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch booking history" });
-  }
-};
+// export const HttpGetBookingHistory = async (req: Request, res: Response) => {
+//   try {
+//     const history = await getBookingHistory();
+//     res.json(history);
+//   } catch (error) {
+//     res.status(500).json({ error: "Failed to fetch booking history" });
+//   }
+// };
 
 // export const HttpGetBookingNotes = async (req: Request, res: Response) => {
 //   try {
