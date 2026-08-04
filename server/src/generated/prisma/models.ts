@@ -8,13 +8,15 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/User.ts'
+export type * from './models/Client.ts'
+export type * from './models/Driver.ts'
+export type * from './models/Worker.ts'
+export type * from './models/UserAuthProvider.ts'
 export type * from './models/Dumpster.ts'
 export type * from './models/Booking.ts'
 export type * from './models/Addon.ts'
 export type * from './models/BookingAddon.ts'
 export type * from './models/BookingNote.ts'
 export type * from './models/BookingHistory.ts'
-export type * from './models/CustomerAccessToken.ts'
-export type * from './models/User.ts'
-export type * from './models/UserAuthProvider.ts'
 export type * from './commonInputTypes.ts'

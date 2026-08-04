@@ -14,29 +14,23 @@ export default function AdminGuard({ children }) {
     async function checkAuth() {
       try {
         setStatus("");
-        return;
-        const res = await getAPI(`/auth/me`);
+        const res = await getAPI(`/client/me`);
 
         if (res.statusText !== "OK") {
-          router.replace("/login");
-          return;
-        }
-
-        const data = await res.data;
-        const user = data.user;
-
-        const isAdmin =
-          user?.accessLevel === "ADMIN" || user?.accessLevel === "OWNER";
-
-        if (!isAdmin) {
-          router.replace("/");
+          setStatus("unauthorized");
+          setTimeout(() => {
+            router.replace("/");
+          }, 3000);
           return;
         }
 
         setStatus("authenticated");
       } catch (error) {
         console.error("Auth check failed:", error);
-        // router.replace("/");
+        setStatus("unauthorized");
+        setTimeout(() => {
+          router.replace("/");
+        }, 3000);
       }
     }
 
@@ -51,5 +45,17 @@ export default function AdminGuard({ children }) {
     );
   }
 
-  return children;
+  if (status === "unauthorized") {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-sm text-gray-500">
+        You do not have permission to access this page.
+      </div>
+    );
+  }
+
+  if (status === "authenticated") {
+    return children;
+  }
+
+  return null;
 }

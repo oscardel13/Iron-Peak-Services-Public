@@ -1,13 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import Popover from "@/components/popover/popover.component";
 
-const API_URL = /*process.env.NEXT_PUBLIC_API_URL || */ "http://localhost:8000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+const LOGIN_TABS = {
+  ADMIN: "admin",
+  CLIENT: "client",
+};
 
 export default function SignInPopup({ closeTrigger }) {
+  const [activeTab, setActiveTab] = useState(LOGIN_TABS.ADMIN);
+
+  const isAdmin = activeTab === LOGIN_TABS.ADMIN;
+
   function handleGoogleLogin() {
-    window.location.href = `${API_URL}/auth/user/google?path=/dashboard`;
+    const loginPath = isAdmin
+      ? "/auth/admin/google?path=/dashboard"
+      : "/auth/client/google?path=/client";
+
+    window.location.href = `${API_URL}${loginPath}`;
   }
 
   return (
@@ -16,7 +30,7 @@ export default function SignInPopup({ closeTrigger }) {
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary">
-              Admin Dashboard
+              {isAdmin ? "Admin Dashboard" : "Client Portal"}
             </p>
             <h2 className="mt-2 text-2xl font-bold text-gray-900">
               Sign in to continue
@@ -33,15 +47,50 @@ export default function SignInPopup({ closeTrigger }) {
           </button>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4">
-          <p className="text-sm font-semibold text-amber-800">
-            Admin access only for now
-          </p>
-          <p className="mt-1 text-sm text-amber-700">
-            The client portal is currently in development. For now, this login
-            is only available to admins.
-          </p>
+        <div className="mt-6 grid grid-cols-2 rounded-2xl bg-gray-100 p-1">
+          <button
+            type="button"
+            onClick={() => setActiveTab(LOGIN_TABS.ADMIN)}
+            className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
+              isAdmin
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            Admin
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab(LOGIN_TABS.CLIENT)}
+            className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
+              !isAdmin
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            Client
+          </button>
         </div>
+
+        {isAdmin ? (
+          <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+            <p className="text-sm font-semibold text-amber-800">
+              Admin access only
+            </p>
+            <p className="mt-1 text-sm text-amber-700">
+              This login is restricted to approved admin and owner accounts.
+            </p>
+          </div>
+        ) : (
+          <div className="mt-4 rounded-2xl border border-blue-200 bg-blue-50 p-4">
+            <p className="text-sm font-semibold text-blue-800">Client portal</p>
+            <p className="mt-1 text-sm text-blue-700">
+              Sign in with Google to view your bookings, payment status, and
+              rental details.
+            </p>
+          </div>
+        )}
 
         <button
           type="button"

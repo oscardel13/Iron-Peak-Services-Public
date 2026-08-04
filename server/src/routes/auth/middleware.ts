@@ -1,12 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import { AccessLevel } from "../../generated/prisma/client.js";
 
-export function checkLoggedIn(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-    console.log("AUTH DEBUG ----------------");
+export function checkLoggedIn(req: Request, res: Response, next: NextFunction) {
+  console.log("AUTH DEBUG ----------------");
   console.log("Origin:", req.headers.origin);
   console.log("Cookie header:", req.headers.cookie);
   console.log("Session ID:", req.sessionID);
@@ -48,7 +44,7 @@ export function requireAccessLevel(...allowedAccessLevels: AccessLevel[]) {
 
 export const requireAdmin = requireAccessLevel(
   AccessLevel.ADMIN,
-  AccessLevel.OWNER
+  AccessLevel.OWNER,
 );
 
 export const requireOwner = requireAccessLevel(AccessLevel.OWNER);

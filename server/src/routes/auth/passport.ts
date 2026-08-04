@@ -15,9 +15,7 @@ export const config = {
 
   COOKIE_KEY_1: process.env.COOKIE_KEY_1,
   COOKIE_KEY_2: process.env.COOKIE_KEY_2,
-  COOKIE_MAX_AGE: Number(
-    process.env.CLIENT_MAX_AGE || 1000 * 60 * 60 * 24 * 7
-  ),
+  COOKIE_MAX_AGE: Number(process.env.CLIENT_MAX_AGE || 1000 * 60 * 60 * 24 * 7),
 
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
@@ -216,6 +214,155 @@ export async function findOrCreateAdminFromProvider({
   return user;
 }
 
+export async function findOrCreateClientFromProvider({
+  provider,
+  providerId,
+  email,
+  name,
+  picture,
+  username,
+}: ProviderInput) {
+  if (!providerId) {
+    throw new Error(`Missing providerId for ${provider}`);
+  }
+
+  const normalizedEmail = normalizeEmail(email);
+
+  if (!normalizedEmail) {
+    throw new Error("Email is required for client login.");
+  }
+
+  const providerType = providerMap[provider];
+
+  let user = await prisma.user.findFirst({
+    where: {
+      isActive: true,
+      authProviders: {
+        some: {
+          provider: providerType,
+          providerAccountId: providerId,
+        },
+      },
+    },
+    include: {
+      authProviders: true,
+      client: true,
+    },
+  });
+
+  if (!user) {
+    user = await prisma.user.findUnique({
+      where: {
+        email: normalizedEmail,
+      },
+      include: {
+        authProviders: true,
+        client: true,
+      },
+    });
+  }
+
+  if (
+    user &&
+    (user.accessLevel === AccessLevel.ADMIN ||
+      user.accessLevel === AccessLevel.OWNER)
+  ) {
+    throw new Error("Admin accounts must use the admin login.");
+  }
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        email: normalizedEmail,
+        name: name ?? null,
+        picture: picture ?? null,
+        accessLevel: AccessLevel.CLIENT,
+        isActive: true,
+        lastLoginAt: new Date(),
+        client: {
+          create: {
+            displayName: name ?? null,
+            email: normalizedEmail,
+            phone: null,
+          },
+        },
+        authProviders: {
+          create: {
+            provider: providerType,
+            providerAccountId: providerId,
+            email: normalizedEmail,
+            username: username ?? null,
+            name: name ?? null,
+            picture: picture ?? null,
+          },
+        },
+      },
+      include: {
+        authProviders: true,
+        client: true,
+      },
+    });
+
+    return user;
+  }
+
+  if (!user.isActive) {
+    throw new Error("This account is inactive.");
+  }
+
+  await prisma.userAuthProvider.upsert({
+    where: {
+      provider_providerAccountId: {
+        provider: providerType,
+        providerAccountId: providerId,
+      },
+    },
+    update: {
+      email: normalizedEmail,
+      username: username ?? null,
+      name: name ?? null,
+      picture: picture ?? null,
+    },
+    create: {
+      userId: user.id,
+      provider: providerType,
+      providerAccountId: providerId,
+      email: normalizedEmail,
+      username: username ?? null,
+      name: name ?? null,
+      picture: picture ?? null,
+    },
+  });
+
+  if (!user.client) {
+    await prisma.client.create({
+      data: {
+        userId: user.id,
+        displayName: user.name ?? name ?? null,
+        email: user.email ?? normalizedEmail,
+        phone: user.phone ?? null,
+      },
+    });
+  }
+
+  user = await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      name: user.name ?? name ?? null,
+      picture: user.picture ?? picture ?? null,
+      lastLoginAt: new Date(),
+    },
+    include: {
+      authProviders: true,
+      client: true,
+    },
+  });
+
+  return user;
+}
+
 passport.serializeUser((user: any, done) => {
   done(null, {
     id: user.id,
@@ -239,10 +386,28 @@ passport.deserializeUser(async (sessionUser: any, done) => {
         accessLevel: true,
         isActive: true,
         lastLoginAt: true,
+        client: {
+          select: {
+            id: true,
+            displayName: true,
+            email: true,
+            phone: true,
+          },
+        },
+        driver: {
+          select: {
+            id: true,
+          },
+        },
+        worker: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
-    if (!user || !user.isActive || !isAdminUser(user.accessLevel)) {
+    if (!user || !user.isActive) {
       return done(null, false);
     }
 

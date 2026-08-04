@@ -36,8 +36,14 @@ function createServiceError(message: string, statusCode = 400) {
   return error;
 }
 
-function toCents(value: unknown) {
-  return Math.round(Number(value || 0) * 100);
+function normalizeEmail(email?: string | null) {
+  return email?.trim().toLowerCase() || null;
+}
+
+function isAdminOrOwner(requestUser?: any) {
+  return (
+    requestUser?.accessLevel === "ADMIN" || requestUser?.accessLevel === "OWNER"
+  );
 }
 
 function normalizeBookingForCheckout(booking: any) {
@@ -75,6 +81,40 @@ async function getRequiredDumpster(dumpsterId?: string | null) {
   }
 
   return dumpster;
+}
+
+async function resolveBookingClientId(data: any, requestUser?: any) {
+  const sessionClientId = requestUser?.client?.id;
+
+  if (sessionClientId) {
+    return sessionClientId;
+  }
+
+  const customerEmail = normalizeEmail(data.customerEmail);
+
+  if (!customerEmail) {
+    return null;
+  }
+
+  const client = await prisma.client.findFirst({
+    where: {
+      OR: [
+        {
+          email: customerEmail,
+        },
+        {
+          user: {
+            email: customerEmail,
+          },
+        },
+      ],
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  return client?.id ?? null;
 }
 
 async function buildBookingPricingData(data: any) {
@@ -139,6 +179,8 @@ function buildBookingCreateData({
   return {
     bookingNumber,
 
+    clientId: data.clientId ?? null,
+
     dumpsterId: dumpster.id,
     dumpsterSize: dumpster.size,
     dumpsterLabel: dumpster.label,
@@ -176,6 +218,10 @@ function buildBookingCreateData({
     pickupDate: data.pickupDate ? new Date(data.pickupDate) : null,
     pickupDateUnknown: Boolean(data.pickupDateUnknown),
     rentalDaysIncluded: Number(data.rentalDaysIncluded ?? 7),
+
+    priorityDelivery: Boolean(data.priorityDelivery),
+    deliveryTime: data.deliveryTime ? new Date(data.deliveryTime) : null,
+    priorityDeliveryNote: data.priorityDeliveryNote ?? null,
 
     bookingStatus: data.bookingStatus ?? BookingStatus.QUOTE,
     paymentStatus: data.paymentStatus ?? PaymentStatus.UNPAID,
@@ -249,8 +295,12 @@ function buildCheckoutDraftUpdateData({
     pickupDateUnknown: Boolean(data.pickupDateUnknown),
     rentalDaysIncluded: Number(data.rentalDaysIncluded ?? 7),
 
+    priorityDelivery: Boolean(data.priorityDelivery),
+    deliveryTime: data.deliveryTime ? new Date(data.deliveryTime) : null,
+    priorityDeliveryNote: data.priorityDeliveryNote ?? null,
+
     bookingStatus: BookingStatus.QUOTE,
-    paymentStatus: PaymentStatus.UNPAID,
+    paymentStatus: PaymentStatus.PENDING,
 
     basePrice: new Prisma.Decimal(pricing.basePrice),
     deliveryFee: new Prisma.Decimal(pricing.deliveryFee),
@@ -301,8 +351,12 @@ export const getBookingById = async (id: string) => {
   });
 };
 
-export const createCheckoutDraftBooking = async (data: any) => {
+export const createCheckoutDraftBooking = async (
+  data: any,
+  requestUser?: any,
+) => {
   const bookingNumber = generateBookingNumber();
+  const clientId = await resolveBookingClientId(data, requestUser);
 
   const {
     dumpster,
@@ -317,8 +371,9 @@ export const createCheckoutDraftBooking = async (data: any) => {
     data: buildBookingCreateData({
       data: {
         ...data,
+        clientId,
         bookingStatus: BookingStatus.QUOTE,
-        paymentStatus: PaymentStatus.UNPAID,
+        paymentStatus: PaymentStatus.PENDING,
       },
       bookingNumber,
       dumpster,
@@ -340,7 +395,7 @@ export const createCheckoutDraftBooking = async (data: any) => {
     data: {
       stripePaymentIntentId: paymentIntent.id,
       stripePaymentStatus: paymentIntent.status,
-      paymentStatus: PaymentStatus.UNPAID,
+      paymentStatus: PaymentStatus.PENDING,
     },
     include: bookingInclude,
   });
@@ -351,7 +406,11 @@ export const createCheckoutDraftBooking = async (data: any) => {
   };
 };
 
-export const updateCheckoutDraftBooking = async (id: string, data: any) => {
+export const updateCheckoutDraftBooking = async (
+  id: string,
+  data: any,
+  requestUser?: any,
+) => {
   const existingBooking = await prisma.booking.findUnique({
     where: {
       id,
@@ -365,6 +424,19 @@ export const updateCheckoutDraftBooking = async (id: string, data: any) => {
   if (existingBooking.paymentStatus === PaymentStatus.PAID) {
     throw createServiceError("Paid bookings cannot be edited.", 400);
   }
+
+  const resolvedClientId = await resolveBookingClientId(data, requestUser);
+
+  if (
+    !isAdminOrOwner(requestUser) &&
+    requestUser?.client?.id &&
+    existingBooking.clientId &&
+    existingBooking.clientId !== requestUser.client.id
+  ) {
+    throw createServiceError("You do not have access to this booking.", 403);
+  }
+
+  const clientId = existingBooking.clientId ?? resolvedClientId;
 
   const {
     dumpster,
@@ -394,6 +466,7 @@ export const updateCheckoutDraftBooking = async (id: string, data: any) => {
         distanceFromWarehouse,
         pricing,
       }),
+      clientId,
       addons: {
         create: selectedAddons.map((addon: any) => ({
           addonId: addon.id,
@@ -416,7 +489,7 @@ export const updateCheckoutDraftBooking = async (id: string, data: any) => {
     data: {
       stripePaymentIntentId: paymentIntent.id,
       stripePaymentStatus: paymentIntent.status,
-      paymentStatus: PaymentStatus.UNPAID,
+      paymentStatus: PaymentStatus.PENDING,
     },
     include: bookingInclude,
   });
@@ -427,9 +500,10 @@ export const updateCheckoutDraftBooking = async (id: string, data: any) => {
   };
 };
 
-export const createBooking = async (data: any) => {
+export const createBooking = async (data: any, requestUser?: any) => {
   try {
     const bookingNumber = generateBookingNumber();
+    const clientId = await resolveBookingClientId(data, requestUser);
 
     const {
       dumpster,
@@ -442,7 +516,10 @@ export const createBooking = async (data: any) => {
 
     return await prisma.booking.create({
       data: buildBookingCreateData({
-        data,
+        data: {
+          ...data,
+          clientId,
+        },
         bookingNumber,
         dumpster,
         selectedAddons,
