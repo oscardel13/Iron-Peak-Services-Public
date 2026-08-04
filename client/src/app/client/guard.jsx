@@ -16,8 +16,6 @@ export default function AdminGuard({ children }) {
         setStatus("");
         const res = await getAPI(`/client/me`);
 
-        console.log("Auth check response:", res.statusText);
-
         if (res.statusText !== "OK") {
           setStatus("unauthorized");
           setTimeout(() => {

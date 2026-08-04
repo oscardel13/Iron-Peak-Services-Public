@@ -3,17 +3,75 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import NavLink from "./navlink/navlink.component";
 import NavDropdown from "./nav-dropdown/nav-dropdown.component";
 import SignInPopup from "@/components/sign-in-popup/sign-in-popup.component";
 
 import METADATA from "@/data/data";
+import { getAPI } from "@/utils/api";
+
+function getDashboardPath(user) {
+  const accessLevel = user?.accessLevel;
+
+  if (accessLevel === "ADMIN" || accessLevel === "OWNER") {
+    return "/dashboard";
+  }
+
+  if (accessLevel === "CLIENT") {
+    return "/client";
+  }
+
+  if (accessLevel === "DRIVER") {
+    return "/driver";
+  }
+
+  if (accessLevel === "WORKER") {
+    return "/worker";
+  }
+
+  return null;
+}
 
 export default function Navbar() {
+  const router = useRouter();
+
   const [prevScrollpos, setPrevScrollpos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
+
+  const [authLoading, setAuthLoading] = useState(true);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function checkAuth() {
+      try {
+        const response = await getAPI("/auth/me");
+
+        if (!ignore) {
+          setUser(response.data?.user ?? null);
+        }
+      } catch {
+        if (!ignore) {
+          setUser(null);
+        }
+      } finally {
+        if (!ignore) {
+          setAuthLoading(false);
+        }
+      }
+    }
+
+    checkAuth();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   useEffect(() => {
     setPrevScrollpos(window.pageYOffset);
@@ -30,32 +88,33 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [prevScrollpos]);
 
-  function openDashboardPopup() {
-    setSignInOpen(true);
+  function handleDashboardClick() {
     setIsOpen(false);
+
+    const dashboardPath = getDashboardPath(user);
+
+    if (dashboardPath) {
+      router.push(dashboardPath);
+      return;
+    }
+
+    setSignInOpen(true);
   }
+
+  const dashboardButtonText = user ? "Dashboard" : "Login";
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 transition-transform duration-300 ${
+        className={`fixed left-0 top-0 z-50 w-full transition-transform duration-300 ${
           visible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        {/* Desktop Dashboard Button */}
-        <button
-          type="button"
-          onClick={openDashboardPopup}
-          className="absolute right-6 top-5 hidden text-sm font-semibold text-white/80 transition hover:text-white lg:inline-flex"
-        >
-          Dashboard
-        </button>
-
-        <div className="w-full flex justify-center px-4 lg:px-8 pt-4">
-          <nav className="w-full max-w-5xl rounded-xl bg-graphite shadow-lg px-6 lg:px-8 py-4">
-            <div className="flex items-center justify-between gap-2">
+        <div className="flex w-full justify-center px-4 pt-4 lg:px-8">
+          <nav className="w-full max-w-6xl rounded-xl bg-graphite px-5 py-4 shadow-lg lg:px-6">
+            <div className="flex items-center justify-between gap-3">
               {/* Logo */}
-              <Link href="/" className="flex items-center shrink-0">
+              <Link href="/" className="flex shrink-0 items-center">
                 <Image
                   src="/assets/logo_short.svg"
                   alt="Logo"
@@ -67,7 +126,7 @@ export default function Navbar() {
               </Link>
 
               {/* Desktop Links */}
-              <div className="hidden lg:flex items-center justify-center gap-2 xl:gap-4 flex-1">
+              <div className="hidden min-w-0 flex-1 items-center justify-center gap-1 lg:flex xl:gap-3">
                 <NavDropdown
                   scrolled={true}
                   links={[
@@ -101,20 +160,29 @@ export default function Navbar() {
                 </NavLink>
               </div>
 
-              {/* Desktop CTA */}
-              <div className="hidden lg:flex shrink-0">
+              {/* Desktop Actions */}
+              <div className="hidden shrink-0 items-center gap-3 lg:flex">
+                <button
+                  type="button"
+                  onClick={handleDashboardClick}
+                  disabled={authLoading}
+                  className="inline-flex h-11 items-center justify-center rounded-xl border border-white/15 px-5 text-sm font-semibold text-white/80 transition hover:border-white/30 hover:bg-white/10 hover:text-white disabled:cursor-wait disabled:opacity-50"
+                >
+                  {authLoading ? "Checking..." : dashboardButtonText}
+                </button>
+
                 <Link
                   href="/book"
-                  className="inline-flex items-center gap-3 rounded-xl h-12 bg-brand-primary px-8 py-4 text-white font-semibold text-lg hover:bg-brand-primary-hover transition"
+                  className="inline-flex h-11 items-center gap-2 rounded-xl bg-brand-primary px-6 font-semibold text-white transition hover:bg-brand-primary-hover"
                 >
                   Book Online
-                  <span className="text-2xl leading-none">→</span>
+                  <span className="text-xl leading-none">→</span>
                 </Link>
               </div>
 
               {/* Mobile Toggle */}
               <button
-                className="lg:hidden p-2 text-brand-secondary"
+                className="p-2 text-brand-secondary lg:hidden"
                 onClick={() => setIsOpen((prev) => !prev)}
                 aria-label="Toggle menu"
               >
@@ -124,7 +192,7 @@ export default function Navbar() {
 
             {/* Mobile Menu */}
             {isOpen && (
-              <div className="lg:hidden mt-5 flex flex-col gap-3 border-t border-gray-200 pt-5">
+              <div className="mt-5 flex flex-col gap-3 border-t border-gray-200 pt-5 lg:hidden">
                 <NavDropdown
                   scrolled={true}
                   links={[
@@ -159,15 +227,16 @@ export default function Navbar() {
 
                 <button
                   type="button"
-                  onClick={openDashboardPopup}
-                  className="mt-2 inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-6 py-3 font-semibold text-white transition hover:bg-white/15"
+                  onClick={handleDashboardClick}
+                  disabled={authLoading}
+                  className="mt-2 inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-6 py-3 font-semibold text-white transition hover:bg-white/15 disabled:cursor-wait disabled:opacity-50"
                 >
-                  Dashboard
+                  {authLoading ? "Checking..." : dashboardButtonText}
                 </button>
 
                 <Link
                   href="/book"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-primary px-6 py-3 text-white font-semibold hover:bg-brand-primary-hover transition"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-primary px-6 py-3 font-semibold text-white transition hover:bg-brand-primary-hover"
                 >
                   Book Online
                   <span>→</span>
