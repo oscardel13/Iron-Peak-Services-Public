@@ -25,7 +25,7 @@ export default function BookingShell({
           </p>
 
           <h1 className="text-3xl font-bold text-white md:text-5xl">
-            Booking Coming Soon
+            Book a Dumpster in Minutes!
           </h1>
         </div>
       </Hero>

@@ -1,10 +1,10 @@
-import { prisma } from '../libs/prisma.js';
+import { prisma } from "../libs/prisma.js";
 
 export const getDumpsters = async (query: any) => {
   // TODO: Implement filtering by status, size, etc.
   return await prisma.dumpster.findMany({
     where: { isActive: true },
-    orderBy: { size: 'asc' },
+    orderBy: { size: "asc" },
   });
 };
 
@@ -14,7 +14,7 @@ function addDays(date: Date, days: number) {
   return next;
 }
 
-// TODO: gets available dumpsters for given dates or if 
+// TODO: gets available dumpsters for given dates or if
 // no dates provided, gets dumpster available now
 export const getDumpstersFilteredByDates = async (query: any) => {
   const deliveryDate = query.deliveryDate
@@ -25,12 +25,14 @@ export const getDumpstersFilteredByDates = async (query: any) => {
     ? new Date(query.pickupDate)
     : addDays(deliveryDate, 14);
 
+  console.log("Delivery Date:", deliveryDate);
+  console.log("Pickup Date:", pickupDate);
+
   const dumpsters = await getDumpsters(query);
 
   const usableDumpsters = dumpsters.filter(
     (dumpster) =>
-      dumpster.status !== "MAINTENANCE" &&
-      dumpster.status !== "OUT_OF_SERVICE"
+      dumpster.status !== "MAINTENANCE" && dumpster.status !== "OUT_OF_SERVICE",
   );
 
   const conflictingBookings = await prisma.booking.findMany({
@@ -38,8 +40,9 @@ export const getDumpstersFilteredByDates = async (query: any) => {
       dumpsterId: {
         not: null,
       },
+
       deliveryDate: {
-        lte: pickupDate,
+        lt: pickupDate,
       },
       OR: [
         {
@@ -57,17 +60,18 @@ export const getDumpstersFilteredByDates = async (query: any) => {
     },
   });
 
+  console.log("Conflicting Bookings:", conflictingBookings);
+
   const unavailableDumpsterIds = new Set(
-    conflictingBookings
-      .map((booking) => booking.dumpsterId)
-      .filter(Boolean)
+    conflictingBookings.map((booking) => booking.dumpsterId).filter(Boolean),
   );
+
+  console.log("Unavailable Dumpster IDs:", Array.from(unavailableDumpsterIds));
 
   return usableDumpsters.filter(
-    (dumpster) => !unavailableDumpsterIds.has(dumpster.id)
+    (dumpster) => !unavailableDumpsterIds.has(dumpster.id),
   );
 };
-
 
 export const getDumpsterById = async (id: string) => {
   return await prisma.dumpster.findUnique({
@@ -100,21 +104,21 @@ export const deleteDumpster = async (id: string) => {
 export const lockDumpster = async (id: string) => {
   return await prisma.dumpster.update({
     where: { id },
-    data: { status: 'RESERVED'},
+    data: { status: "RESERVED" },
   });
-}
+};
 
 export const unlockDumpster = async (id: string) => {
   return await prisma.dumpster.update({
     where: { id },
-    data: { status: 'AVAILABLE'},
+    data: { status: "AVAILABLE" },
   });
-}
+};
 
 export const getAddons = async (query: any) => {
   return await prisma.addon.findMany({
     where: { isActive: true },
-    orderBy: { name: 'asc' },
+    orderBy: { name: "asc" },
   });
 };
 

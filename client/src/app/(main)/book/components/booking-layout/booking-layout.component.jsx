@@ -1,6 +1,6 @@
 "use client";
 
-import Hero from "@/components/hero/hero.component"
+import Hero from "@/components/hero/hero.component";
 import BookingStepNav from "../booking-step-nav/booking-step-nav.component";
 
 export default function BookingLayout({
@@ -12,19 +12,18 @@ export default function BookingLayout({
 }) {
   return (
     <div className="min-h-screen bg-gray-100 py-8">
-        <Hero>
+      <Hero>
         <div className="relative max-w-3xl mx-auto text-center space-y-6 px-4">
           <p className="text-sm tracking-[0.28em] text-gray-200 uppercase">
             Online Booking
           </p>
 
           <h1 className="text-4xl md:text-5xl font-bold text-white">
-            Booking Coming Soon
+            Book a Dumpster in Minutes!
           </h1>
         </div>
       </Hero>
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 pt-10">
-
         <BookingStepNav
           steps={steps}
           currentStep={currentStep}

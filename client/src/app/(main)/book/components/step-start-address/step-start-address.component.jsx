@@ -5,7 +5,7 @@ import StepShell from "../step-shell/step-shell.component";
 import {
   calculateDistanceMiles,
   searchMapboxAddresses,
-} from "../../../../../../utils/mapbox";
+} from "../../../../../utils/mapbox";
 
 import { WAREHOUSE_LOCATION } from "../../utils/booking-data";
 import { calculateMileageFee } from "../../utils/booking-helpers";

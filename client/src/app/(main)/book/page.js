@@ -1,69 +1,548 @@
-import Hero from "@/components/hero/hero.component";
-import METADATA from "@/data/data";
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+
+import { buildCheckoutPayload } from "./utils/booking-checkout-payload";
+import StepSchedule from "./components/step-schedule/step-schedule.component";
+import BookingShell from "./components/booking-shell/booking-shell.component";
+import StepStartAddress from "./components/step-start-address/step-start-address.component";
+import StepReviewSubmit from "./components/step-review-and-payment/step-review-and-payment.component";
+import StepVerifyLocation from "./components/step-verify-location/step-verify-location.component";
+import StepCustomerInfo from "./components/step-customer-info/step-customer-info.component";
+import StepDumpsterDetails from "./components/step-dumpster-details/step-dumpster-details.component";
+
+import { INITIAL_BOOKING_FORM } from "./utils/booking-form";
+
+import { getAPI, postAPI, putAPI } from "@/utils/api";
+
+import {
+  calculateBookingTotal,
+  calculateExtraDaysFee,
+  calculateRentalDays,
+} from "./utils/booking-helpers";
+
+const BOOKING_STEPS = [
+  { id: 1, key: "address", title: "Start Address", shortTitle: "Address" },
+  { id: 2, key: "schedule", title: "Schedule", shortTitle: "Date" },
+  { id: 3, key: "dumpster", title: "Dumpster Details", shortTitle: "Dumpster" },
+  { id: 4, key: "location", title: "Verify Location", shortTitle: "Location" },
+  { id: 5, key: "customer", title: "Customer Info", shortTitle: "Info" },
+  { id: 6, key: "review", title: "Review & Payment", shortTitle: "Pay" },
+];
+
+function hasValue(value) {
+  return value !== null && value !== undefined && String(value).trim() !== "";
+}
 
 export default function BookPage() {
+  const [addons, setAddons] = useState(null);
+  const [dumpsters, setDumpsters] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
+  const [bookingId, setBookingId] = useState(null);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [clientSecret, setClientSecret] = useState("");
+  const [checkoutError, setCheckoutError] = useState("");
+  const [serverBooking, setServerBooking] = useState(null);
+  const [paymentSucceeded, setPaymentSucceeded] = useState(false);
+  const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
+  const [bookingForm, setBookingForm] = useState(INITIAL_BOOKING_FORM);
+  const [isPreparingCheckout, setIsPreparingCheckout] = useState(false);
+
+  const bookingIdRef = useRef(null);
+  const checkoutRequestInFlightRef = useRef(false);
+
+  useEffect(() => {
+    const fetchDumpsters = async () => {
+      try {
+        const response = await getAPI("/inventory/dumpsters");
+        setDumpsters(response.data);
+      } catch (error) {
+        console.error("Failed to fetch dumpsters:", error);
+      }
+    };
+
+    const fetchAddons = async () => {
+      try {
+        const response = await getAPI("/inventory/addons");
+        setAddons(response.data);
+      } catch (error) {
+        console.error("Failed to fetch addons:", error);
+      }
+    };
+
+    fetchDumpsters();
+    fetchAddons();
+  }, []);
+
+  useEffect(() => {
+    const firstScroll = setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "auto",
+      });
+    }, 0);
+
+    const secondScroll = setTimeout(() => {
+      window.scrollTo({
+        top: 450,
+        behavior: "smooth",
+      });
+    }, 120);
+
+    return () => {
+      clearTimeout(firstScroll);
+      clearTimeout(secondScroll);
+    };
+  }, [currentStep]);
+
+  const availableProducts = dumpsters ?? [];
+
+  function clearError(path) {
+    setFormErrors((prev) => {
+      if (!prev[path]) return prev;
+
+      const nextErrors = { ...prev };
+      delete nextErrors[path];
+      return nextErrors;
+    });
+  }
+
+  function clearErrors(paths) {
+    setFormErrors((prev) => {
+      let changed = false;
+      const nextErrors = { ...prev };
+
+      paths.forEach((path) => {
+        if (nextErrors[path]) {
+          delete nextErrors[path];
+          changed = true;
+        }
+      });
+
+      return changed ? nextErrors : prev;
+    });
+  }
+
+  function markCheckoutDirty() {
+    setClientSecret("");
+    setServerBooking(null);
+    setCheckoutError("");
+    setPaymentSucceeded(false);
+  }
+
+  function validateStep(stepId, form) {
+    const errors = {};
+
+    if (stepId === 1) {
+      if (!hasValue(form.address.address1)) {
+        errors["address.address1"] = "Address is required.";
+      }
+
+      if (!hasValue(form.address.city)) {
+        errors["address.city"] = "City is required.";
+      }
+
+      if (!hasValue(form.address.state)) {
+        errors["address.state"] = "State is required.";
+      }
+
+      if (!hasValue(form.address.zip)) {
+        errors["address.zip"] = "ZIP is required.";
+      }
+
+      if (!hasValue(form.address.projectType)) {
+        errors["address.projectType"] = "Project type is required.";
+      }
+    }
+
+    if (stepId === 2) {
+      if (!hasValue(form.schedule.deliveryDate)) {
+        errors["schedule.deliveryDate"] = "Delivery date is required.";
+      }
+
+      if (!form.schedule.unknownPickup && !hasValue(form.schedule.pickupDate)) {
+        errors["schedule.pickupDate"] = "Pickup date is required.";
+      }
+
+      if (
+        hasValue(form.schedule.deliveryDate) &&
+        hasValue(form.schedule.pickupDate) &&
+        form.schedule.pickupDate < form.schedule.deliveryDate
+      ) {
+        errors["schedule.pickupDate"] =
+          "Pickup date cannot be before delivery date.";
+      }
+    }
+
+    if (stepId === 3) {
+      if (!hasValue(form.dumpster.material)) {
+        errors["dumpster.material"] = "Material is required.";
+      }
+
+      if (!hasValue(form.dumpster.productId)) {
+        errors["dumpster.productId"] = "Please select a dumpster.";
+      }
+    }
+
+    if (stepId === 4) {
+      if (!hasValue(form.location.placement)) {
+        errors["location.placement"] = "Placement is required.";
+      }
+    }
+
+    if (stepId === 5) {
+      if (!hasValue(form.customer.firstName)) {
+        errors["customer.firstName"] = "First name is required.";
+      }
+
+      if (!hasValue(form.customer.lastName)) {
+        errors["customer.lastName"] = "Last name is required.";
+      }
+
+      if (!hasValue(form.customer.phone)) {
+        errors["customer.phone"] = "Phone number is required.";
+      }
+
+      if (!hasValue(form.customer.email)) {
+        errors["customer.email"] = "Email is required.";
+      }
+    }
+
+    return errors;
+  }
+
+  function validateAllSteps(form) {
+    return BOOKING_STEPS.reduce((allErrors, step) => {
+      return {
+        ...allErrors,
+        ...validateStep(step.id, form),
+      };
+    }, {});
+  }
+
+  function getFirstInvalidStep(form) {
+    for (const step of BOOKING_STEPS) {
+      const stepErrors = validateStep(step.id, form);
+
+      if (Object.keys(stepErrors).length > 0) {
+        return {
+          stepId: step.id,
+          errors: stepErrors,
+        };
+      }
+    }
+
+    return null;
+  }
+
+  function goToStep(stepId) {
+    if (stepId <= currentStep) {
+      setCurrentStep(stepId);
+      setMobileSummaryOpen(false);
+      return;
+    }
+
+    const stepErrors = validateStep(currentStep, bookingForm);
+
+    if (Object.keys(stepErrors).length > 0) {
+      setFormErrors(stepErrors);
+      setMobileSummaryOpen(false);
+      return;
+    }
+
+    setFormErrors({});
+    setCurrentStep(stepId);
+    setMobileSummaryOpen(false);
+  }
+
+  function goToNextStep() {
+    const stepErrors = validateStep(currentStep, bookingForm);
+
+    if (Object.keys(stepErrors).length > 0) {
+      setFormErrors(stepErrors);
+      return;
+    }
+
+    setFormErrors({});
+    setCurrentStep((prev) => Math.min(prev + 1, BOOKING_STEPS.length));
+  }
+
+  function goToPreviousStep() {
+    setFormErrors({});
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+  }
+
+  function updateBookingForm(path, value) {
+    clearError(path);
+    markCheckoutDirty();
+
+    setBookingForm((prev) => {
+      const next = structuredClone(prev);
+      const keys = path.split(".");
+      let current = next;
+
+      for (let i = 0; i < keys.length - 1; i += 1) {
+        current = current[keys[i]];
+      }
+
+      current[keys[keys.length - 1]] = value;
+
+      if (path === "pricing.mileageFee") {
+        next.pricing.total = calculateBookingTotal(next);
+      }
+
+      if (path === "dumpster.material") {
+        next.pricing.materialSurcharge =
+          value === "concrete" ? Number(next.dumpster.concretePrice || 0) : 0;
+
+        next.pricing.total = calculateBookingTotal(next);
+      }
+
+      return next;
+    });
+  }
+
+  function setSelectedProduct(product) {
+    clearErrors(["dumpster.productId"]);
+    markCheckoutDirty();
+
+    setBookingForm((prev) => {
+      const next = structuredClone(prev);
+
+      next.dumpster.productId = product.id;
+      next.dumpster.productLabel = product.label;
+      next.dumpster.size = product.size;
+      next.dumpster.basePrice = Number(product.basePrice || 0);
+      next.dumpster.concretePrice = Number(product.concretePrice || 0);
+      next.dumpster.includedWeightText = product.includedWeightText;
+
+      next.pricing.basePrice = Number(product.basePrice || 0);
+      next.pricing.materialSurcharge =
+        next.dumpster.material === "concrete"
+          ? Number(product.concretePrice || 0)
+          : 0;
+
+      next.pricing.total = calculateBookingTotal(next);
+
+      return next;
+    });
+  }
+
+  function toggleAddon(key, checked) {
+    markCheckoutDirty();
+
+    setBookingForm((prev) => {
+      const next = structuredClone(prev);
+
+      next.addons[key] = checked;
+
+      const selectedAddon = addons?.find((addon) => addon.code === key);
+
+      if (key === "drivewayProtection") {
+        next.pricing.drivewayProtectionFee =
+          checked && selectedAddon ? Number(selectedAddon.price) : 0;
+      }
+
+      if (key === "priorityDelivery") {
+        next.pricing.priorityDeliveryFee =
+          checked && selectedAddon ? Number(selectedAddon.price) : 0;
+      }
+
+      next.pricing.total = calculateBookingTotal(next);
+
+      return next;
+    });
+  }
+
+  function updateScheduleField(path, value) {
+    clearError(path);
+    markCheckoutDirty();
+
+    setBookingForm((prev) => {
+      const next = structuredClone(prev);
+
+      const keys = path.split(".");
+      let current = next;
+
+      for (let i = 0; i < keys.length - 1; i += 1) {
+        current = current[keys[i]];
+      }
+
+      current[keys[keys.length - 1]] = value;
+
+      const rentalDays = next.schedule.unknownPickup
+        ? 0
+        : calculateRentalDays(
+            next.schedule.deliveryDate,
+            next.schedule.pickupDate,
+          );
+
+      const extraDays = rentalDays > 7 ? rentalDays - 7 : 0;
+      const extraDaysFee = calculateExtraDaysFee(rentalDays);
+
+      next.schedule.rentalDays = rentalDays;
+      next.schedule.extraDays = extraDays;
+      next.schedule.extraDaysFee = extraDaysFee;
+      next.pricing.extraDaysFee = extraDaysFee;
+      next.pricing.total = calculateBookingTotal(next);
+
+      return next;
+    });
+  }
+
+  async function prepareCheckoutDraft() {
+    if (checkoutRequestInFlightRef.current) {
+      return;
+    }
+
+    const invalidStep = getFirstInvalidStep(bookingForm);
+
+    if (invalidStep) {
+      setFormErrors(invalidStep.errors);
+      setCurrentStep(invalidStep.stepId);
+      return;
+    }
+
+    const allErrors = validateAllSteps(bookingForm);
+
+    if (Object.keys(allErrors).length > 0) {
+      setFormErrors(allErrors);
+      return;
+    }
+
+    try {
+      checkoutRequestInFlightRef.current = true;
+      setIsPreparingCheckout(true);
+      setCheckoutError("");
+
+      const payload = buildCheckoutPayload(bookingForm);
+      const currentBookingId = bookingIdRef.current || bookingId;
+
+      const response = currentBookingId
+        ? await putAPI(`/bookings/${currentBookingId}/checkout-draft`, payload)
+        : await postAPI("/bookings/checkout-draft", payload);
+
+      const data = response.data;
+
+      setBookingId(data.booking.id);
+      bookingIdRef.current = data.booking.id;
+
+      setServerBooking(data.booking);
+      setClientSecret(data.clientSecret);
+    } catch (error) {
+      console.error(error);
+
+      const apiMessage =
+        error?.response?.data?.error ||
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong preparing checkout.";
+
+      setCheckoutError(apiMessage);
+    } finally {
+      checkoutRequestInFlightRef.current = false;
+      setIsPreparingCheckout(false);
+    }
+  }
+
+  function handlePaymentSuccess(paymentIntent) {
+    console.log("Payment succeeded:", paymentIntent);
+    setPaymentSucceeded(true);
+  }
+
+  function renderStep() {
+    switch (currentStep) {
+      case 1:
+        return (
+          <StepStartAddress
+            bookingForm={bookingForm}
+            updateBookingForm={updateBookingForm}
+            goToNextStep={goToNextStep}
+            formErrors={formErrors}
+          />
+        );
+
+      case 2:
+        return (
+          <StepSchedule
+            bookingForm={bookingForm}
+            updateScheduleField={updateScheduleField}
+            goToNextStep={goToNextStep}
+            goToPreviousStep={goToPreviousStep}
+            formErrors={formErrors}
+          />
+        );
+
+      case 3:
+        return (
+          <StepDumpsterDetails
+            bookingForm={bookingForm}
+            updateBookingForm={updateBookingForm}
+            setSelectedProduct={setSelectedProduct}
+            toggleAddon={toggleAddon}
+            availableProducts={availableProducts}
+            goToNextStep={goToNextStep}
+            goToPreviousStep={goToPreviousStep}
+            formErrors={formErrors}
+          />
+        );
+
+      case 4:
+        return (
+          <StepVerifyLocation
+            bookingForm={bookingForm}
+            updateBookingForm={updateBookingForm}
+            goToNextStep={goToNextStep}
+            goToPreviousStep={goToPreviousStep}
+            formErrors={formErrors}
+          />
+        );
+
+      case 5:
+        return (
+          <StepCustomerInfo
+            bookingForm={bookingForm}
+            updateBookingForm={updateBookingForm}
+            goToNextStep={goToNextStep}
+            goToPreviousStep={goToPreviousStep}
+            formErrors={formErrors}
+          />
+        );
+
+      case 6:
+        return (
+          <StepReviewSubmit
+            bookingForm={bookingForm}
+            serverBooking={serverBooking}
+            bookingId={bookingId}
+            clientSecret={clientSecret}
+            isPreparingCheckout={isPreparingCheckout}
+            checkoutError={checkoutError}
+            paymentSucceeded={paymentSucceeded}
+            prepareCheckoutDraft={prepareCheckoutDraft}
+            handlePaymentSuccess={handlePaymentSuccess}
+            goToPreviousStep={goToPreviousStep}
+            goToStep={goToStep}
+            formErrors={formErrors}
+          />
+        );
+
+      default:
+        return null;
+    }
+  }
+
   return (
-    <div className="flex flex-col">
-
-      {/* Hero */}
-      <Hero>
-        <div className="relative max-w-3xl mx-auto text-center space-y-6 px-4">
-          <p className="text-sm tracking-[0.28em] text-gray-200 uppercase">
-            Online Booking
-          </p>
-
-          <h1 className="text-4xl md:text-5xl font-bold text-white">
-            Booking Coming Soon
-          </h1>
-
-          <p className="text-lg md:text-xl text-gray-100">
-            We’re currently building our online booking system so you can
-            schedule dumpster rentals quickly and easily.
-          </p>
-        </div>
-      </Hero>
-
-      {/* Content */}
-      <section className="px-4 md:px-16 py-16 bg-white">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-
-          <h2 className="text-2xl md:text-3xl font-bold text-brand-text-primary">
-            {`We're Working On It`}
-          </h2>
-
-          <p className="text-gray-700 text-lg leading-relaxed">
-            {`Our online booking system will allow you to choose your dumpster
-            size, select delivery dates, and schedule pickup all in one place.
-            We're putting the finishing touches on it now.`}
-          </p>
-
-          <p className="text-gray-700 leading-relaxed">
-            In the meantime, you can still schedule a dumpster rental, junk
-            removal, or demolition service by contacting us directly.
-          </p>
-
-          {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-
-            <a
-              href={METADATA.clickablePhone}
-              className="px-6 py-3 rounded-lg bg-brand-primary text-white font-semibold hover:bg-brand-primary-hover transition"
-            >
-              Call {METADATA.phone}
-            </a>
-
-            {/* <a
-              href="/contact"
-              className="px-6 py-3 rounded-lg border border-brand-primary text-brand-primary font-semibold hover:bg-brand-primary hover:text-white transition"
-            >
-              Request a Quote
-            </a> */}
-
-          </div>
-
-        </div>
-      </section>
-
-    </div>
+    <BookingShell
+      steps={BOOKING_STEPS}
+      currentStep={currentStep}
+      goToStep={goToStep}
+      bookingForm={bookingForm}
+      mobileSummaryOpen={mobileSummaryOpen}
+      setMobileSummaryOpen={setMobileSummaryOpen}
+      goToPreviousStep={goToPreviousStep}
+    >
+      {renderStep()}
+    </BookingShell>
   );
 }
