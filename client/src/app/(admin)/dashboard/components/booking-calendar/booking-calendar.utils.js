@@ -15,13 +15,23 @@ export function formatDateKey(value) {
     return null;
   }
 
-  return date.toISOString().split("T")[0];
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 }
 
 export function formatTime(value) {
   if (!value) return "Time TBD";
 
-  return new Date(value).toLocaleTimeString(undefined, {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Time TBD";
+  }
+
+  return date.toLocaleTimeString(undefined, {
     hour: "numeric",
     minute: "2-digit",
   });
@@ -80,13 +90,21 @@ export function getBookingEventsForDate(bookings, date) {
   const events = [];
 
   bookings.forEach((booking) => {
-    if (formatDateKey(booking.deliveryDate) === dateKey) {
+    const deliveryDateKey = formatDateKey(booking.deliveryDate);
+    const pickupDateKey = formatDateKey(booking.pickupDate);
+
+    if (deliveryDateKey === dateKey) {
       events.push({
         id: `${booking.id}-delivery`,
+        bookingId: booking.id,
         type: "delivery",
         label: "Delivery",
         date: booking.deliveryDate,
         time: formatTime(booking.deliveryDate),
+        dateKey: deliveryDateKey,
+        relatedLabel: "Pickup",
+        relatedDate: booking.pickupDate,
+        relatedDateKey: pickupDateKey,
         booking,
       });
     }
@@ -94,14 +112,19 @@ export function getBookingEventsForDate(bookings, date) {
     if (
       booking.pickupDate &&
       !booking.pickupDateUnknown &&
-      formatDateKey(booking.pickupDate) === dateKey
+      pickupDateKey === dateKey
     ) {
       events.push({
         id: `${booking.id}-pickup`,
+        bookingId: booking.id,
         type: "pickup",
         label: "Pickup",
         date: booking.pickupDate,
         time: formatTime(booking.pickupDate),
+        dateKey: pickupDateKey,
+        relatedLabel: "Delivered",
+        relatedDate: booking.deliveryDate,
+        relatedDateKey: deliveryDateKey,
         booking,
       });
     }

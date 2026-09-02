@@ -67,6 +67,29 @@ enum AuthProviderType {
   EMAIL
 }
 
+enum DumpsterColor {
+  BLUE
+  EMERALD
+  VIOLET
+  ORANGE
+  ROSE
+  CYAN
+  AMBER
+  FUCHSIA
+  INDIGO
+  TEAL
+  LIME
+  PINK
+  SLATE
+}
+
+enum DumpsterPattern {
+  SOLID
+  STRIPE
+  SPLIT
+  DOT
+}
+
 model User {
   id          String      @id @default(cuid())
 
@@ -155,28 +178,32 @@ model UserAuthProvider {
 }
 
 model Dumpster {
-  id            String         @id @default(cuid())
+  id             String           @id @default(cuid())
+  label          String
+  size           Int
+  sizeLabel      String
+  serialNumber   String?          @unique
 
-  label         String
-  size          Int
-  sizeLabel     String
-  serialNumber  String?        @unique
-  color         String?
-  status        DumpsterStatus @default(AVAILABLE)
-  notes         String?
-  isActive      Boolean        @default(true)
+  primaryColor   DumpsterColor    @default(SLATE)
+  secondaryColor DumpsterColor?
+  colorPattern   DumpsterPattern  @default(SOLID)
 
-  basePrice     Int
-  concretePrice Int
+  status         DumpsterStatus   @default(AVAILABLE)
+  notes          String?
+  isActive       Boolean          @default(true)
 
-  bookings      Booking[]
+  basePrice      Int
+  concretePrice  Int
 
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  bookings       Booking[]
+
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 
   @@index([size])
   @@index([status])
   @@index([isActive])
+  @@index([primaryColor])
 }
 
 model Booking {

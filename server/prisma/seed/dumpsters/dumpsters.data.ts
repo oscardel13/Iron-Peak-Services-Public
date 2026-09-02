@@ -1,4 +1,8 @@
-import { DumpsterStatus } from "../../../src/generated/prisma/client.js";
+import {
+  DumpsterColor,
+  DumpsterPattern,
+  DumpsterStatus,
+} from "../../../src/generated/prisma/client.js";
 
 export const dumpstersData = [
   {
@@ -7,14 +11,17 @@ export const dumpstersData = [
     size: 17,
     sizeLabel: "17 Yard",
     serialNumber: "DMP-17-001",
-    color: "Green",
+
+    primaryColor: DumpsterColor.EMERALD,
+    secondaryColor: null,
+    colorPattern: DumpsterPattern.SOLID,
 
     status: DumpsterStatus.AVAILABLE,
 
     basePrice: 375,
     concretePrice: 150,
 
-    notes: "Ready for dispatch.",
+    notes: "Ready for dispatch. Solid emerald test.",
     isActive: true,
   },
 
@@ -24,14 +31,17 @@ export const dumpstersData = [
     size: 17,
     sizeLabel: "17 Yard",
     serialNumber: "DMP-17-002",
-    color: "Green",
+
+    primaryColor: DumpsterColor.EMERALD,
+    secondaryColor: DumpsterColor.PINK,
+    colorPattern: DumpsterPattern.STRIPE,
 
     status: DumpsterStatus.IN_USE,
 
     basePrice: 375,
     concretePrice: 150,
 
-    notes: "Currently out on a job.",
+    notes: "Currently out on a job. Emerald and pink stripe test.",
     isActive: true,
   },
 
@@ -41,14 +51,17 @@ export const dumpstersData = [
     size: 17,
     sizeLabel: "17 Yard",
     serialNumber: "DMP-17-003",
-    color: "Green",
+
+    primaryColor: DumpsterColor.EMERALD,
+    secondaryColor: DumpsterColor.ORANGE,
+    colorPattern: DumpsterPattern.DOT,
 
     status: DumpsterStatus.AVAILABLE,
 
     basePrice: 375,
     concretePrice: 150,
 
-    notes: "Available and ready.",
+    notes: "Available and ready. Emerald with orange dot test.",
     isActive: true,
   },
 
@@ -58,14 +71,17 @@ export const dumpstersData = [
     size: 22,
     sizeLabel: "22 Yard",
     serialNumber: "DMP-22-001",
-    color: "Blue",
+
+    primaryColor: DumpsterColor.BLUE,
+    secondaryColor: null,
+    colorPattern: DumpsterPattern.SOLID,
 
     status: DumpsterStatus.RESERVED,
 
     basePrice: 450,
     concretePrice: 180,
 
-    notes: "Scheduled for upcoming delivery.",
+    notes: "Scheduled for upcoming delivery. Solid blue test.",
     isActive: true,
   },
 
@@ -75,14 +91,17 @@ export const dumpstersData = [
     size: 22,
     sizeLabel: "22 Yard",
     serialNumber: "DMP-22-002",
-    color: "Blue",
+
+    primaryColor: DumpsterColor.BLUE,
+    secondaryColor: DumpsterColor.ROSE,
+    colorPattern: DumpsterPattern.SPLIT,
 
     status: DumpsterStatus.AVAILABLE,
 
     basePrice: 450,
     concretePrice: 180,
 
-    notes: "Ready for dispatch.",
+    notes: "Ready for dispatch. Blue and rose split test.",
     isActive: true,
   },
 ];

@@ -6,10 +6,7 @@ import BookingCalendarDay from "./booking-calendar-day.component";
 import BookingCalendarWeek from "./booking-calendar-week.component";
 import BookingCalendarMonth from "./booking-calendar-month.component";
 
-import {
-  getMonthDays,
-  getWeekDays,
-} from "./booking-calendar.utils";
+import { getMonthDays, getWeekDays } from "./booking-calendar.utils";
 
 export default function BookingCalendar({
   bookings = [],
@@ -29,6 +26,7 @@ export default function BookingCalendar({
 
   const [view, setView] = useState(normalizedDefaultView);
   const [selectedDate, setSelectedDate] = useState(initialDate);
+  const [focusedBookingId, setFocusedBookingId] = useState(null);
 
   const weekDays = useMemo(() => {
     return getWeekDays(selectedDate);
@@ -75,7 +73,7 @@ export default function BookingCalendar({
   }
 
   return (
-    <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-5">
+    <section className="max-w-screen rounded-2xl border bg-white p-4 shadow-sm sm:p-5 flex flex-col gap-3">
       {showHeader && (
         <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
@@ -136,15 +134,18 @@ export default function BookingCalendar({
           )}
         </div>
       )}
-
-      {view === "day" && (
-        <BookingCalendarDay
-          bookings={bookings}
-          selectedDate={selectedDate}
-          compact={compact}
-        />
+      {view === "month" && (
+        <div className="space-y-5">
+          <BookingCalendarMonth
+            bookings={bookings}
+            monthDays={monthDays}
+            selectedDate={selectedDate}
+            onSelectDate={setSelectedDate}
+            focusedBookingId={focusedBookingId}
+            setFocusedBookingId={setFocusedBookingId}
+          />
+        </div>
       )}
-
       {view === "week" && (
         <div className="space-y-5">
           <BookingCalendarWeek
@@ -153,36 +154,18 @@ export default function BookingCalendar({
             selectedDate={selectedDate}
             onSelectDate={setSelectedDate}
             compact={compact}
+            focusedBookingId={focusedBookingId}
+            setFocusedBookingId={setFocusedBookingId}
           />
-
-          {showDayDetails && (
-            <BookingCalendarDay
-              bookings={bookings}
-              selectedDate={selectedDate}
-              compact={compact}
-            />
-          )}
         </div>
       )}
-
-      {view === "month" && (
-        <div className="space-y-5">
-          <BookingCalendarMonth
-            bookings={bookings}
-            monthDays={monthDays}
-            selectedDate={selectedDate}
-            onSelectDate={setSelectedDate}
-          />
-
-          {showDayDetails && (
-            <BookingCalendarDay
-              bookings={bookings}
-              selectedDate={selectedDate}
-              compact={compact}
-            />
-          )}
-        </div>
-      )}
+      <BookingCalendarDay
+        bookings={bookings}
+        selectedDate={selectedDate}
+        compact={compact}
+        focusedBookingId={focusedBookingId}
+        setFocusedBookingId={setFocusedBookingId}
+      />
     </section>
   );
 }

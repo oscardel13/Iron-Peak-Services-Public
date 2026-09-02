@@ -16,7 +16,11 @@ export async function seedDumpsters(prisma: PrismaClient) {
         size: dumpster.size,
         sizeLabel: dumpster.sizeLabel,
         serialNumber: dumpster.serialNumber,
-        color: dumpster.color,
+
+        primaryColor: dumpster.primaryColor,
+        secondaryColor: dumpster.secondaryColor,
+        colorPattern: dumpster.colorPattern,
+
         status: dumpster.status,
         basePrice: dumpster.basePrice,
         concretePrice: dumpster.concretePrice,
@@ -24,7 +28,23 @@ export async function seedDumpsters(prisma: PrismaClient) {
         isActive: dumpster.isActive,
       },
 
-      create: dumpster,
+      create: {
+        id: dumpster.id,
+        label: dumpster.label,
+        size: dumpster.size,
+        sizeLabel: dumpster.sizeLabel,
+        serialNumber: dumpster.serialNumber,
+
+        primaryColor: dumpster.primaryColor,
+        secondaryColor: dumpster.secondaryColor,
+        colorPattern: dumpster.colorPattern,
+
+        status: dumpster.status,
+        basePrice: dumpster.basePrice,
+        concretePrice: dumpster.concretePrice,
+        notes: dumpster.notes,
+        isActive: dumpster.isActive,
+      },
     });
   }
 

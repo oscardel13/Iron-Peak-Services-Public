@@ -91,3 +91,32 @@ export const AuthProviderType = {
 } as const
 
 export type AuthProviderType = (typeof AuthProviderType)[keyof typeof AuthProviderType]
+
+
+export const DumpsterColor = {
+  BLUE: 'BLUE',
+  EMERALD: 'EMERALD',
+  VIOLET: 'VIOLET',
+  ORANGE: 'ORANGE',
+  ROSE: 'ROSE',
+  CYAN: 'CYAN',
+  AMBER: 'AMBER',
+  FUCHSIA: 'FUCHSIA',
+  INDIGO: 'INDIGO',
+  TEAL: 'TEAL',
+  LIME: 'LIME',
+  PINK: 'PINK',
+  SLATE: 'SLATE'
+} as const
+
+export type DumpsterColor = (typeof DumpsterColor)[keyof typeof DumpsterColor]
+
+
+export const DumpsterPattern = {
+  SOLID: 'SOLID',
+  STRIPE: 'STRIPE',
+  SPLIT: 'SPLIT',
+  DOT: 'DOT'
+} as const
+
+export type DumpsterPattern = (typeof DumpsterPattern)[keyof typeof DumpsterPattern]

@@ -80,11 +80,11 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.9.0
+ * Prisma Client JS version: 7.9.1
  * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.9.0",
+  client: "7.9.1",
   engine: "e922089b7d7502aff4249d5da3420f6fa55fc6ad"
 }
 
@@ -1351,7 +1351,9 @@ export const DumpsterScalarFieldEnum = {
   size: 'size',
   sizeLabel: 'sizeLabel',
   serialNumber: 'serialNumber',
-  color: 'color',
+  primaryColor: 'primaryColor',
+  secondaryColor: 'secondaryColor',
+  colorPattern: 'colorPattern',
   status: 'status',
   notes: 'notes',
   isActive: 'isActive',
@@ -1598,6 +1600,34 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DumpsterColor'
+ */
+export type EnumDumpsterColorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DumpsterColor'>
+    
+
+
+/**
+ * Reference to a field of type 'DumpsterColor[]'
+ */
+export type ListEnumDumpsterColorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DumpsterColor[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DumpsterPattern'
+ */
+export type EnumDumpsterPatternFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DumpsterPattern'>
+    
+
+
+/**
+ * Reference to a field of type 'DumpsterPattern[]'
+ */
+export type ListEnumDumpsterPatternFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DumpsterPattern[]'>
     
 
 

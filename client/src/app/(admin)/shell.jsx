@@ -34,7 +34,7 @@ export default function DashboardShell({ children }) {
   };
 
   return (
-    <div className="flex min-h-screen w-full overflow-x-hidden bg-gray-100">
+    <div className="flex min-h-screen w-full max-w-screen overflow-x-hidden bg-gray-100">
       <DashboardNav
         open={openSidebar}
         isDesktop={isDesktop}
@@ -62,7 +62,7 @@ export default function DashboardShell({ children }) {
           )}
         </header>
 
-        <main className="flex-1 p-4 xl:p-6">{children}</main>
+        <main className="max-w-screen flex-1 p-4 xl:p-6">{children}</main>
       </div>
     </div>
   );

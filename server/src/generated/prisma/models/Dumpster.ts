@@ -44,7 +44,9 @@ export type DumpsterMinAggregateOutputType = {
   size: number | null
   sizeLabel: string | null
   serialNumber: string | null
-  color: string | null
+  primaryColor: $Enums.DumpsterColor | null
+  secondaryColor: $Enums.DumpsterColor | null
+  colorPattern: $Enums.DumpsterPattern | null
   status: $Enums.DumpsterStatus | null
   notes: string | null
   isActive: boolean | null
@@ -60,7 +62,9 @@ export type DumpsterMaxAggregateOutputType = {
   size: number | null
   sizeLabel: string | null
   serialNumber: string | null
-  color: string | null
+  primaryColor: $Enums.DumpsterColor | null
+  secondaryColor: $Enums.DumpsterColor | null
+  colorPattern: $Enums.DumpsterPattern | null
   status: $Enums.DumpsterStatus | null
   notes: string | null
   isActive: boolean | null
@@ -76,7 +80,9 @@ export type DumpsterCountAggregateOutputType = {
   size: number
   sizeLabel: number
   serialNumber: number
-  color: number
+  primaryColor: number
+  secondaryColor: number
+  colorPattern: number
   status: number
   notes: number
   isActive: number
@@ -106,7 +112,9 @@ export type DumpsterMinAggregateInputType = {
   size?: true
   sizeLabel?: true
   serialNumber?: true
-  color?: true
+  primaryColor?: true
+  secondaryColor?: true
+  colorPattern?: true
   status?: true
   notes?: true
   isActive?: true
@@ -122,7 +130,9 @@ export type DumpsterMaxAggregateInputType = {
   size?: true
   sizeLabel?: true
   serialNumber?: true
-  color?: true
+  primaryColor?: true
+  secondaryColor?: true
+  colorPattern?: true
   status?: true
   notes?: true
   isActive?: true
@@ -138,7 +148,9 @@ export type DumpsterCountAggregateInputType = {
   size?: true
   sizeLabel?: true
   serialNumber?: true
-  color?: true
+  primaryColor?: true
+  secondaryColor?: true
+  colorPattern?: true
   status?: true
   notes?: true
   isActive?: true
@@ -241,7 +253,9 @@ export type DumpsterGroupByOutputType = {
   size: number
   sizeLabel: string
   serialNumber: string | null
-  color: string | null
+  primaryColor: $Enums.DumpsterColor
+  secondaryColor: $Enums.DumpsterColor | null
+  colorPattern: $Enums.DumpsterPattern
   status: $Enums.DumpsterStatus
   notes: string | null
   isActive: boolean
@@ -280,7 +294,9 @@ export type DumpsterWhereInput = {
   size?: Prisma.IntFilter<"Dumpster"> | number
   sizeLabel?: Prisma.StringFilter<"Dumpster"> | string
   serialNumber?: Prisma.StringNullableFilter<"Dumpster"> | string | null
-  color?: Prisma.StringNullableFilter<"Dumpster"> | string | null
+  primaryColor?: Prisma.EnumDumpsterColorFilter<"Dumpster"> | $Enums.DumpsterColor
+  secondaryColor?: Prisma.EnumDumpsterColorNullableFilter<"Dumpster"> | $Enums.DumpsterColor | null
+  colorPattern?: Prisma.EnumDumpsterPatternFilter<"Dumpster"> | $Enums.DumpsterPattern
   status?: Prisma.EnumDumpsterStatusFilter<"Dumpster"> | $Enums.DumpsterStatus
   notes?: Prisma.StringNullableFilter<"Dumpster"> | string | null
   isActive?: Prisma.BoolFilter<"Dumpster"> | boolean
@@ -297,7 +313,9 @@ export type DumpsterOrderByWithRelationInput = {
   size?: Prisma.SortOrder
   sizeLabel?: Prisma.SortOrder
   serialNumber?: Prisma.SortOrderInput | Prisma.SortOrder
-  color?: Prisma.SortOrderInput | Prisma.SortOrder
+  primaryColor?: Prisma.SortOrder
+  secondaryColor?: Prisma.SortOrderInput | Prisma.SortOrder
+  colorPattern?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -317,7 +335,9 @@ export type DumpsterWhereUniqueInput = Prisma.AtLeast<{
   label?: Prisma.StringFilter<"Dumpster"> | string
   size?: Prisma.IntFilter<"Dumpster"> | number
   sizeLabel?: Prisma.StringFilter<"Dumpster"> | string
-  color?: Prisma.StringNullableFilter<"Dumpster"> | string | null
+  primaryColor?: Prisma.EnumDumpsterColorFilter<"Dumpster"> | $Enums.DumpsterColor
+  secondaryColor?: Prisma.EnumDumpsterColorNullableFilter<"Dumpster"> | $Enums.DumpsterColor | null
+  colorPattern?: Prisma.EnumDumpsterPatternFilter<"Dumpster"> | $Enums.DumpsterPattern
   status?: Prisma.EnumDumpsterStatusFilter<"Dumpster"> | $Enums.DumpsterStatus
   notes?: Prisma.StringNullableFilter<"Dumpster"> | string | null
   isActive?: Prisma.BoolFilter<"Dumpster"> | boolean
@@ -334,7 +354,9 @@ export type DumpsterOrderByWithAggregationInput = {
   size?: Prisma.SortOrder
   sizeLabel?: Prisma.SortOrder
   serialNumber?: Prisma.SortOrderInput | Prisma.SortOrder
-  color?: Prisma.SortOrderInput | Prisma.SortOrder
+  primaryColor?: Prisma.SortOrder
+  secondaryColor?: Prisma.SortOrderInput | Prisma.SortOrder
+  colorPattern?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -358,7 +380,9 @@ export type DumpsterScalarWhereWithAggregatesInput = {
   size?: Prisma.IntWithAggregatesFilter<"Dumpster"> | number
   sizeLabel?: Prisma.StringWithAggregatesFilter<"Dumpster"> | string
   serialNumber?: Prisma.StringNullableWithAggregatesFilter<"Dumpster"> | string | null
-  color?: Prisma.StringNullableWithAggregatesFilter<"Dumpster"> | string | null
+  primaryColor?: Prisma.EnumDumpsterColorWithAggregatesFilter<"Dumpster"> | $Enums.DumpsterColor
+  secondaryColor?: Prisma.EnumDumpsterColorNullableWithAggregatesFilter<"Dumpster"> | $Enums.DumpsterColor | null
+  colorPattern?: Prisma.EnumDumpsterPatternWithAggregatesFilter<"Dumpster"> | $Enums.DumpsterPattern
   status?: Prisma.EnumDumpsterStatusWithAggregatesFilter<"Dumpster"> | $Enums.DumpsterStatus
   notes?: Prisma.StringNullableWithAggregatesFilter<"Dumpster"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"Dumpster"> | boolean
@@ -374,7 +398,9 @@ export type DumpsterCreateInput = {
   size: number
   sizeLabel: string
   serialNumber?: string | null
-  color?: string | null
+  primaryColor?: $Enums.DumpsterColor
+  secondaryColor?: $Enums.DumpsterColor | null
+  colorPattern?: $Enums.DumpsterPattern
   status?: $Enums.DumpsterStatus
   notes?: string | null
   isActive?: boolean
@@ -391,7 +417,9 @@ export type DumpsterUncheckedCreateInput = {
   size: number
   sizeLabel: string
   serialNumber?: string | null
-  color?: string | null
+  primaryColor?: $Enums.DumpsterColor
+  secondaryColor?: $Enums.DumpsterColor | null
+  colorPattern?: $Enums.DumpsterPattern
   status?: $Enums.DumpsterStatus
   notes?: string | null
   isActive?: boolean
@@ -408,7 +436,9 @@ export type DumpsterUpdateInput = {
   size?: Prisma.IntFieldUpdateOperationsInput | number
   sizeLabel?: Prisma.StringFieldUpdateOperationsInput | string
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryColor?: Prisma.EnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor
+  secondaryColor?: Prisma.NullableEnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor | null
+  colorPattern?: Prisma.EnumDumpsterPatternFieldUpdateOperationsInput | $Enums.DumpsterPattern
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -425,7 +455,9 @@ export type DumpsterUncheckedUpdateInput = {
   size?: Prisma.IntFieldUpdateOperationsInput | number
   sizeLabel?: Prisma.StringFieldUpdateOperationsInput | string
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryColor?: Prisma.EnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor
+  secondaryColor?: Prisma.NullableEnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor | null
+  colorPattern?: Prisma.EnumDumpsterPatternFieldUpdateOperationsInput | $Enums.DumpsterPattern
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -442,7 +474,9 @@ export type DumpsterCreateManyInput = {
   size: number
   sizeLabel: string
   serialNumber?: string | null
-  color?: string | null
+  primaryColor?: $Enums.DumpsterColor
+  secondaryColor?: $Enums.DumpsterColor | null
+  colorPattern?: $Enums.DumpsterPattern
   status?: $Enums.DumpsterStatus
   notes?: string | null
   isActive?: boolean
@@ -458,7 +492,9 @@ export type DumpsterUpdateManyMutationInput = {
   size?: Prisma.IntFieldUpdateOperationsInput | number
   sizeLabel?: Prisma.StringFieldUpdateOperationsInput | string
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryColor?: Prisma.EnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor
+  secondaryColor?: Prisma.NullableEnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor | null
+  colorPattern?: Prisma.EnumDumpsterPatternFieldUpdateOperationsInput | $Enums.DumpsterPattern
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -474,7 +510,9 @@ export type DumpsterUncheckedUpdateManyInput = {
   size?: Prisma.IntFieldUpdateOperationsInput | number
   sizeLabel?: Prisma.StringFieldUpdateOperationsInput | string
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryColor?: Prisma.EnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor
+  secondaryColor?: Prisma.NullableEnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor | null
+  colorPattern?: Prisma.EnumDumpsterPatternFieldUpdateOperationsInput | $Enums.DumpsterPattern
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -490,7 +528,9 @@ export type DumpsterCountOrderByAggregateInput = {
   size?: Prisma.SortOrder
   sizeLabel?: Prisma.SortOrder
   serialNumber?: Prisma.SortOrder
-  color?: Prisma.SortOrder
+  primaryColor?: Prisma.SortOrder
+  secondaryColor?: Prisma.SortOrder
+  colorPattern?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -512,7 +552,9 @@ export type DumpsterMaxOrderByAggregateInput = {
   size?: Prisma.SortOrder
   sizeLabel?: Prisma.SortOrder
   serialNumber?: Prisma.SortOrder
-  color?: Prisma.SortOrder
+  primaryColor?: Prisma.SortOrder
+  secondaryColor?: Prisma.SortOrder
+  colorPattern?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -528,7 +570,9 @@ export type DumpsterMinOrderByAggregateInput = {
   size?: Prisma.SortOrder
   sizeLabel?: Prisma.SortOrder
   serialNumber?: Prisma.SortOrder
-  color?: Prisma.SortOrder
+  primaryColor?: Prisma.SortOrder
+  secondaryColor?: Prisma.SortOrder
+  colorPattern?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -557,6 +601,18 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type EnumDumpsterColorFieldUpdateOperationsInput = {
+  set?: $Enums.DumpsterColor
+}
+
+export type NullableEnumDumpsterColorFieldUpdateOperationsInput = {
+  set?: $Enums.DumpsterColor | null
+}
+
+export type EnumDumpsterPatternFieldUpdateOperationsInput = {
+  set?: $Enums.DumpsterPattern
+}
+
 export type EnumDumpsterStatusFieldUpdateOperationsInput = {
   set?: $Enums.DumpsterStatus
 }
@@ -583,7 +639,9 @@ export type DumpsterCreateWithoutBookingsInput = {
   size: number
   sizeLabel: string
   serialNumber?: string | null
-  color?: string | null
+  primaryColor?: $Enums.DumpsterColor
+  secondaryColor?: $Enums.DumpsterColor | null
+  colorPattern?: $Enums.DumpsterPattern
   status?: $Enums.DumpsterStatus
   notes?: string | null
   isActive?: boolean
@@ -599,7 +657,9 @@ export type DumpsterUncheckedCreateWithoutBookingsInput = {
   size: number
   sizeLabel: string
   serialNumber?: string | null
-  color?: string | null
+  primaryColor?: $Enums.DumpsterColor
+  secondaryColor?: $Enums.DumpsterColor | null
+  colorPattern?: $Enums.DumpsterPattern
   status?: $Enums.DumpsterStatus
   notes?: string | null
   isActive?: boolean
@@ -631,7 +691,9 @@ export type DumpsterUpdateWithoutBookingsInput = {
   size?: Prisma.IntFieldUpdateOperationsInput | number
   sizeLabel?: Prisma.StringFieldUpdateOperationsInput | string
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryColor?: Prisma.EnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor
+  secondaryColor?: Prisma.NullableEnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor | null
+  colorPattern?: Prisma.EnumDumpsterPatternFieldUpdateOperationsInput | $Enums.DumpsterPattern
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -647,7 +709,9 @@ export type DumpsterUncheckedUpdateWithoutBookingsInput = {
   size?: Prisma.IntFieldUpdateOperationsInput | number
   sizeLabel?: Prisma.StringFieldUpdateOperationsInput | string
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryColor?: Prisma.EnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor
+  secondaryColor?: Prisma.NullableEnumDumpsterColorFieldUpdateOperationsInput | $Enums.DumpsterColor | null
+  colorPattern?: Prisma.EnumDumpsterPatternFieldUpdateOperationsInput | $Enums.DumpsterPattern
   status?: Prisma.EnumDumpsterStatusFieldUpdateOperationsInput | $Enums.DumpsterStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -694,7 +758,9 @@ export type DumpsterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   size?: boolean
   sizeLabel?: boolean
   serialNumber?: boolean
-  color?: boolean
+  primaryColor?: boolean
+  secondaryColor?: boolean
+  colorPattern?: boolean
   status?: boolean
   notes?: boolean
   isActive?: boolean
@@ -712,7 +778,9 @@ export type DumpsterSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   size?: boolean
   sizeLabel?: boolean
   serialNumber?: boolean
-  color?: boolean
+  primaryColor?: boolean
+  secondaryColor?: boolean
+  colorPattern?: boolean
   status?: boolean
   notes?: boolean
   isActive?: boolean
@@ -728,7 +796,9 @@ export type DumpsterSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   size?: boolean
   sizeLabel?: boolean
   serialNumber?: boolean
-  color?: boolean
+  primaryColor?: boolean
+  secondaryColor?: boolean
+  colorPattern?: boolean
   status?: boolean
   notes?: boolean
   isActive?: boolean
@@ -744,7 +814,9 @@ export type DumpsterSelectScalar = {
   size?: boolean
   sizeLabel?: boolean
   serialNumber?: boolean
-  color?: boolean
+  primaryColor?: boolean
+  secondaryColor?: boolean
+  colorPattern?: boolean
   status?: boolean
   notes?: boolean
   isActive?: boolean
@@ -754,7 +826,7 @@ export type DumpsterSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DumpsterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "size" | "sizeLabel" | "serialNumber" | "color" | "status" | "notes" | "isActive" | "basePrice" | "concretePrice" | "createdAt" | "updatedAt", ExtArgs["result"]["dumpster"]>
+export type DumpsterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "size" | "sizeLabel" | "serialNumber" | "primaryColor" | "secondaryColor" | "colorPattern" | "status" | "notes" | "isActive" | "basePrice" | "concretePrice" | "createdAt" | "updatedAt", ExtArgs["result"]["dumpster"]>
 export type DumpsterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   bookings?: boolean | Prisma.Dumpster$bookingsArgs<ExtArgs>
   _count?: boolean | Prisma.DumpsterCountOutputTypeDefaultArgs<ExtArgs>
@@ -773,7 +845,9 @@ export type $DumpsterPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     size: number
     sizeLabel: string
     serialNumber: string | null
-    color: string | null
+    primaryColor: $Enums.DumpsterColor
+    secondaryColor: $Enums.DumpsterColor | null
+    colorPattern: $Enums.DumpsterPattern
     status: $Enums.DumpsterStatus
     notes: string | null
     isActive: boolean
@@ -1210,7 +1284,9 @@ export interface DumpsterFieldRefs {
   readonly size: Prisma.FieldRef<"Dumpster", 'Int'>
   readonly sizeLabel: Prisma.FieldRef<"Dumpster", 'String'>
   readonly serialNumber: Prisma.FieldRef<"Dumpster", 'String'>
-  readonly color: Prisma.FieldRef<"Dumpster", 'String'>
+  readonly primaryColor: Prisma.FieldRef<"Dumpster", 'DumpsterColor'>
+  readonly secondaryColor: Prisma.FieldRef<"Dumpster", 'DumpsterColor'>
+  readonly colorPattern: Prisma.FieldRef<"Dumpster", 'DumpsterPattern'>
   readonly status: Prisma.FieldRef<"Dumpster", 'DumpsterStatus'>
   readonly notes: Prisma.FieldRef<"Dumpster", 'String'>
   readonly isActive: Prisma.FieldRef<"Dumpster", 'Boolean'>

@@ -3,18 +3,47 @@
 import BookingCard from "./booking-card.component";
 import { getBookingEventsForDate } from "./booking-calendar.utils";
 
+function groupEventsByBooking(events) {
+  return events.reduce((acc, event) => {
+    const bookingId = event.bookingId || event.booking?.id || event.id;
+
+    if (!acc[bookingId]) {
+      acc[bookingId] = {
+        bookingId,
+        booking: event.booking,
+        events: [],
+      };
+    }
+
+    acc[bookingId].events.push(event);
+
+    return acc;
+  }, {});
+}
+
 export default function BookingCalendarDay({
   bookings = [],
   selectedDate,
   compact = false,
+  focusedBookingId,
+  setFocusedBookingId,
+
+  // Optional later: pass real API handlers from parent
+  onMarkDelivered,
+  onMarkPickedUp,
 }) {
   const activeDate = selectedDate ? new Date(selectedDate) : new Date();
 
   const events = getBookingEventsForDate(bookings, activeDate);
+  const groupedEvents = Object.values(groupEventsByBooking(events));
+
+  if (events.length === 0) {
+    return null;
+  }
 
   return (
-    <div>
-      <div className="mb-3 flex flex-col gap-1">
+    <section className="min-w-0">
+      <div className="mb-4">
         <h3 className="text-base font-semibold text-gray-900">
           {activeDate.toLocaleDateString(undefined, {
             weekday: "long",
@@ -23,28 +52,30 @@ export default function BookingCalendarDay({
           })}
         </h3>
 
-        <p className="text-sm text-gray-500">
-          {events.length} scheduled item{events.length === 1 ? "" : "s"}
+        <p className="mt-1 text-sm text-gray-500">
+          {events.length} scheduled item{events.length === 1 ? "" : "s"} from{" "}
+          {groupedEvents.length} order{groupedEvents.length === 1 ? "" : "s"}
         </p>
       </div>
 
-      {events.length === 0 ? (
-        <div className="rounded-xl border border-dashed p-6 text-center text-sm text-gray-400">
-          No deliveries or pickups scheduled.
-        </div>
-      ) : (
-        <div
-          className={
-            compact
-              ? "grid gap-3 md:grid-cols-2"
-              : "grid gap-3 sm:grid-cols-2 xl:grid-cols-4"
-          }
-        >
-          {events.map((event) => (
-            <BookingCard key={event.id} event={event} />
-          ))}
-        </div>
-      )}
-    </div>
+      <div
+        className={
+          compact
+            ? "grid min-w-0 gap-4 md:grid-cols-2"
+            : "grid min-w-0 gap-4 lg:grid-cols-2"
+        }
+      >
+        {groupedEvents.map((group) => (
+          <BookingCard
+            key={group.bookingId}
+            group={group}
+            focusedBookingId={focusedBookingId}
+            setFocusedBookingId={setFocusedBookingId}
+            onMarkDelivered={onMarkDelivered}
+            onMarkPickedUp={onMarkPickedUp}
+          />
+        ))}
+      </div>
+    </section>
   );
 }

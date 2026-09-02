@@ -14,7 +14,7 @@ export default function AdminCalendarPage() {
 
         const nextBookings = Array.isArray(response.data)
           ? response.data
-          : response.data?.bookings ?? [];
+          : (response.data?.bookings ?? []);
 
         setBookings(nextBookings);
       } catch (error) {

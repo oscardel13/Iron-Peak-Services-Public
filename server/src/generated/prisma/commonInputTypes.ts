@@ -193,6 +193,27 @@ export type IntFilter<$PrismaModel = never> = {
   not?: Prisma.NestedIntFilter<$PrismaModel> | number
 }
 
+export type EnumDumpsterColorFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterColor | Prisma.EnumDumpsterColorFieldRefInput<$PrismaModel>
+  in?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDumpsterColorFilter<$PrismaModel> | $Enums.DumpsterColor
+}
+
+export type EnumDumpsterColorNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterColor | Prisma.EnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumDumpsterColorNullableFilter<$PrismaModel> | $Enums.DumpsterColor | null
+}
+
+export type EnumDumpsterPatternFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterPattern | Prisma.EnumDumpsterPatternFieldRefInput<$PrismaModel>
+  in?: $Enums.DumpsterPattern[] | Prisma.ListEnumDumpsterPatternFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DumpsterPattern[] | Prisma.ListEnumDumpsterPatternFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDumpsterPatternFilter<$PrismaModel> | $Enums.DumpsterPattern
+}
+
 export type EnumDumpsterStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.DumpsterStatus | Prisma.EnumDumpsterStatusFieldRefInput<$PrismaModel>
   in?: $Enums.DumpsterStatus[] | Prisma.ListEnumDumpsterStatusFieldRefInput<$PrismaModel>
@@ -214,6 +235,36 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedIntFilter<$PrismaModel>
   _max?: Prisma.NestedIntFilter<$PrismaModel>
+}
+
+export type EnumDumpsterColorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterColor | Prisma.EnumDumpsterColorFieldRefInput<$PrismaModel>
+  in?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDumpsterColorWithAggregatesFilter<$PrismaModel> | $Enums.DumpsterColor
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDumpsterColorFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDumpsterColorFilter<$PrismaModel>
+}
+
+export type EnumDumpsterColorNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterColor | Prisma.EnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumDumpsterColorNullableWithAggregatesFilter<$PrismaModel> | $Enums.DumpsterColor | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDumpsterColorNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDumpsterColorNullableFilter<$PrismaModel>
+}
+
+export type EnumDumpsterPatternWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterPattern | Prisma.EnumDumpsterPatternFieldRefInput<$PrismaModel>
+  in?: $Enums.DumpsterPattern[] | Prisma.ListEnumDumpsterPatternFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DumpsterPattern[] | Prisma.ListEnumDumpsterPatternFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDumpsterPatternWithAggregatesFilter<$PrismaModel> | $Enums.DumpsterPattern
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDumpsterPatternFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDumpsterPatternFilter<$PrismaModel>
 }
 
 export type EnumDumpsterStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -597,6 +648,27 @@ export type NestedEnumAuthProviderTypeWithAggregatesFilter<$PrismaModel = never>
   _max?: Prisma.NestedEnumAuthProviderTypeFilter<$PrismaModel>
 }
 
+export type NestedEnumDumpsterColorFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterColor | Prisma.EnumDumpsterColorFieldRefInput<$PrismaModel>
+  in?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDumpsterColorFilter<$PrismaModel> | $Enums.DumpsterColor
+}
+
+export type NestedEnumDumpsterColorNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterColor | Prisma.EnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumDumpsterColorNullableFilter<$PrismaModel> | $Enums.DumpsterColor | null
+}
+
+export type NestedEnumDumpsterPatternFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterPattern | Prisma.EnumDumpsterPatternFieldRefInput<$PrismaModel>
+  in?: $Enums.DumpsterPattern[] | Prisma.ListEnumDumpsterPatternFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DumpsterPattern[] | Prisma.ListEnumDumpsterPatternFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDumpsterPatternFilter<$PrismaModel> | $Enums.DumpsterPattern
+}
+
 export type NestedEnumDumpsterStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.DumpsterStatus | Prisma.EnumDumpsterStatusFieldRefInput<$PrismaModel>
   in?: $Enums.DumpsterStatus[] | Prisma.ListEnumDumpsterStatusFieldRefInput<$PrismaModel>
@@ -629,6 +701,36 @@ export type NestedFloatFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatFilter<$PrismaModel> | number
+}
+
+export type NestedEnumDumpsterColorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterColor | Prisma.EnumDumpsterColorFieldRefInput<$PrismaModel>
+  in?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDumpsterColorWithAggregatesFilter<$PrismaModel> | $Enums.DumpsterColor
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDumpsterColorFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDumpsterColorFilter<$PrismaModel>
+}
+
+export type NestedEnumDumpsterColorNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterColor | Prisma.EnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.DumpsterColor[] | Prisma.ListEnumDumpsterColorFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumDumpsterColorNullableWithAggregatesFilter<$PrismaModel> | $Enums.DumpsterColor | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDumpsterColorNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDumpsterColorNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumDumpsterPatternWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DumpsterPattern | Prisma.EnumDumpsterPatternFieldRefInput<$PrismaModel>
+  in?: $Enums.DumpsterPattern[] | Prisma.ListEnumDumpsterPatternFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DumpsterPattern[] | Prisma.ListEnumDumpsterPatternFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDumpsterPatternWithAggregatesFilter<$PrismaModel> | $Enums.DumpsterPattern
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDumpsterPatternFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDumpsterPatternFilter<$PrismaModel>
 }
 
 export type NestedEnumDumpsterStatusWithAggregatesFilter<$PrismaModel = never> = {
