@@ -38,7 +38,34 @@ export default function BookingCalendarDay({
   const groupedEvents = Object.values(groupEventsByBooking(events));
 
   if (events.length === 0) {
-    return null;
+    return (
+      <div
+        className={
+          compact
+            ? "rounded-2xl border border-dashed border-gray-200 bg-gray-50/80 p-6 text-center"
+            : "rounded-3xl border border-dashed border-gray-200 bg-gray-50/80 p-8 text-center"
+        }
+      >
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-xl shadow-sm">
+          📅
+        </div>
+
+        <p className="mt-4 text-sm font-semibold text-gray-900">
+          No bookings today
+        </p>
+
+        <p className="mt-1 text-sm text-gray-500">
+          There are no scheduled deliveries or pickups for this day.
+        </p>
+
+        {compact ? (
+          <p className="mt-3 text-xs font-medium text-gray-400">
+            Switch to Week view or open the Dumpster Timeline to see what’s
+            coming up.
+          </p>
+        ) : null}
+      </div>
+    );
   }
 
   return (

@@ -1,0 +1,60 @@
+export const INITIAL_BOOKING_FORM = {
+  address: {
+    query: "",
+    fullAddress: "",
+    address1: "",
+    city: "",
+    state: "",
+    zip: "",
+    latitude: null,
+    longitude: null,
+    projectType: "residential",
+    distanceFromWarehouse: null,
+  },
+  dumpster: {
+    material: "",
+    size: "",
+    productId: "",
+    productLabel: "",
+    basePrice: 0,
+    concretePrice: 0,
+    includedWeightText: "",
+  },
+  addons: {
+    drivewayProtection: false,
+    priorityDelivery: false,
+  },
+  schedule: {
+    deliveryDate: "",
+    pickupDate: "",
+    unknownPickup: false,
+    rentalDays: 0,
+    extraDays: 0,
+    extraDaysFee: 0,
+  },
+  location: {
+    placement: "",
+    instructions: "",
+    verified: false,
+  },
+  customer: {
+    customerType: "home",
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+  },
+  payment: {
+    billingSameAsCustomer: true,
+    status: "pending",
+  },
+  pricing: {
+    basePrice: 0,
+    materialSurcharge: 0,
+    drivewayProtectionFee: 0,
+    priorityDeliveryFee: 0,
+    extraDaysFee: 0,
+    mileageFee: 0,
+    total: 0,
+  }
+};

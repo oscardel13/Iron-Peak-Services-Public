@@ -12,6 +12,7 @@ import DashboardRecentBookings from "./components/dashboard-recent-bookings/dash
 import BookingCalendar from "./components/booking-calendar/booking-calendar.component";
 
 import { getAPI } from "@/utils/api";
+import DashboardScheduleWidget from "./components/dashboard-schedule-widget/dashboard-schedule-widget.component";
 
 function formatDateKey(value) {
   if (!value) return null;
@@ -38,7 +39,7 @@ export default function DashboardPage() {
 
         const nextBookings = Array.isArray(response.data)
           ? response.data
-          : response.data?.bookings ?? [];
+          : (response.data?.bookings ?? []);
 
         setBookings(nextBookings);
       } catch (error) {
@@ -54,7 +55,7 @@ export default function DashboardPage() {
 
         const nextInventory = Array.isArray(response.data)
           ? response.data
-          : response.data?.dumpsters ?? response.data?.inventory ?? [];
+          : (response.data?.dumpsters ?? response.data?.inventory ?? []);
 
         setInventory(nextInventory);
       } catch (error) {
@@ -70,41 +71,41 @@ export default function DashboardPage() {
     const todayKey = formatDateKey(new Date());
 
     const activeBookings = bookings.filter(
-      (booking) => booking.bookingStatus === "ACTIVE"
+      (booking) => booking.bookingStatus === "ACTIVE",
     );
 
     const scheduledBookings = bookings.filter(
-      (booking) => booking.bookingStatus === "SCHEDULED"
+      (booking) => booking.bookingStatus === "SCHEDULED",
     );
 
     const unpaidBookings = bookings.filter(
       (booking) =>
         booking.paymentStatus === "UNPAID" ||
-        booking.paymentStatus === "DEPOSIT_PAID"
+        booking.paymentStatus === "DEPOSIT_PAID",
     );
 
     const deliveriesToday = bookings.filter(
-      (booking) => formatDateKey(booking.deliveryDate) === todayKey
+      (booking) => formatDateKey(booking.deliveryDate) === todayKey,
     );
 
     const pickupsToday = bookings.filter(
       (booking) =>
         booking.pickupDate &&
         !booking.pickupDateUnknown &&
-        formatDateKey(booking.pickupDate) === todayKey
+        formatDateKey(booking.pickupDate) === todayKey,
     );
 
     const availableInventory = inventory.filter(
-      (item) => item.status === "AVAILABLE"
+      (item) => item.status === "AVAILABLE",
     );
 
     const maintenanceInventory = inventory.filter(
       (item) =>
-        item.status === "MAINTENANCE" || item.status === "OUT_OF_SERVICE"
+        item.status === "MAINTENANCE" || item.status === "OUT_OF_SERVICE",
     );
 
     const reservedInventory = inventory.filter(
-      (item) => item.status === "RESERVED"
+      (item) => item.status === "RESERVED",
     );
 
     const recentBookings = [...bookings]
@@ -146,14 +147,10 @@ export default function DashboardPage() {
       <DashboardSummaryCards dashboardData={dashboardData} />
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <BookingCalendar
+        <DashboardScheduleWidget
           bookings={bookings}
-          allowedViews={["day", "week"]}
-          defaultView="day"
-          title="Today’s Schedule"
-          description="Deliveries and pickups for the day."
-          compact
-          showDayDetails
+          inventory={inventory}
+          routeBase="/client/bookings"
         />
 
         <DashboardQuickActions />
