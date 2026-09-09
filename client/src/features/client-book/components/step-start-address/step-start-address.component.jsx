@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import StepShell from "../step-shell/step-shell.component";
 import { calculateDistanceMiles, searchMapboxAddresses } from "@/utils/mapbox";
 
@@ -29,6 +29,33 @@ function Select(props) {
   );
 }
 
+function hasCompleteAddress(address = {}) {
+  return Boolean(
+    address.address1?.trim() &&
+    address.city?.trim() &&
+    address.state?.trim() &&
+    address.zip?.trim(),
+  );
+}
+
+function hasCalculatedDistance(address = {}) {
+  return Boolean(
+    address.longitude && address.latitude && address.distanceFromWarehouse,
+  );
+}
+
+function buildAddressSearchText(address = {}) {
+  return [
+    address.fullAddress,
+    address.address1,
+    address.city,
+    address.state,
+    address.zip,
+  ]
+    .filter(Boolean)
+    .join(", ");
+}
+
 export default function StepStartAddress({
   bookingForm,
   updateBookingForm,
@@ -38,6 +65,20 @@ export default function StepStartAddress({
   const [addressSuggestions, setAddressSuggestions] = useState([]);
   const [isSearchingAddress, setIsSearchingAddress] = useState(false);
   const [addressSearchError, setAddressSearchError] = useState("");
+  const [isCalculatingDistance, setIsCalculatingDistance] = useState(false);
+  const [localError, setLocalError] = useState("");
+
+  const address = bookingForm.address || {};
+
+  const addressSearchText = useMemo(() => {
+    return buildAddressSearchText(address);
+  }, [
+    address.fullAddress,
+    address.address1,
+    address.city,
+    address.state,
+    address.zip,
+  ]);
 
   useEffect(() => {
     const query = bookingForm.address.query;
@@ -81,7 +122,7 @@ export default function StepStartAddress({
     };
   }, [bookingForm.address.query]);
 
-  function selectAddress(suggestion) {
+  function applyAddressSuggestion(suggestion) {
     const distanceFromWarehouse = calculateDistanceMiles(WAREHOUSE_LOCATION, {
       longitude: suggestion.longitude,
       latitude: suggestion.latitude,
@@ -101,15 +142,90 @@ export default function StepStartAddress({
     updateBookingForm("pricing.mileageFee", mileageFee);
 
     setAddressSuggestions([]);
+    setLocalError("");
+  }
+
+  function selectAddress(suggestion) {
+    applyAddressSuggestion(suggestion);
+  }
+
+  async function calculateDistanceFromCurrentAddress() {
+    if (hasCalculatedDistance(address)) {
+      return true;
+    }
+
+    const searchText =
+      address.query?.trim() ||
+      address.fullAddress?.trim() ||
+      addressSearchText?.trim();
+
+    if (!searchText || searchText.length < 3) {
+      setLocalError("Please enter a delivery address before continuing.");
+      return false;
+    }
+
+    try {
+      setIsCalculatingDistance(true);
+      setLocalError("");
+
+      const suggestions = await searchMapboxAddresses(searchText);
+      const bestSuggestion = suggestions?.[0];
+
+      if (!bestSuggestion?.longitude || !bestSuggestion?.latitude) {
+        setLocalError(
+          "We could not verify that address. Please select an address from the search results.",
+        );
+        return false;
+      }
+
+      applyAddressSuggestion(bestSuggestion);
+      return true;
+    } catch (error) {
+      console.error("Distance calculation failed:", error);
+      setLocalError(
+        "We could not calculate the delivery distance. Please check the address and try again.",
+      );
+      return false;
+    } finally {
+      setIsCalculatingDistance(false);
+    }
+  }
+
+  async function handleNext() {
+    if (!hasCompleteAddress(address) && !address.query?.trim()) {
+      setLocalError(
+        "Please enter the full delivery address before continuing.",
+      );
+      return;
+    }
+
+    const distanceCalculated = await calculateDistanceFromCurrentAddress();
+
+    if (!distanceCalculated) return;
+
+    goToNextStep();
+  }
+
+  function updateAddressField(path, value) {
+    updateBookingForm(path, value);
+
+    updateBookingForm("address.longitude", "");
+    updateBookingForm("address.latitude", "");
+    updateBookingForm("address.distanceFromWarehouse", "");
+    updateBookingForm("pricing.mileageFee", 0);
+
+    setLocalError("");
   }
 
   return (
     <StepShell
       title="Start address"
       description="Enter the delivery address and project type to begin your booking."
-      onNext={goToNextStep}
+      onNext={handleNext}
       hideBack
       errors={formErrors}
+      nextLabel={isCalculatingDistance ? "Calculating..." : "Continue"}
+      nextDisabled={isCalculatingDistance}
     >
       <div className="space-y-4">
         <div className="relative">
@@ -120,8 +236,10 @@ export default function StepStartAddress({
           <Input
             placeholder="Start typing an address..."
             value={bookingForm.address.query}
-            onChange={(e) => updateBookingForm("address.query", e.target.value)}
-            autoComplete="off"
+            onChange={(e) =>
+              updateAddressField("address.query", e.target.value)
+            }
+            autoComplete="street-address"
           />
 
           {isSearchingAddress && (
@@ -165,8 +283,9 @@ export default function StepStartAddress({
             <Input
               value={bookingForm.address.fullAddress}
               onChange={(e) =>
-                updateBookingForm("address.fullAddress", e.target.value)
+                updateAddressField("address.fullAddress", e.target.value)
               }
+              autoComplete="street-address"
             />
           </div>
 
@@ -177,8 +296,9 @@ export default function StepStartAddress({
             <Input
               value={bookingForm.address.address1}
               onChange={(e) =>
-                updateBookingForm("address.address1", e.target.value)
+                updateAddressField("address.address1", e.target.value)
               }
+              autoComplete="address-line1"
             />
           </div>
 
@@ -189,8 +309,9 @@ export default function StepStartAddress({
             <Input
               value={bookingForm.address.city}
               onChange={(e) =>
-                updateBookingForm("address.city", e.target.value)
+                updateAddressField("address.city", e.target.value)
               }
+              autoComplete="address-level2"
             />
           </div>
 
@@ -201,8 +322,9 @@ export default function StepStartAddress({
             <Input
               value={bookingForm.address.state}
               onChange={(e) =>
-                updateBookingForm("address.state", e.target.value)
+                updateAddressField("address.state", e.target.value)
               }
+              autoComplete="address-level1"
             />
           </div>
 
@@ -212,7 +334,10 @@ export default function StepStartAddress({
             </label>
             <Input
               value={bookingForm.address.zip}
-              onChange={(e) => updateBookingForm("address.zip", e.target.value)}
+              onChange={(e) =>
+                updateAddressField("address.zip", e.target.value)
+              }
+              autoComplete="postal-code"
             />
           </div>
 
@@ -247,6 +372,12 @@ export default function StepStartAddress({
             />
           </div>
         </div>
+
+        {localError ? (
+          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+            {localError}
+          </div>
+        ) : null}
       </div>
     </StepShell>
   );

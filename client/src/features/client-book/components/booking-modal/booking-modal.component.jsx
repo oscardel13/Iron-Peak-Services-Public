@@ -12,15 +12,15 @@ export default function BookingModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 p-3 sm:p-6">
-      <div className="mx-auto flex min-h-full max-w-6xl items-start justify-center">
-        <div className="relative w-full overflow-hidden rounded-3xl bg-white shadow-2xl">
-          <div className="sticky top-0 z-20 flex items-center justify-between border-b border-gray-200 bg-white/95 px-4 py-3 backdrop-blur sm:px-5">
+    <div className="fixed inset-0 z-50 bg-black/50">
+      <div className="flex min-h-dvh items-stretch justify-center sm:items-center sm:p-6">
+        <div className="flex h-dvh w-full flex-col bg-white shadow-xl sm:h-auto sm:max-h-[calc(100dvh-3rem)] sm:max-w-6xl sm:overflow-hidden sm:rounded-3xl">
+          <div className="sticky top-0 z-20 flex shrink-0 items-center justify-between border-b border-gray-200 bg-white px-4 py-4 sm:px-6">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
                 New Rental
               </p>
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-bold text-gray-900">
                 Book a Dumpster
               </h2>
             </div>
@@ -28,21 +28,20 @@ export default function BookingModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-600 transition hover:bg-gray-50"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition hover:bg-gray-50 hover:text-gray-900"
               aria-label="Close booking modal"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
 
-          <div className="p-3 sm:p-5">
+          <div className="min-h-0 flex-1 overflow-y-auto">
             <BookingFlow
               mode="modal"
               source={source}
-              autoScroll={false}
+              autoScroll
               onComplete={() => {
-                // Keep modal open after payment success so user can see confirmation.
-                // You can close here later if preferred.
+                // keep open for now, or redirect later
               }}
             />
           </div>

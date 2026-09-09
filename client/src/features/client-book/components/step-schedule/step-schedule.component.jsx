@@ -1,166 +1,212 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import StepShell from "../step-shell/step-shell.component";
 
-function Input(props) {
-  return (
-    <input
-      {...props}
-      className={`w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 ${
-        props.className || ""
-      }`}
-    />
-  );
-}
+import ScheduleDatePicker from "./components/schedule-date-picker.component";
+import ScheduleDateFields from "./components/schedule-date-fields.component";
+import ScheduleSummaryCards from "./components/schedule-summary-cards.component";
+import ScheduleAvailabilityNotice from "./components/schedule-availability-notice.component";
 
-function getDateInputValueFromDate(date) {
-  const year = date.getFullYear();
-  const month = `${date.getMonth() + 1}`.padStart(2, "0");
-  const day = `${date.getDate()}`.padStart(2, "0");
+import {
+  addDaysToDateInputValue,
+  getRentalDays,
+  getTomorrowDateInputValue,
+  getUpcomingDateOptions,
+} from "./utils/schedule-date.utils";
 
-  return `${year}-${month}-${day}`;
-}
-
-function getTomorrowDateInputValue() {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
-  return getDateInputValueFromDate(tomorrow);
-}
-
-function addDaysToDateInputValue(dateValue, days) {
-  if (!dateValue) return "";
-
-  const [year, month, day] = dateValue.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
-
-  date.setDate(date.getDate() + days);
-
-  return getDateInputValueFromDate(date);
-}
+import { getDateAvailability } from "./utils/schedule-availability.utils";
 
 export default function StepSchedule({
   bookingForm,
   updateScheduleField,
+  availableProducts = [],
+  dumpsters = [],
+  bookings = [],
   goToNextStep,
   goToPreviousStep,
   formErrors = {},
 }) {
+  const [localError, setLocalError] = useState("");
+
   const hasExtraDaysFee = bookingForm.schedule.extraDays > 0;
   const minDate = getTomorrowDateInputValue();
+  const rentableItems = dumpsters.length > 0 ? dumpsters : availableProducts;
+
+  const dateOptions = useMemo(() => getUpcomingDateOptions(21), []);
+
+  const availabilityByDate = useMemo(() => {
+    return dateOptions.reduce((map, option) => {
+      map[option.value] = getDateAvailability({
+        items: rentableItems,
+        bookings,
+        dateValue: option.value,
+      });
+
+      return map;
+    }, {});
+  }, [dateOptions, rentableItems, bookings]);
+
+  const selectedDeliveryAvailability = bookingForm.schedule.deliveryDate
+    ? getDateAvailability({
+        items: rentableItems,
+        bookings,
+        dateValue: bookingForm.schedule.deliveryDate,
+      })
+    : null;
 
   function handleDeliveryDateChange(value) {
+    const availability = getDateAvailability({
+      items: rentableItems,
+      bookings,
+      dateValue: value,
+    });
+
+    if (!availability.isAvailable) {
+      setLocalError("No rentals are available for that delivery date.");
+      updateScheduleField("schedule.deliveryDate", "");
+      updateScheduleField("schedule.pickupDate", "");
+      return;
+    }
+
+    setLocalError("");
     updateScheduleField("schedule.deliveryDate", value);
 
     if (!bookingForm.schedule.unknownPickup && value) {
-      const defaultPickupDate = addDaysToDateInputValue(value, 7);
+      const defaultPickupDate = addDaysToDateInputValue(
+        value,
+        availability.defaultRentalDays,
+      );
+
       updateScheduleField("schedule.pickupDate", defaultPickupDate);
     }
   }
 
   function handlePickupDateChange(value) {
+    const deliveryDate = bookingForm.schedule.deliveryDate;
+
+    if (!deliveryDate) {
+      setLocalError("Please select a delivery date first.");
+      return;
+    }
+
+    const availability = getDateAvailability({
+      items: rentableItems,
+      bookings,
+      dateValue: deliveryDate,
+    });
+
+    const rentalDays = getRentalDays(deliveryDate, value);
+
+    if (
+      availability.maxAvailableDays &&
+      rentalDays > availability.maxAvailableDays
+    ) {
+      setLocalError(
+        `Only ${availability.maxAvailableDays} day${
+          availability.maxAvailableDays === 1 ? "" : "s"
+        } are available from this delivery date.`,
+      );
+
+      updateScheduleField(
+        "schedule.pickupDate",
+        addDaysToDateInputValue(deliveryDate, availability.maxAvailableDays),
+      );
+
+      return;
+    }
+
+    setLocalError("");
     updateScheduleField("schedule.pickupDate", value);
+  }
+
+  function handleNext() {
+    const deliveryDate = bookingForm.schedule.deliveryDate;
+    const pickupDate = bookingForm.schedule.pickupDate;
+
+    if (!deliveryDate) {
+      setLocalError("Please select a delivery date.");
+      return;
+    }
+
+    const availability = getDateAvailability({
+      items: rentableItems,
+      bookings,
+      dateValue: deliveryDate,
+    });
+
+    if (!availability.isAvailable) {
+      setLocalError("No rentals are available for that delivery date.");
+      return;
+    }
+
+    if (!bookingForm.schedule.unknownPickup) {
+      if (!pickupDate) {
+        setLocalError("Please select a pickup date.");
+        return;
+      }
+
+      const rentalDays = getRentalDays(deliveryDate, pickupDate);
+
+      if (rentalDays <= 0) {
+        setLocalError("Pickup date must be after the delivery date.");
+        return;
+      }
+
+      if (
+        availability.maxAvailableDays &&
+        rentalDays > availability.maxAvailableDays
+      ) {
+        setLocalError(
+          `Only ${availability.maxAvailableDays} day${
+            availability.maxAvailableDays === 1 ? "" : "s"
+          } are available from this delivery date.`,
+        );
+        return;
+      }
+    }
+
+    setLocalError("");
+    goToNextStep();
   }
 
   return (
     <StepShell
       title="Choose your dates"
       description="Pick your delivery date and expected pickup date."
-      onNext={goToNextStep}
+      onNext={handleNext}
       onBack={goToPreviousStep}
       errors={formErrors}
     >
       <div className="space-y-6">
-        <div className="grid gap-4 md:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              Delivery Date
-            </label>
-            <Input
-              type="date"
-              min={minDate}
-              value={bookingForm.schedule.deliveryDate}
-              onChange={(e) => handleDeliveryDateChange(e.target.value)}
-            />
-            <p className="mt-2 text-xs text-gray-500">
-              Online booking starts tomorrow. For same-day delivery, please call
-              us.
-            </p>
-          </div>
+        <ScheduleDatePicker
+          dateOptions={dateOptions}
+          availabilityByDate={availabilityByDate}
+          selectedDate={bookingForm.schedule.deliveryDate}
+          onSelectDate={handleDeliveryDateChange}
+        />
 
-          <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              Pickup Date
-            </label>
-            <Input
-              type="date"
-              min={bookingForm.schedule.deliveryDate || minDate}
-              value={bookingForm.schedule.pickupDate}
-              disabled={bookingForm.schedule.unknownPickup}
-              onChange={(e) => handlePickupDateChange(e.target.value)}
-            />
-            <p className="mt-2 text-xs text-gray-500">
-              Pickup is automatically set 7 days after delivery, but you can
-              change it.
-            </p>
-          </div>
-        </div>
+        <ScheduleAvailabilityNotice
+          selectedDeliveryAvailability={selectedDeliveryAvailability}
+          hasExtraDaysFee={hasExtraDaysFee}
+          unknownPickup={bookingForm.schedule.unknownPickup}
+        />
 
-        {/* <label className="flex items-start gap-3 rounded-2xl border border-gray-200 bg-gray-50 p-4">
-          <input
-            type="checkbox"
-            checked={bookingForm.schedule.unknownPickup}
-            onChange={(e) =>
-              updateScheduleField("schedule.unknownPickup", e.target.checked)
-            }
-            className="mt-1 h-5 w-5"
-          />
-          <div>
-            <p className="font-medium text-gray-900">I don't know pickup yet</p>
-            <p className="mt-1 text-sm text-gray-500">
-              You can leave pickup open-ended for now.
-            </p>
-          </div>
-        </label> */}
+        <ScheduleDateFields
+          bookingForm={bookingForm}
+          minDate={minDate}
+          selectedDeliveryAvailability={selectedDeliveryAvailability}
+          onDeliveryDateChange={handleDeliveryDateChange}
+          onPickupDateChange={handlePickupDateChange}
+        />
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-gray-200 bg-white p-4">
-            <p className="text-sm text-gray-500">Rental Days</p>
-            <p className="mt-2 text-2xl font-semibold text-gray-900">
-              {bookingForm.schedule.unknownPickup
-                ? "—"
-                : bookingForm.schedule.rentalDays || 0}
-            </p>
-          </div>
+        <ScheduleSummaryCards bookingForm={bookingForm} />
 
-          <div className="rounded-2xl border border-gray-200 bg-white p-4">
-            <p className="text-sm text-gray-500">Extra Days</p>
-            <p className="mt-2 text-2xl font-semibold text-gray-900">
-              {bookingForm.schedule.unknownPickup
-                ? "—"
-                : bookingForm.schedule.extraDays || 0}
-            </p>
+        {localError ? (
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
+            {localError}
           </div>
-
-          <div className="rounded-2xl border border-gray-200 bg-white p-4">
-            <p className="text-sm text-gray-500">Extra Days Fee</p>
-            <p className="mt-2 text-2xl font-semibold text-gray-900">
-              ${(bookingForm.pricing.extraDaysFee || 0).toFixed(2)}
-            </p>
-          </div>
-        </div>
-
-        {hasExtraDaysFee && !bookingForm.schedule.unknownPickup && (
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
-            <p className="font-semibold text-amber-800">
-              Your rental is longer than 7 days
-            </p>
-            <p className="mt-1 text-sm text-amber-700">
-              Additional time is billed at $25 per day after the first 7 days.
-              That fee has been added to your total.
-            </p>
-          </div>
-        )}
+        ) : null}
       </div>
     </StepShell>
   );

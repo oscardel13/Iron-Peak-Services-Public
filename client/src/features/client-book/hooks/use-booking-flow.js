@@ -30,12 +30,54 @@ function normalizeAddonsResponse(response) {
   return response?.data?.addons || response?.data?.inventory || [];
 }
 
+function normalizeClientResponse(response) {
+  return (
+    response?.data?.client ||
+    response?.data?.user ||
+    response?.data ||
+    response?.client ||
+    response?.user ||
+    null
+  );
+}
+
+function splitName(name = "") {
+  const parts = String(name).trim().split(/\s+/).filter(Boolean);
+
+  return {
+    firstName: parts[0] || "",
+    lastName: parts.slice(1).join(" ") || "",
+  };
+}
+
+function getClientCustomerValues(client) {
+  if (!client) return null;
+
+  const fullName =
+    client.name ||
+    client.fullName ||
+    `${client.firstName || ""} ${client.lastName || ""}`.trim();
+
+  const split = splitName(fullName);
+
+  return {
+    firstName: client.firstName || split.firstName || "",
+    lastName: client.lastName || split.lastName || "",
+    phone: client.phone || client.phoneNumber || "",
+    email: client.email || "",
+  };
+}
+
 export default function useBookingFlow({
   initialForm = INITIAL_BOOKING_FORM,
   autoScroll = true,
 } = {}) {
+  const [signedInClient, setSignedInClient] = useState(null);
+  const [customerPrefilled, setCustomerPrefilled] = useState(false);
+
   const [addons, setAddons] = useState(null);
   const [dumpsters, setDumpsters] = useState(null);
+  const [bookings, setBookings] = useState([]);
 
   const [formErrors, setFormErrors] = useState({});
   const [bookingId, setBookingId] = useState(null);
@@ -59,16 +101,56 @@ export default function useBookingFlow({
   useEffect(() => {
     async function fetchSetupData() {
       try {
-        setLoadingSetup(true);
-        setSetupError("");
-
-        const [dumpstersResponse, addonsResponse] = await Promise.all([
+        const [
+          dumpstersResponse,
+          addonsResponse,
+          bookingsResponse,
+          clientResponse,
+        ] = await Promise.all([
           getAPI("/inventory/dumpsters"),
           getAPI("/inventory/addons"),
+          getAPI("/bookings"),
+          getAPI("/client/me").catch(() => null),
         ]);
 
         setDumpsters(normalizeInventoryResponse(dumpstersResponse));
         setAddons(normalizeAddonsResponse(addonsResponse));
+
+        setBookings(
+          bookingsResponse?.data?.bookings ||
+            bookingsResponse?.data?.data ||
+            bookingsResponse?.bookings ||
+            bookingsResponse?.data ||
+            [],
+        );
+
+        const client = normalizeClientResponse(clientResponse);
+        const customerValues = getClientCustomerValues(client);
+
+        if (customerValues) {
+          setSignedInClient(client);
+
+          setBookingForm((prev) => {
+            const next = structuredClone(prev);
+
+            const shouldPrefill =
+              !hasValue(next.customer.firstName) &&
+              !hasValue(next.customer.lastName) &&
+              !hasValue(next.customer.phone) &&
+              !hasValue(next.customer.email);
+
+            if (!shouldPrefill) return prev;
+
+            next.customer.firstName = customerValues.firstName;
+            next.customer.lastName = customerValues.lastName;
+            next.customer.phone = customerValues.phone;
+            next.customer.email = customerValues.email;
+
+            return next;
+          });
+
+          setCustomerPrefilled(true);
+        }
       } catch (error) {
         console.error("Failed to fetch booking setup data:", error);
         setSetupError("Failed to load booking options.");
@@ -457,8 +539,12 @@ export default function useBookingFlow({
   }
 
   return {
+    signedInClient,
+    customerPrefilled,
+
     addons,
     dumpsters,
+    bookings,
     availableProducts,
 
     formErrors,

@@ -3,15 +3,10 @@
 import DumpsterTimelineBar from "./dumpster-timeline-bar.component";
 
 import {
+  formatDateKey,
   getBookingsForDumpster,
   getDumpsterLabel,
 } from "./dumpster-timeline.utils";
-
-import {
-  getDumpsterAccent,
-  getSecondaryDumpsterAccent,
-  getDumpsterPattern,
-} from "../booking-calendar/booking-calendar.colors";
 
 function getStatusClasses(status) {
   const map = {
@@ -47,7 +42,7 @@ function DumpsterLabelCell({ dumpster, onSelectDumpster }) {
           </span>
 
           {dumpster.serialNumber ? (
-            <span className="truncate text-xs text-gray-500 md:inline">
+            <span className="max-w-full truncate text-xs text-gray-500">
               {dumpster.serialNumber}
             </span>
           ) : null}
@@ -67,48 +62,82 @@ export default function DumpsterTimelineRow({
   setFocusedBookingId,
   onSelectDumpster,
   routeBase,
+  activeDateKey = "",
+  selectedDateKey = "",
+  hoveredDateKey = "",
+  onDayHover,
+  onDayClick,
+  timelineWidth = 1800,
+  dayColumnWidth = 60,
 }) {
   const dumpsterBookings = getBookingsForDumpster(bookings, dumpster.id);
 
   return (
-    <div className="grid min-w-[760px] grid-cols-[115px_1fr] border-b border-gray-100 last:border-b-0 md:min-w-[920px] md:grid-cols-[210px_1fr]">
-      {" "}
+    <div className="grid grid-cols-[128px_var(--timeline-width)] border-b border-gray-100 last:border-b-0 md:grid-cols-[210px_var(--timeline-width)]">
       <DumpsterLabelCell
         dumpster={dumpster}
         onSelectDumpster={onSelectDumpster}
       />
-      <div className="relative min-h-[68px] bg-white">
+
+      <div
+        className="relative min-h-[76px] bg-white"
+        style={{
+          width: `${timelineWidth}px`,
+        }}
+      >
         <div
-          className="absolute inset-0 grid"
+          className="absolute inset-0 z-0 grid"
           style={{
-            gridTemplateColumns: `repeat(${numberOfDays}, minmax(0, 1fr))`,
+            gridTemplateColumns: `repeat(${numberOfDays}, ${dayColumnWidth}px)`,
           }}
         >
-          {timelineDays.map((day) => (
-            <div
-              key={day.toISOString()}
-              className="border-r border-gray-100 last:border-r-0"
-            />
-          ))}
+          {timelineDays.map((day) => {
+            const dateKey = formatDateKey(day);
+            const isActive = activeDateKey === dateKey;
+            const isSelected = selectedDateKey === dateKey;
+            const isHovered = hoveredDateKey === dateKey;
+
+            return (
+              <button
+                key={dateKey}
+                type="button"
+                onMouseEnter={() => onDayHover?.(dateKey)}
+                onMouseLeave={() => onDayHover?.("")}
+                onClick={() => onDayClick?.(day)}
+                className={`border-r border-gray-100 transition last:border-r-0 ${
+                  isSelected
+                    ? "bg-indigo-100/70"
+                    : isHovered
+                      ? "bg-indigo-50"
+                      : isActive
+                        ? "bg-indigo-50"
+                        : ""
+                }`}
+                aria-label={`Highlight ${dateKey}`}
+              />
+            );
+          })}
         </div>
 
         {dumpsterBookings.length === 0 ? (
-          <div className="relative z-10 flex min-h-[68px] items-center px-4 text-sm font-medium text-gray-400">
+          <div className="relative z-10 flex min-h-[76px] items-center px-4 text-sm font-medium text-gray-400">
             No rentals scheduled
           </div>
         ) : null}
 
-        {dumpsterBookings.map((booking) => (
-          <DumpsterTimelineBar
-            key={booking.id}
-            booking={booking}
-            timelineStart={timelineStart}
-            numberOfDays={numberOfDays}
-            focusedBookingId={focusedBookingId}
-            setFocusedBookingId={setFocusedBookingId}
-            routeBase={routeBase}
-          />
-        ))}
+        <div className="relative z-20">
+          {dumpsterBookings.map((booking) => (
+            <DumpsterTimelineBar
+              key={booking.id}
+              booking={booking}
+              timelineStart={timelineStart}
+              numberOfDays={numberOfDays}
+              focusedBookingId={focusedBookingId}
+              setFocusedBookingId={setFocusedBookingId}
+              routeBase={routeBase}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

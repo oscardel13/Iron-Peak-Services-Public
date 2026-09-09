@@ -100,7 +100,7 @@ export default function MiniCalendarEvent({
 
     if (!bookingId) return;
 
-    router.push(`/client/bookings/${bookingId}`);
+    router.push(`/dashboard/bookings/${bookingId}`);
   }
 
   function handleKeyDown(e) {
@@ -111,7 +111,7 @@ export default function MiniCalendarEvent({
 
     if (!bookingId) return;
 
-    router.push(`/client/bookings/${bookingId}`);
+    router.push(`/dashboard/bookings/${bookingId}`);
   }
 
   return (

@@ -27,12 +27,12 @@ export default function BookingShell({
       <div
         className={
           isModal
-            ? "mx-auto w-full max-w-5xl px-0 py-0"
+            ? "mx-auto w-full max-w-5xl px-3 py-4 md:px-6 md:py-6"
             : "mx-auto w-full max-w-5xl px-3 py-4 md:px-6 md:py-6"
         }
       >
         <div className="grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,2fr)_360px]">
-          <div className="min-w-0 space-y-3 overflow-x-auto md:space-y-4">
+          <div className="min-w-0 space-y-3 md:space-y-4">
             <BookingStepNav
               steps={steps}
               currentStep={currentStep}

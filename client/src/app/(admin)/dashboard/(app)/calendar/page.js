@@ -25,7 +25,7 @@ function normalizeInventoryResponse(response) {
   return response?.data?.dumpsters || response?.data?.inventory || [];
 }
 
-export default function ClientCalendarPage() {
+export default function CalendarPage() {
   const [activeTab, setActiveTab] = useState("calendar");
 
   const [bookings, setBookings] = useState([]);
@@ -46,7 +46,7 @@ export default function ClientCalendarPage() {
         setLoadingBookings(true);
         setBookingsError("");
 
-        const response = await getAPI("/client/bookings");
+        const response = await getAPI("/bookings");
         const nextBookings = normalizeBookingsResponse(response);
 
         setBookings(nextBookings);
@@ -95,7 +95,7 @@ export default function ClientCalendarPage() {
       setLoadingBookings(true);
       setBookingsError("");
 
-      const response = await getAPI("/client/bookings");
+      const response = await getAPI("/bookings");
       const nextBookings = normalizeBookingsResponse(response);
 
       setBookings(nextBookings);
@@ -117,10 +117,6 @@ export default function ClientCalendarPage() {
   return (
     <div className="min-w-0 space-y-6">
       <div>
-        <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary">
-          Client Portal
-        </p>
-
         <h1 className="mt-1 text-2xl font-semibold text-gray-900">Calendar</h1>
 
         <p className="mt-1 text-sm text-gray-500">
@@ -199,7 +195,7 @@ export default function ClientCalendarPage() {
               title="Dumpster Timeline"
               description="View rental windows by dumpster."
               defaultDays={30}
-              routeBase="/client/bookings"
+              routeBase="/dashboard/bookings"
             />
           )}
         </div>

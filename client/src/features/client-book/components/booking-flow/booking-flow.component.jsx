@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 import BookingShell from "../booking-shell/booking-shell.component";
 import StepStartAddress from "../step-start-address/step-start-address.component";
 import StepSchedule from "../step-schedule/step-schedule.component";
@@ -18,12 +20,24 @@ export default function BookingFlow({
   autoScroll = true,
   onComplete,
 }) {
+  const flowTopRef = useRef(null);
+
   const booking = useBookingFlow({
-    autoScroll: mode === "page" ? autoScroll : false,
+    autoScroll: false,
   });
+
+  useEffect(() => {
+    if (!autoScroll) return;
+
+    flowTopRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [booking.currentStep, autoScroll]);
 
   function handlePaymentSuccess(paymentIntent) {
     booking.handlePaymentSuccess(paymentIntent);
+
     onComplete?.({
       paymentIntent,
       bookingId: booking.bookingId,
@@ -49,6 +63,9 @@ export default function BookingFlow({
           <StepSchedule
             bookingForm={booking.bookingForm}
             updateScheduleField={booking.updateScheduleField}
+            updateBookingForm={booking.updateBookingForm}
+            availableProducts={booking.availableProducts}
+            bookings={booking.bookings}
             goToNextStep={booking.goToNextStep}
             goToPreviousStep={booking.goToPreviousStep}
             formErrors={booking.formErrors}
@@ -88,6 +105,8 @@ export default function BookingFlow({
             goToNextStep={booking.goToNextStep}
             goToPreviousStep={booking.goToPreviousStep}
             formErrors={booking.formErrors}
+            signedInClient={booking.signedInClient}
+            customerPrefilled={booking.customerPrefilled}
           />
         );
 
@@ -116,39 +135,45 @@ export default function BookingFlow({
 
   if (booking.loadingSetup) {
     return (
-      <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-        <div className="h-8 w-48 animate-pulse rounded-xl bg-gray-100" />
-        <div className="mt-6 h-[420px] animate-pulse rounded-3xl bg-gray-100" />
+      <div ref={flowTopRef}>
+        <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="h-8 w-48 animate-pulse rounded-xl bg-gray-100" />
+          <div className="mt-6 h-[420px] animate-pulse rounded-3xl bg-gray-100" />
+        </div>
       </div>
     );
   }
 
   if (booking.setupError) {
     return (
-      <div className="rounded-3xl border border-red-200 bg-red-50 p-6">
-        <p className="text-sm font-semibold text-red-700">
-          {booking.setupError}
-        </p>
+      <div ref={flowTopRef}>
+        <div className="rounded-3xl border border-red-200 bg-red-50 p-6">
+          <p className="text-sm font-semibold text-red-700">
+            {booking.setupError}
+          </p>
 
-        <p className="mt-1 text-sm text-red-600">
-          Please refresh and try again.
-        </p>
+          <p className="mt-1 text-sm text-red-600">
+            Please refresh and try again.
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <BookingShell
-      steps={BOOKING_STEPS}
-      currentStep={booking.currentStep}
-      goToStep={booking.goToStep}
-      bookingForm={booking.bookingForm}
-      mobileSummaryOpen={booking.mobileSummaryOpen}
-      setMobileSummaryOpen={booking.setMobileSummaryOpen}
-      goToPreviousStep={booking.goToPreviousStep}
-      mode={mode}
-    >
-      {renderStep()}
-    </BookingShell>
+    <div ref={flowTopRef}>
+      <BookingShell
+        steps={BOOKING_STEPS}
+        currentStep={booking.currentStep}
+        goToStep={booking.goToStep}
+        bookingForm={booking.bookingForm}
+        mobileSummaryOpen={booking.mobileSummaryOpen}
+        setMobileSummaryOpen={booking.setMobileSummaryOpen}
+        goToPreviousStep={booking.goToPreviousStep}
+        mode={mode}
+      >
+        {renderStep()}
+      </BookingShell>
+    </div>
   );
 }

@@ -30,9 +30,19 @@ export function getMaterialLabel(material, materialOptions = []) {
 
 export function productSupportsMaterial(product, material) {
   if (!material) return true;
-  return Array.isArray(product.supportedMaterials)
-    ? product.supportedMaterials.includes(material)
-    : false;
+
+  /**
+   * If the backend does not send supportedMaterials yet,
+   * assume the dumpster supports the material.
+   *
+   * This prevents every product from becoming disabled just because
+   * supportedMaterials is missing from the API response.
+   */
+  if (!Array.isArray(product?.supportedMaterials)) return true;
+
+  if (product.supportedMaterials.length === 0) return true;
+
+  return product.supportedMaterials.includes(material);
 }
 
 const FREE_MILE_RADIUS = 20;

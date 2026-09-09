@@ -240,7 +240,7 @@ export default function BookingCard({
 
   function handleOpenBooking() {
     if (!bookingId) return;
-    router.push(`/client/bookings/${bookingId}`);
+    router.push(`/dashboard/bookings/${bookingId}`);
   }
 
   function handleKeyDown(e) {

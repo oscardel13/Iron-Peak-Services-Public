@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MATERIAL_OPTIONS } from "../../utils/booking-data";
+
 import { getAPI } from "@/utils/api";
+
 import StepShell from "../step-shell/step-shell.component";
+import { MATERIAL_OPTIONS } from "../../utils/booking-data";
+import { productSupportsMaterial } from "../../utils/booking-helpers";
 
 function SectionTitle({ children }) {
   return <h3 className="text-lg font-semibold text-gray-900">{children}</h3>;
@@ -65,14 +68,41 @@ export default function StepDumpsterDetails({
     bookingForm.schedule.unknownPickup,
   ]);
 
+  function getSelectedProduct() {
+    if (!bookingForm.dumpster.productId) return null;
+
+    return availableProducts.find((product) => {
+      return product.id === bookingForm.dumpster.productId;
+    });
+  }
+
   function handleMaterialSelect(materialValue) {
+    const selectedProduct = getSelectedProduct();
+
+    const selectedProductStillSupportsMaterial =
+      !selectedProduct ||
+      productSupportsMaterial(selectedProduct, materialValue);
+
     updateBookingForm("dumpster.material", materialValue);
-    updateBookingForm("dumpster.productId", "");
-    updateBookingForm("dumpster.productLabel", "");
-    updateBookingForm("dumpster.size", "");
-    updateBookingForm("dumpster.basePrice", 0);
-    updateBookingForm("dumpster.concretePrice", 0);
-    updateBookingForm("dumpster.includedWeightText", "");
+
+    /**
+     * Important:
+     * Do not clear productId/productLabel/size/basePrice/concretePrice here.
+     * The hook already recalculates material surcharge when dumpster.material changes.
+     *
+     * Only clear the selected dumpster if that specific dumpster/product does not
+     * support the newly selected material.
+     */
+    if (!selectedProductStillSupportsMaterial) {
+      updateBookingForm("dumpster.productId", "");
+      updateBookingForm("dumpster.productLabel", "");
+      updateBookingForm("dumpster.size", "");
+      updateBookingForm("dumpster.basePrice", 0);
+      updateBookingForm("dumpster.concretePrice", 0);
+      updateBookingForm("dumpster.includedWeightText", "");
+      updateBookingForm("pricing.basePrice", 0);
+      updateBookingForm("pricing.materialSurcharge", 0);
+    }
   }
 
   return (
@@ -141,15 +171,23 @@ export default function StepDumpsterDetails({
                 const isSelected =
                   bookingForm.dumpster.productId === product.id;
 
+                const supportsSelectedMaterial = productSupportsMaterial(
+                  product,
+                  bookingForm.dumpster.material,
+                );
+
                 return (
                   <button
                     key={product.id}
                     type="button"
+                    disabled={!supportsSelectedMaterial}
                     onClick={() => setSelectedProduct(product)}
                     className={`rounded-2xl border p-4 text-left transition ${
                       isSelected
                         ? "border-indigo-600 bg-indigo-50"
-                        : "border-gray-200 bg-white hover:bg-gray-50"
+                        : !supportsSelectedMaterial
+                          ? "cursor-not-allowed border-gray-200 bg-gray-100 opacity-60"
+                          : "border-gray-200 bg-white hover:bg-gray-50"
                     }`}
                   >
                     <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -172,6 +210,13 @@ export default function StepDumpsterDetails({
                           {product.includedDays || 7} days included, then
                           $25/day
                         </p>
+
+                        {!supportsSelectedMaterial ? (
+                          <p className="mt-2 text-sm font-medium text-red-600">
+                            This dumpster does not support the selected
+                            material.
+                          </p>
+                        ) : null}
                       </div>
 
                       <div className="text-left md:text-right">
@@ -198,29 +243,6 @@ export default function StepDumpsterDetails({
           <SectionTitle>Add-ons</SectionTitle>
 
           <div className="grid gap-4">
-            {/* <label className="flex cursor-pointer items-start justify-between gap-4 rounded-2xl border border-gray-200 bg-white p-4">
-              <div>
-                <p className="font-semibold text-gray-900">Priority Delivery</p>
-                <p className="mt-1 text-sm text-gray-500">
-                  Move your delivery up in scheduling priority.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-900">
-                  $49.99
-                </span>
-                <input
-                  type="checkbox"
-                  checked={bookingForm.addons.priorityDelivery}
-                  onChange={(e) =>
-                    toggleAddon("priorityDelivery", e.target.checked)
-                  }
-                  className="h-5 w-5"
-                />
-              </div>
-            </label> */}
-
             <label className="flex cursor-pointer items-start justify-between gap-4 rounded-2xl border border-gray-200 bg-white p-4">
               <div>
                 <p className="font-semibold text-gray-900">

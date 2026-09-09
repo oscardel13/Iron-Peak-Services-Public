@@ -150,7 +150,7 @@ export default function DashboardPage() {
         <DashboardScheduleWidget
           bookings={bookings}
           inventory={inventory}
-          routeBase="/client/bookings"
+          routeBase="/dashboard/bookings"
         />
 
         <DashboardQuickActions />

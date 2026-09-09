@@ -34,7 +34,7 @@ export default function DashboardShell({ children }) {
   };
 
   return (
-    <div className="flex min-h-screen w-full max-w-screen overflow-x-hidden bg-gray-100">
+    <div className="min-h-screen overflow-x-hidden bg-gray-100">
       <DashboardNav
         open={openSidebar}
         isDesktop={isDesktop}
@@ -42,27 +42,29 @@ export default function DashboardShell({ children }) {
         closeSidebar={closeSidebar}
       />
 
-      {!isDesktop && openSidebar && (
+      {!isDesktop && openSidebar ? (
         <button
+          type="button"
           aria-label="Close sidebar overlay"
           className="fixed inset-0 z-30 bg-black/50"
           onClick={closeSidebar}
         />
-      )}
+      ) : null}
 
-      <div className="flex min-h-screen flex-1 flex-col xl:ml-[280px]">
-        <header className="sticky top-0 z-20 flex h-16 items-center border-b bg-white px-4">
-          {!isDesktop && (
+      <div className="flex min-h-screen min-w-0 flex-col xl:pl-[280px]">
+        <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center border-b bg-white px-4">
+          {!isDesktop ? (
             <button
+              type="button"
               className="rounded-md border px-3 py-2"
               onClick={toggleSidebar}
             >
               Menu
             </button>
-          )}
+          ) : null}
         </header>
 
-        <main className="max-w-screen flex-1 p-4 xl:p-6">{children}</main>
+        <main className="min-w-0 flex-1 p-4 xl:p-6">{children}</main>
       </div>
     </div>
   );

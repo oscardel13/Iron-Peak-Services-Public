@@ -21,7 +21,11 @@ export default function StepCustomerInfo({
   goToNextStep,
   goToPreviousStep,
   formErrors = {},
+  signedInClient = null,
+  customerPrefilled = false,
 }) {
+  const isBusiness = bookingForm.customer.customerType === "business";
+
   return (
     <StepShell
       title="Customer Information"
@@ -36,6 +40,27 @@ export default function StepCustomerInfo({
           <h3 className="text-lg font-semibold text-gray-900">
             Service contact information
           </h3>
+
+          {customerPrefilled ? (
+            <div className="rounded-2xl border border-green-200 bg-green-50 p-4">
+              <p className="text-sm font-semibold text-green-800">
+                We filled this in from your account.
+              </p>
+              <p className="mt-1 text-sm text-green-700">
+                You can still update the contact info for this booking.
+              </p>
+            </div>
+          ) : null}
+
+          <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4">
+            <p className="text-sm font-semibold text-blue-800">
+              Booking for a business?
+            </p>
+            <p className="mt-1 text-sm text-blue-700">
+              Use the business email and phone number, and enter the name of the
+              person placing the order.
+            </p>
+          </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <button
@@ -71,6 +96,19 @@ export default function StepCustomerInfo({
             </button>
           </div>
 
+          {isBusiness ? (
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+              <p className="text-sm font-semibold text-amber-800">
+                Business order contact
+              </p>
+              <p className="mt-1 text-sm text-amber-700">
+                Enter the contact person’s name below. Use the business phone
+                and email so confirmations, receipts, and schedule updates go to
+                the right place.
+              </p>
+            </div>
+          ) : null}
+
           <div className="grid gap-4 md:grid-cols-2">
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700">
@@ -82,6 +120,7 @@ export default function StepCustomerInfo({
                   updateBookingForm("customer.firstName", e.target.value)
                 }
                 placeholder="Jane"
+                autoComplete="given-name"
               />
             </div>
 
@@ -95,6 +134,7 @@ export default function StepCustomerInfo({
                   updateBookingForm("customer.lastName", e.target.value)
                 }
                 placeholder="Doe"
+                autoComplete="family-name"
               />
             </div>
 
@@ -113,6 +153,7 @@ export default function StepCustomerInfo({
                   )
                 }
                 placeholder="(720) 555-0123"
+                autoComplete={isBusiness ? "work tel" : "tel"}
               />
             </div>
 
@@ -127,6 +168,7 @@ export default function StepCustomerInfo({
                   updateBookingForm("customer.email", e.target.value)
                 }
                 placeholder="jane@example.com"
+                autoComplete={isBusiness ? "work email" : "email"}
               />
             </div>
           </div>

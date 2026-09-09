@@ -12,25 +12,23 @@ export function addDays(date, amount) {
 }
 
 export function formatDateKey(value) {
-  if (!value) return null;
+  const date = value instanceof Date ? value : new Date(value);
 
-  if (typeof value === "string") {
-    const datePart = value.split("T")[0];
-
-    if (/^\d{4}-\d{2}-\d{2}$/.test(datePart)) {
-      return datePart;
-    }
-  }
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) return null;
+  if (Number.isNaN(date.getTime())) return "";
 
   const year = date.getFullYear();
   const month = `${date.getMonth() + 1}`.padStart(2, "0");
   const day = `${date.getDate()}`.padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+}
+
+export function isSameDate(dateA, dateB) {
+  return formatDateKey(dateA) === formatDateKey(dateB);
+}
+
+export function isToday(date) {
+  return isSameDate(date, new Date());
 }
 
 export function getDefaultTimelineStart() {

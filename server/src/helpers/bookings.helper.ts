@@ -26,6 +26,12 @@ type ValidationResult = {
   pickupDate?: Date | null;
 };
 
+type BookingDateValidationOptions = {
+  timeZone?: string;
+};
+
+const DEFAULT_BUSINESS_TIME_ZONE = "America/Denver";
+
 const WAREHOUSE_LOCATION: Coordinates = {
   // Replace with your real warehouse coordinates
   latitude: 39.7392,
@@ -173,10 +179,21 @@ export async function getSelectedAddons(addonsInput: Record<string, boolean>) {
   };
 }
 
+/**
+ * Parses a date-only value from:
+ * - "2026-09-09"
+ * - "2026-09-09T00:00:00.000Z"
+ * - Date
+ *
+ * Returns a Date at UTC midnight for storage/use with Prisma.
+ * Validation comparisons should use date numbers, not Date object comparison.
+ */
 function parseDateOnly(value: unknown) {
   if (!value) return null;
 
   if (value instanceof Date) {
+    if (Number.isNaN(value.getTime())) return null;
+
     return new Date(
       Date.UTC(value.getUTCFullYear(), value.getUTCMonth(), value.getUTCDate()),
     );
@@ -184,46 +201,116 @@ function parseDateOnly(value: unknown) {
 
   if (typeof value !== "string") return null;
 
-  const [datePart] = value.split("T");
-  if (!datePart) return null;
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
 
-  const [year, month, day] = datePart.split("-").map(Number);
+  if (!match) return null;
 
-  if (!year || !month || !day) return null;
+  const [, year, month, day] = match;
 
-  return new Date(Date.UTC(year, month - 1, day));
+  return new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));
 }
 
-function getUtcStartOfToday() {
-  const now = new Date();
+/**
+ * Converts a date-only value into a YYYYMMDD number.
+ * This avoids timezone bugs when comparing user-selected booking dates.
+ */
+function parseDateOnlyToNumber(value: unknown) {
+  if (!value) return null;
 
-  return new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
+  if (value instanceof Date) {
+    if (Number.isNaN(value.getTime())) return null;
+
+    return (
+      value.getUTCFullYear() * 10000 +
+      (value.getUTCMonth() + 1) * 100 +
+      value.getUTCDate()
+    );
+  }
+
+  if (typeof value !== "string") return null;
+
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+  if (!match) return null;
+
+  const [, year, month, day] = match;
+
+  return Number(year) * 10000 + Number(month) * 100 + Number(day);
+}
+
+function getDatePartsInTimeZone(
+  date: Date,
+  timeZone = DEFAULT_BUSINESS_TIME_ZONE,
+) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+
+  const values = Object.fromEntries(
+    parts
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, part.value]),
+  );
+
+  return {
+    year: Number(values.year),
+    month: Number(values.month),
+    day: Number(values.day),
+  };
+}
+
+function getBusinessDateNumber(
+  date = new Date(),
+  timeZone = DEFAULT_BUSINESS_TIME_ZONE,
+) {
+  const { year, month, day } = getDatePartsInTimeZone(date, timeZone);
+
+  return year * 10000 + month * 100 + day;
+}
+
+function addDaysToDateNumber(dateNumber: number, days: number) {
+  const year = Math.floor(dateNumber / 10000);
+  const month = Math.floor((dateNumber % 10000) / 100);
+  const day = dateNumber % 100;
+
+  const date = new Date(year, month - 1, day);
+  date.setDate(date.getDate() + days);
+
+  return (
+    date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate()
   );
 }
 
-function addUtcDays(date: Date, days: number) {
-  const next = new Date(date);
-  next.setUTCDate(next.getUTCDate() + days);
-  return next;
-}
+export function validateBookingDates(
+  data: any,
+  options: BookingDateValidationOptions = {},
+): ValidationResult {
+  const timeZone = options.timeZone || DEFAULT_BUSINESS_TIME_ZONE;
 
-export function validateBookingDates(data: any): ValidationResult {
-  const today = getUtcStartOfToday();
-  const tomorrow = addUtcDays(today, 1);
+  const todayNumber = getBusinessDateNumber(new Date(), timeZone);
+  const tomorrowNumber = addDaysToDateNumber(todayNumber, 1);
 
   const deliveryDate = parseDateOnly(data.deliveryDate);
   const pickupDate = data.pickupDate ? parseDateOnly(data.pickupDate) : null;
+
+  const deliveryDateNumber = parseDateOnlyToNumber(data.deliveryDate);
+  const pickupDateNumber = data.pickupDate
+    ? parseDateOnlyToNumber(data.pickupDate)
+    : null;
+
   const pickupDateUnknown = Boolean(data.pickupDateUnknown);
 
-  if (!deliveryDate) {
+  if (!deliveryDate || !deliveryDateNumber) {
     return {
       valid: false,
       error: "Delivery date is required.",
     };
   }
 
-  if (deliveryDate < tomorrow) {
+  if (deliveryDateNumber < tomorrowNumber) {
     return {
       valid: false,
       error:
@@ -231,15 +318,15 @@ export function validateBookingDates(data: any): ValidationResult {
     };
   }
 
-  if (!pickupDateUnknown && !pickupDate) {
+  if (!pickupDateUnknown && (!pickupDate || !pickupDateNumber)) {
     return {
       valid: false,
       error: "Pickup date is required.",
     };
   }
 
-  if (pickupDate) {
-    if (pickupDate < tomorrow) {
+  if (pickupDateNumber) {
+    if (pickupDateNumber < tomorrowNumber) {
       return {
         valid: false,
         error:
@@ -247,7 +334,7 @@ export function validateBookingDates(data: any): ValidationResult {
       };
     }
 
-    if (pickupDate < deliveryDate) {
+    if (pickupDateNumber < deliveryDateNumber) {
       return {
         valid: false,
         error: "Pickup date cannot be before delivery date.",
@@ -262,8 +349,11 @@ export function validateBookingDates(data: any): ValidationResult {
   };
 }
 
-export function validateCreateBookingInput(data: any) {
-  const dateValidation = validateBookingDates(data);
+export function validateCreateBookingInput(
+  data: any,
+  options: BookingDateValidationOptions = {},
+) {
+  const dateValidation = validateBookingDates(data, options);
 
   if (!dateValidation.valid) {
     throw createValidationError(
@@ -279,7 +369,11 @@ export function validateCreateBookingInput(data: any) {
   };
 }
 
-export async function validatePatchBookingInput(id: string, data: any) {
+export async function validatePatchBookingInput(
+  id: string,
+  data: any,
+  options: BookingDateValidationOptions = {},
+) {
   const isUpdatingDates =
     "deliveryDate" in data ||
     "pickupDate" in data ||
@@ -312,7 +406,7 @@ export async function validatePatchBookingInput(id: string, data: any) {
       data.pickupDateUnknown ?? existingBooking.pickupDateUnknown,
   };
 
-  const dateValidation = validateBookingDates(mergedDateData);
+  const dateValidation = validateBookingDates(mergedDateData, options);
 
   if (!dateValidation.valid) {
     throw createValidationError(

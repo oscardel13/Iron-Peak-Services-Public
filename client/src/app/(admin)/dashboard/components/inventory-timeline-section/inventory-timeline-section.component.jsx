@@ -52,14 +52,14 @@ export default function InventoryTimelineSection({
   }
 
   return (
-    <section className="min-w-0 overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
+    <section className="w-full min-w-0 overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
       <button
         type="button"
         onClick={handleToggle}
-        className="flex w-full items-start justify-between gap-4 p-5 text-left transition hover:bg-gray-50"
+        className="flex w-full min-w-0 items-start justify-between gap-4 p-5 text-left transition hover:bg-gray-50"
       >
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             <h2 className="text-lg font-semibold text-gray-900">
               Dumpster Availability
             </h2>
@@ -89,14 +89,14 @@ export default function InventoryTimelineSection({
       </button>
 
       {isExpanded ? (
-        <div className="border-t border-gray-100">
+        <div className="min-w-0 border-t border-gray-100 p-5">
           {loadingBookings ? (
-            <div className="space-y-4 p-5">
+            <div className="space-y-4">
               <div className="h-10 animate-pulse rounded-xl bg-gray-100" />
               <div className="h-72 animate-pulse rounded-3xl bg-gray-100" />
             </div>
           ) : error ? (
-            <div className="p-5">
+            <div>
               <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                 {error}
               </div>
