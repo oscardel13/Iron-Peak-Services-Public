@@ -379,16 +379,6 @@ export type UserAuthProviderUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type UserAuthProviderListRelationFilter = {
-  every?: Prisma.UserAuthProviderWhereInput
-  some?: Prisma.UserAuthProviderWhereInput
-  none?: Prisma.UserAuthProviderWhereInput
-}
-
-export type UserAuthProviderOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type UserAuthProviderProviderProviderAccountIdCompoundUniqueInput = {
   provider: $Enums.AuthProviderType
   providerAccountId: string
@@ -433,6 +423,20 @@ export type UserAuthProviderMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type UserAuthProviderListRelationFilter = {
+  every?: Prisma.UserAuthProviderWhereInput
+  some?: Prisma.UserAuthProviderWhereInput
+  none?: Prisma.UserAuthProviderWhereInput
+}
+
+export type UserAuthProviderOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type EnumAuthProviderTypeFieldUpdateOperationsInput = {
+  set?: $Enums.AuthProviderType
+}
+
 export type UserAuthProviderCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.UserAuthProviderCreateWithoutUserInput, Prisma.UserAuthProviderUncheckedCreateWithoutUserInput> | Prisma.UserAuthProviderCreateWithoutUserInput[] | Prisma.UserAuthProviderUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.UserAuthProviderCreateOrConnectWithoutUserInput | Prisma.UserAuthProviderCreateOrConnectWithoutUserInput[]
@@ -473,10 +477,6 @@ export type UserAuthProviderUncheckedUpdateManyWithoutUserNestedInput = {
   update?: Prisma.UserAuthProviderUpdateWithWhereUniqueWithoutUserInput | Prisma.UserAuthProviderUpdateWithWhereUniqueWithoutUserInput[]
   updateMany?: Prisma.UserAuthProviderUpdateManyWithWhereWithoutUserInput | Prisma.UserAuthProviderUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.UserAuthProviderScalarWhereInput | Prisma.UserAuthProviderScalarWhereInput[]
-}
-
-export type EnumAuthProviderTypeFieldUpdateOperationsInput = {
-  set?: $Enums.AuthProviderType
 }
 
 export type UserAuthProviderCreateWithoutUserInput = {

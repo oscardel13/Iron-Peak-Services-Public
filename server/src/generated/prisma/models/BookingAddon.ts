@@ -38,6 +38,7 @@ export type BookingAddonSumAggregateOutputType = {
 
 export type BookingAddonMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   bookingId: string | null
   addonId: string | null
   addonCodeSnapshot: string | null
@@ -49,6 +50,7 @@ export type BookingAddonMinAggregateOutputType = {
 
 export type BookingAddonMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   bookingId: string | null
   addonId: string | null
   addonCodeSnapshot: string | null
@@ -60,6 +62,7 @@ export type BookingAddonMaxAggregateOutputType = {
 
 export type BookingAddonCountAggregateOutputType = {
   id: number
+  tenantId: number
   bookingId: number
   addonId: number
   addonCodeSnapshot: number
@@ -83,6 +86,7 @@ export type BookingAddonSumAggregateInputType = {
 
 export type BookingAddonMinAggregateInputType = {
   id?: true
+  tenantId?: true
   bookingId?: true
   addonId?: true
   addonCodeSnapshot?: true
@@ -94,6 +98,7 @@ export type BookingAddonMinAggregateInputType = {
 
 export type BookingAddonMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   bookingId?: true
   addonId?: true
   addonCodeSnapshot?: true
@@ -105,6 +110,7 @@ export type BookingAddonMaxAggregateInputType = {
 
 export type BookingAddonCountAggregateInputType = {
   id?: true
+  tenantId?: true
   bookingId?: true
   addonId?: true
   addonCodeSnapshot?: true
@@ -203,8 +209,9 @@ export type BookingAddonGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 
 export type BookingAddonGroupByOutputType = {
   id: string
+  tenantId: string
   bookingId: string
-  addonId: string
+  addonId: string | null
   addonCodeSnapshot: string
   addonNameSnapshot: string
   addonPriceSnapshot: runtime.Decimal
@@ -237,21 +244,23 @@ export type BookingAddonWhereInput = {
   OR?: Prisma.BookingAddonWhereInput[]
   NOT?: Prisma.BookingAddonWhereInput | Prisma.BookingAddonWhereInput[]
   id?: Prisma.StringFilter<"BookingAddon"> | string
+  tenantId?: Prisma.StringFilter<"BookingAddon"> | string
   bookingId?: Prisma.StringFilter<"BookingAddon"> | string
-  addonId?: Prisma.StringFilter<"BookingAddon"> | string
+  addonId?: Prisma.StringNullableFilter<"BookingAddon"> | string | null
   addonCodeSnapshot?: Prisma.StringFilter<"BookingAddon"> | string
   addonNameSnapshot?: Prisma.StringFilter<"BookingAddon"> | string
   addonPriceSnapshot?: Prisma.DecimalFilter<"BookingAddon"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFilter<"BookingAddon"> | number
   createdAt?: Prisma.DateTimeFilter<"BookingAddon"> | Date | string
   booking?: Prisma.XOR<Prisma.BookingScalarRelationFilter, Prisma.BookingWhereInput>
-  addon?: Prisma.XOR<Prisma.AddonScalarRelationFilter, Prisma.AddonWhereInput>
+  addon?: Prisma.XOR<Prisma.AddonNullableScalarRelationFilter, Prisma.AddonWhereInput> | null
 }
 
 export type BookingAddonOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   bookingId?: Prisma.SortOrder
-  addonId?: Prisma.SortOrder
+  addonId?: Prisma.SortOrderInput | Prisma.SortOrder
   addonCodeSnapshot?: Prisma.SortOrder
   addonNameSnapshot?: Prisma.SortOrder
   addonPriceSnapshot?: Prisma.SortOrder
@@ -266,21 +275,23 @@ export type BookingAddonWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.BookingAddonWhereInput | Prisma.BookingAddonWhereInput[]
   OR?: Prisma.BookingAddonWhereInput[]
   NOT?: Prisma.BookingAddonWhereInput | Prisma.BookingAddonWhereInput[]
+  tenantId?: Prisma.StringFilter<"BookingAddon"> | string
   bookingId?: Prisma.StringFilter<"BookingAddon"> | string
-  addonId?: Prisma.StringFilter<"BookingAddon"> | string
+  addonId?: Prisma.StringNullableFilter<"BookingAddon"> | string | null
   addonCodeSnapshot?: Prisma.StringFilter<"BookingAddon"> | string
   addonNameSnapshot?: Prisma.StringFilter<"BookingAddon"> | string
   addonPriceSnapshot?: Prisma.DecimalFilter<"BookingAddon"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFilter<"BookingAddon"> | number
   createdAt?: Prisma.DateTimeFilter<"BookingAddon"> | Date | string
   booking?: Prisma.XOR<Prisma.BookingScalarRelationFilter, Prisma.BookingWhereInput>
-  addon?: Prisma.XOR<Prisma.AddonScalarRelationFilter, Prisma.AddonWhereInput>
+  addon?: Prisma.XOR<Prisma.AddonNullableScalarRelationFilter, Prisma.AddonWhereInput> | null
 }, "id">
 
 export type BookingAddonOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   bookingId?: Prisma.SortOrder
-  addonId?: Prisma.SortOrder
+  addonId?: Prisma.SortOrderInput | Prisma.SortOrder
   addonCodeSnapshot?: Prisma.SortOrder
   addonNameSnapshot?: Prisma.SortOrder
   addonPriceSnapshot?: Prisma.SortOrder
@@ -298,8 +309,9 @@ export type BookingAddonScalarWhereWithAggregatesInput = {
   OR?: Prisma.BookingAddonScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BookingAddonScalarWhereWithAggregatesInput | Prisma.BookingAddonScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"BookingAddon"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"BookingAddon"> | string
   bookingId?: Prisma.StringWithAggregatesFilter<"BookingAddon"> | string
-  addonId?: Prisma.StringWithAggregatesFilter<"BookingAddon"> | string
+  addonId?: Prisma.StringNullableWithAggregatesFilter<"BookingAddon"> | string | null
   addonCodeSnapshot?: Prisma.StringWithAggregatesFilter<"BookingAddon"> | string
   addonNameSnapshot?: Prisma.StringWithAggregatesFilter<"BookingAddon"> | string
   addonPriceSnapshot?: Prisma.DecimalWithAggregatesFilter<"BookingAddon"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -309,19 +321,21 @@ export type BookingAddonScalarWhereWithAggregatesInput = {
 
 export type BookingAddonCreateInput = {
   id?: string
+  tenantId: string
   addonCodeSnapshot: string
   addonNameSnapshot: string
   addonPriceSnapshot: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: number
   createdAt?: Date | string
   booking: Prisma.BookingCreateNestedOneWithoutAddonsInput
-  addon: Prisma.AddonCreateNestedOneWithoutBookingAddonsInput
+  addon?: Prisma.AddonCreateNestedOneWithoutBookingAddonsInput
 }
 
 export type BookingAddonUncheckedCreateInput = {
   id?: string
+  tenantId: string
   bookingId: string
-  addonId: string
+  addonId?: string | null
   addonCodeSnapshot: string
   addonNameSnapshot: string
   addonPriceSnapshot: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -331,19 +345,21 @@ export type BookingAddonUncheckedCreateInput = {
 
 export type BookingAddonUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   booking?: Prisma.BookingUpdateOneRequiredWithoutAddonsNestedInput
-  addon?: Prisma.AddonUpdateOneRequiredWithoutBookingAddonsNestedInput
+  addon?: Prisma.AddonUpdateOneWithoutBookingAddonsNestedInput
 }
 
 export type BookingAddonUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   bookingId?: Prisma.StringFieldUpdateOperationsInput | string
-  addonId?: Prisma.StringFieldUpdateOperationsInput | string
+  addonId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -353,8 +369,9 @@ export type BookingAddonUncheckedUpdateInput = {
 
 export type BookingAddonCreateManyInput = {
   id?: string
+  tenantId: string
   bookingId: string
-  addonId: string
+  addonId?: string | null
   addonCodeSnapshot: string
   addonNameSnapshot: string
   addonPriceSnapshot: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -364,6 +381,7 @@ export type BookingAddonCreateManyInput = {
 
 export type BookingAddonUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -373,8 +391,9 @@ export type BookingAddonUpdateManyMutationInput = {
 
 export type BookingAddonUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   bookingId?: Prisma.StringFieldUpdateOperationsInput | string
-  addonId?: Prisma.StringFieldUpdateOperationsInput | string
+  addonId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -394,6 +413,7 @@ export type BookingAddonOrderByRelationAggregateInput = {
 
 export type BookingAddonCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   bookingId?: Prisma.SortOrder
   addonId?: Prisma.SortOrder
   addonCodeSnapshot?: Prisma.SortOrder
@@ -410,6 +430,7 @@ export type BookingAddonAvgOrderByAggregateInput = {
 
 export type BookingAddonMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   bookingId?: Prisma.SortOrder
   addonId?: Prisma.SortOrder
   addonCodeSnapshot?: Prisma.SortOrder
@@ -421,6 +442,7 @@ export type BookingAddonMaxOrderByAggregateInput = {
 
 export type BookingAddonMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   bookingId?: Prisma.SortOrder
   addonId?: Prisma.SortOrder
   addonCodeSnapshot?: Prisma.SortOrder
@@ -433,48 +455,6 @@ export type BookingAddonMinOrderByAggregateInput = {
 export type BookingAddonSumOrderByAggregateInput = {
   addonPriceSnapshot?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
-}
-
-export type BookingAddonCreateNestedManyWithoutBookingInput = {
-  create?: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput> | Prisma.BookingAddonCreateWithoutBookingInput[] | Prisma.BookingAddonUncheckedCreateWithoutBookingInput[]
-  connectOrCreate?: Prisma.BookingAddonCreateOrConnectWithoutBookingInput | Prisma.BookingAddonCreateOrConnectWithoutBookingInput[]
-  createMany?: Prisma.BookingAddonCreateManyBookingInputEnvelope
-  connect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
-}
-
-export type BookingAddonUncheckedCreateNestedManyWithoutBookingInput = {
-  create?: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput> | Prisma.BookingAddonCreateWithoutBookingInput[] | Prisma.BookingAddonUncheckedCreateWithoutBookingInput[]
-  connectOrCreate?: Prisma.BookingAddonCreateOrConnectWithoutBookingInput | Prisma.BookingAddonCreateOrConnectWithoutBookingInput[]
-  createMany?: Prisma.BookingAddonCreateManyBookingInputEnvelope
-  connect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
-}
-
-export type BookingAddonUpdateManyWithoutBookingNestedInput = {
-  create?: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput> | Prisma.BookingAddonCreateWithoutBookingInput[] | Prisma.BookingAddonUncheckedCreateWithoutBookingInput[]
-  connectOrCreate?: Prisma.BookingAddonCreateOrConnectWithoutBookingInput | Prisma.BookingAddonCreateOrConnectWithoutBookingInput[]
-  upsert?: Prisma.BookingAddonUpsertWithWhereUniqueWithoutBookingInput | Prisma.BookingAddonUpsertWithWhereUniqueWithoutBookingInput[]
-  createMany?: Prisma.BookingAddonCreateManyBookingInputEnvelope
-  set?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
-  disconnect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
-  delete?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
-  connect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
-  update?: Prisma.BookingAddonUpdateWithWhereUniqueWithoutBookingInput | Prisma.BookingAddonUpdateWithWhereUniqueWithoutBookingInput[]
-  updateMany?: Prisma.BookingAddonUpdateManyWithWhereWithoutBookingInput | Prisma.BookingAddonUpdateManyWithWhereWithoutBookingInput[]
-  deleteMany?: Prisma.BookingAddonScalarWhereInput | Prisma.BookingAddonScalarWhereInput[]
-}
-
-export type BookingAddonUncheckedUpdateManyWithoutBookingNestedInput = {
-  create?: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput> | Prisma.BookingAddonCreateWithoutBookingInput[] | Prisma.BookingAddonUncheckedCreateWithoutBookingInput[]
-  connectOrCreate?: Prisma.BookingAddonCreateOrConnectWithoutBookingInput | Prisma.BookingAddonCreateOrConnectWithoutBookingInput[]
-  upsert?: Prisma.BookingAddonUpsertWithWhereUniqueWithoutBookingInput | Prisma.BookingAddonUpsertWithWhereUniqueWithoutBookingInput[]
-  createMany?: Prisma.BookingAddonCreateManyBookingInputEnvelope
-  set?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
-  disconnect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
-  delete?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
-  connect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
-  update?: Prisma.BookingAddonUpdateWithWhereUniqueWithoutBookingInput | Prisma.BookingAddonUpdateWithWhereUniqueWithoutBookingInput[]
-  updateMany?: Prisma.BookingAddonUpdateManyWithWhereWithoutBookingInput | Prisma.BookingAddonUpdateManyWithWhereWithoutBookingInput[]
-  deleteMany?: Prisma.BookingAddonScalarWhereInput | Prisma.BookingAddonScalarWhereInput[]
 }
 
 export type BookingAddonCreateNestedManyWithoutAddonInput = {
@@ -519,68 +499,59 @@ export type BookingAddonUncheckedUpdateManyWithoutAddonNestedInput = {
   deleteMany?: Prisma.BookingAddonScalarWhereInput | Prisma.BookingAddonScalarWhereInput[]
 }
 
-export type BookingAddonCreateWithoutBookingInput = {
-  id?: string
-  addonCodeSnapshot: string
-  addonNameSnapshot: string
-  addonPriceSnapshot: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: number
-  createdAt?: Date | string
-  addon: Prisma.AddonCreateNestedOneWithoutBookingAddonsInput
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
-export type BookingAddonUncheckedCreateWithoutBookingInput = {
-  id?: string
-  addonId: string
-  addonCodeSnapshot: string
-  addonNameSnapshot: string
-  addonPriceSnapshot: runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: number
-  createdAt?: Date | string
+export type BookingAddonCreateNestedManyWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput> | Prisma.BookingAddonCreateWithoutBookingInput[] | Prisma.BookingAddonUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.BookingAddonCreateOrConnectWithoutBookingInput | Prisma.BookingAddonCreateOrConnectWithoutBookingInput[]
+  createMany?: Prisma.BookingAddonCreateManyBookingInputEnvelope
+  connect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
 }
 
-export type BookingAddonCreateOrConnectWithoutBookingInput = {
-  where: Prisma.BookingAddonWhereUniqueInput
-  create: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput>
+export type BookingAddonUncheckedCreateNestedManyWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput> | Prisma.BookingAddonCreateWithoutBookingInput[] | Prisma.BookingAddonUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.BookingAddonCreateOrConnectWithoutBookingInput | Prisma.BookingAddonCreateOrConnectWithoutBookingInput[]
+  createMany?: Prisma.BookingAddonCreateManyBookingInputEnvelope
+  connect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
 }
 
-export type BookingAddonCreateManyBookingInputEnvelope = {
-  data: Prisma.BookingAddonCreateManyBookingInput | Prisma.BookingAddonCreateManyBookingInput[]
-  skipDuplicates?: boolean
+export type BookingAddonUpdateManyWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput> | Prisma.BookingAddonCreateWithoutBookingInput[] | Prisma.BookingAddonUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.BookingAddonCreateOrConnectWithoutBookingInput | Prisma.BookingAddonCreateOrConnectWithoutBookingInput[]
+  upsert?: Prisma.BookingAddonUpsertWithWhereUniqueWithoutBookingInput | Prisma.BookingAddonUpsertWithWhereUniqueWithoutBookingInput[]
+  createMany?: Prisma.BookingAddonCreateManyBookingInputEnvelope
+  set?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
+  disconnect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
+  delete?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
+  connect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
+  update?: Prisma.BookingAddonUpdateWithWhereUniqueWithoutBookingInput | Prisma.BookingAddonUpdateWithWhereUniqueWithoutBookingInput[]
+  updateMany?: Prisma.BookingAddonUpdateManyWithWhereWithoutBookingInput | Prisma.BookingAddonUpdateManyWithWhereWithoutBookingInput[]
+  deleteMany?: Prisma.BookingAddonScalarWhereInput | Prisma.BookingAddonScalarWhereInput[]
 }
 
-export type BookingAddonUpsertWithWhereUniqueWithoutBookingInput = {
-  where: Prisma.BookingAddonWhereUniqueInput
-  update: Prisma.XOR<Prisma.BookingAddonUpdateWithoutBookingInput, Prisma.BookingAddonUncheckedUpdateWithoutBookingInput>
-  create: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput>
-}
-
-export type BookingAddonUpdateWithWhereUniqueWithoutBookingInput = {
-  where: Prisma.BookingAddonWhereUniqueInput
-  data: Prisma.XOR<Prisma.BookingAddonUpdateWithoutBookingInput, Prisma.BookingAddonUncheckedUpdateWithoutBookingInput>
-}
-
-export type BookingAddonUpdateManyWithWhereWithoutBookingInput = {
-  where: Prisma.BookingAddonScalarWhereInput
-  data: Prisma.XOR<Prisma.BookingAddonUpdateManyMutationInput, Prisma.BookingAddonUncheckedUpdateManyWithoutBookingInput>
-}
-
-export type BookingAddonScalarWhereInput = {
-  AND?: Prisma.BookingAddonScalarWhereInput | Prisma.BookingAddonScalarWhereInput[]
-  OR?: Prisma.BookingAddonScalarWhereInput[]
-  NOT?: Prisma.BookingAddonScalarWhereInput | Prisma.BookingAddonScalarWhereInput[]
-  id?: Prisma.StringFilter<"BookingAddon"> | string
-  bookingId?: Prisma.StringFilter<"BookingAddon"> | string
-  addonId?: Prisma.StringFilter<"BookingAddon"> | string
-  addonCodeSnapshot?: Prisma.StringFilter<"BookingAddon"> | string
-  addonNameSnapshot?: Prisma.StringFilter<"BookingAddon"> | string
-  addonPriceSnapshot?: Prisma.DecimalFilter<"BookingAddon"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFilter<"BookingAddon"> | number
-  createdAt?: Prisma.DateTimeFilter<"BookingAddon"> | Date | string
+export type BookingAddonUncheckedUpdateManyWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput> | Prisma.BookingAddonCreateWithoutBookingInput[] | Prisma.BookingAddonUncheckedCreateWithoutBookingInput[]
+  connectOrCreate?: Prisma.BookingAddonCreateOrConnectWithoutBookingInput | Prisma.BookingAddonCreateOrConnectWithoutBookingInput[]
+  upsert?: Prisma.BookingAddonUpsertWithWhereUniqueWithoutBookingInput | Prisma.BookingAddonUpsertWithWhereUniqueWithoutBookingInput[]
+  createMany?: Prisma.BookingAddonCreateManyBookingInputEnvelope
+  set?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
+  disconnect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
+  delete?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
+  connect?: Prisma.BookingAddonWhereUniqueInput | Prisma.BookingAddonWhereUniqueInput[]
+  update?: Prisma.BookingAddonUpdateWithWhereUniqueWithoutBookingInput | Prisma.BookingAddonUpdateWithWhereUniqueWithoutBookingInput[]
+  updateMany?: Prisma.BookingAddonUpdateManyWithWhereWithoutBookingInput | Prisma.BookingAddonUpdateManyWithWhereWithoutBookingInput[]
+  deleteMany?: Prisma.BookingAddonScalarWhereInput | Prisma.BookingAddonScalarWhereInput[]
 }
 
 export type BookingAddonCreateWithoutAddonInput = {
   id?: string
+  tenantId: string
   addonCodeSnapshot: string
   addonNameSnapshot: string
   addonPriceSnapshot: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -591,6 +562,7 @@ export type BookingAddonCreateWithoutAddonInput = {
 
 export type BookingAddonUncheckedCreateWithoutAddonInput = {
   id?: string
+  tenantId: string
   bookingId: string
   addonCodeSnapshot: string
   addonNameSnapshot: string
@@ -625,9 +597,36 @@ export type BookingAddonUpdateManyWithWhereWithoutAddonInput = {
   data: Prisma.XOR<Prisma.BookingAddonUpdateManyMutationInput, Prisma.BookingAddonUncheckedUpdateManyWithoutAddonInput>
 }
 
-export type BookingAddonCreateManyBookingInput = {
+export type BookingAddonScalarWhereInput = {
+  AND?: Prisma.BookingAddonScalarWhereInput | Prisma.BookingAddonScalarWhereInput[]
+  OR?: Prisma.BookingAddonScalarWhereInput[]
+  NOT?: Prisma.BookingAddonScalarWhereInput | Prisma.BookingAddonScalarWhereInput[]
+  id?: Prisma.StringFilter<"BookingAddon"> | string
+  tenantId?: Prisma.StringFilter<"BookingAddon"> | string
+  bookingId?: Prisma.StringFilter<"BookingAddon"> | string
+  addonId?: Prisma.StringNullableFilter<"BookingAddon"> | string | null
+  addonCodeSnapshot?: Prisma.StringFilter<"BookingAddon"> | string
+  addonNameSnapshot?: Prisma.StringFilter<"BookingAddon"> | string
+  addonPriceSnapshot?: Prisma.DecimalFilter<"BookingAddon"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quantity?: Prisma.IntFilter<"BookingAddon"> | number
+  createdAt?: Prisma.DateTimeFilter<"BookingAddon"> | Date | string
+}
+
+export type BookingAddonCreateWithoutBookingInput = {
   id?: string
-  addonId: string
+  tenantId: string
+  addonCodeSnapshot: string
+  addonNameSnapshot: string
+  addonPriceSnapshot: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quantity?: number
+  createdAt?: Date | string
+  addon?: Prisma.AddonCreateNestedOneWithoutBookingAddonsInput
+}
+
+export type BookingAddonUncheckedCreateWithoutBookingInput = {
+  id?: string
+  tenantId: string
+  addonId?: string | null
   addonCodeSnapshot: string
   addonNameSnapshot: string
   addonPriceSnapshot: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -635,38 +634,35 @@ export type BookingAddonCreateManyBookingInput = {
   createdAt?: Date | string
 }
 
-export type BookingAddonUpdateWithoutBookingInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
-  addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
-  addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  addon?: Prisma.AddonUpdateOneRequiredWithoutBookingAddonsNestedInput
+export type BookingAddonCreateOrConnectWithoutBookingInput = {
+  where: Prisma.BookingAddonWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput>
 }
 
-export type BookingAddonUncheckedUpdateWithoutBookingInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  addonId?: Prisma.StringFieldUpdateOperationsInput | string
-  addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
-  addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
-  addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type BookingAddonCreateManyBookingInputEnvelope = {
+  data: Prisma.BookingAddonCreateManyBookingInput | Prisma.BookingAddonCreateManyBookingInput[]
+  skipDuplicates?: boolean
 }
 
-export type BookingAddonUncheckedUpdateManyWithoutBookingInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  addonId?: Prisma.StringFieldUpdateOperationsInput | string
-  addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
-  addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
-  addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type BookingAddonUpsertWithWhereUniqueWithoutBookingInput = {
+  where: Prisma.BookingAddonWhereUniqueInput
+  update: Prisma.XOR<Prisma.BookingAddonUpdateWithoutBookingInput, Prisma.BookingAddonUncheckedUpdateWithoutBookingInput>
+  create: Prisma.XOR<Prisma.BookingAddonCreateWithoutBookingInput, Prisma.BookingAddonUncheckedCreateWithoutBookingInput>
+}
+
+export type BookingAddonUpdateWithWhereUniqueWithoutBookingInput = {
+  where: Prisma.BookingAddonWhereUniqueInput
+  data: Prisma.XOR<Prisma.BookingAddonUpdateWithoutBookingInput, Prisma.BookingAddonUncheckedUpdateWithoutBookingInput>
+}
+
+export type BookingAddonUpdateManyWithWhereWithoutBookingInput = {
+  where: Prisma.BookingAddonScalarWhereInput
+  data: Prisma.XOR<Prisma.BookingAddonUpdateManyMutationInput, Prisma.BookingAddonUncheckedUpdateManyWithoutBookingInput>
 }
 
 export type BookingAddonCreateManyAddonInput = {
   id?: string
+  tenantId: string
   bookingId: string
   addonCodeSnapshot: string
   addonNameSnapshot: string
@@ -677,6 +673,7 @@ export type BookingAddonCreateManyAddonInput = {
 
 export type BookingAddonUpdateWithoutAddonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -687,6 +684,7 @@ export type BookingAddonUpdateWithoutAddonInput = {
 
 export type BookingAddonUncheckedUpdateWithoutAddonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   bookingId?: Prisma.StringFieldUpdateOperationsInput | string
   addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
@@ -697,7 +695,52 @@ export type BookingAddonUncheckedUpdateWithoutAddonInput = {
 
 export type BookingAddonUncheckedUpdateManyWithoutAddonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   bookingId?: Prisma.StringFieldUpdateOperationsInput | string
+  addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type BookingAddonCreateManyBookingInput = {
+  id?: string
+  tenantId: string
+  addonId?: string | null
+  addonCodeSnapshot: string
+  addonNameSnapshot: string
+  addonPriceSnapshot: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quantity?: number
+  createdAt?: Date | string
+}
+
+export type BookingAddonUpdateWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  addon?: Prisma.AddonUpdateOneWithoutBookingAddonsNestedInput
+}
+
+export type BookingAddonUncheckedUpdateWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  addonId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
+  addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type BookingAddonUncheckedUpdateManyWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  addonId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addonCodeSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonNameSnapshot?: Prisma.StringFieldUpdateOperationsInput | string
   addonPriceSnapshot?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -709,6 +752,7 @@ export type BookingAddonUncheckedUpdateManyWithoutAddonInput = {
 
 export type BookingAddonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   bookingId?: boolean
   addonId?: boolean
   addonCodeSnapshot?: boolean
@@ -717,11 +761,12 @@ export type BookingAddonSelect<ExtArgs extends runtime.Types.Extensions.Internal
   quantity?: boolean
   createdAt?: boolean
   booking?: boolean | Prisma.BookingDefaultArgs<ExtArgs>
-  addon?: boolean | Prisma.AddonDefaultArgs<ExtArgs>
+  addon?: boolean | Prisma.BookingAddon$addonArgs<ExtArgs>
 }, ExtArgs["result"]["bookingAddon"]>
 
 export type BookingAddonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   bookingId?: boolean
   addonId?: boolean
   addonCodeSnapshot?: boolean
@@ -730,11 +775,12 @@ export type BookingAddonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   quantity?: boolean
   createdAt?: boolean
   booking?: boolean | Prisma.BookingDefaultArgs<ExtArgs>
-  addon?: boolean | Prisma.AddonDefaultArgs<ExtArgs>
+  addon?: boolean | Prisma.BookingAddon$addonArgs<ExtArgs>
 }, ExtArgs["result"]["bookingAddon"]>
 
 export type BookingAddonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   bookingId?: boolean
   addonId?: boolean
   addonCodeSnapshot?: boolean
@@ -743,11 +789,12 @@ export type BookingAddonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   quantity?: boolean
   createdAt?: boolean
   booking?: boolean | Prisma.BookingDefaultArgs<ExtArgs>
-  addon?: boolean | Prisma.AddonDefaultArgs<ExtArgs>
+  addon?: boolean | Prisma.BookingAddon$addonArgs<ExtArgs>
 }, ExtArgs["result"]["bookingAddon"]>
 
 export type BookingAddonSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   bookingId?: boolean
   addonId?: boolean
   addonCodeSnapshot?: boolean
@@ -757,30 +804,31 @@ export type BookingAddonSelectScalar = {
   createdAt?: boolean
 }
 
-export type BookingAddonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bookingId" | "addonId" | "addonCodeSnapshot" | "addonNameSnapshot" | "addonPriceSnapshot" | "quantity" | "createdAt", ExtArgs["result"]["bookingAddon"]>
+export type BookingAddonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "bookingId" | "addonId" | "addonCodeSnapshot" | "addonNameSnapshot" | "addonPriceSnapshot" | "quantity" | "createdAt", ExtArgs["result"]["bookingAddon"]>
 export type BookingAddonInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   booking?: boolean | Prisma.BookingDefaultArgs<ExtArgs>
-  addon?: boolean | Prisma.AddonDefaultArgs<ExtArgs>
+  addon?: boolean | Prisma.BookingAddon$addonArgs<ExtArgs>
 }
 export type BookingAddonIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   booking?: boolean | Prisma.BookingDefaultArgs<ExtArgs>
-  addon?: boolean | Prisma.AddonDefaultArgs<ExtArgs>
+  addon?: boolean | Prisma.BookingAddon$addonArgs<ExtArgs>
 }
 export type BookingAddonIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   booking?: boolean | Prisma.BookingDefaultArgs<ExtArgs>
-  addon?: boolean | Prisma.AddonDefaultArgs<ExtArgs>
+  addon?: boolean | Prisma.BookingAddon$addonArgs<ExtArgs>
 }
 
 export type $BookingAddonPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "BookingAddon"
   objects: {
     booking: Prisma.$BookingPayload<ExtArgs>
-    addon: Prisma.$AddonPayload<ExtArgs>
+    addon: Prisma.$AddonPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     bookingId: string
-    addonId: string
+    addonId: string | null
     addonCodeSnapshot: string
     addonNameSnapshot: string
     addonPriceSnapshot: runtime.Decimal
@@ -1181,7 +1229,7 @@ readonly fields: BookingAddonFieldRefs;
 export interface Prisma__BookingAddonClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   booking<T extends Prisma.BookingDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BookingDefaultArgs<ExtArgs>>): Prisma.Prisma__BookingClient<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  addon<T extends Prisma.AddonDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AddonDefaultArgs<ExtArgs>>): Prisma.Prisma__AddonClient<runtime.Types.Result.GetResult<Prisma.$AddonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  addon<T extends Prisma.BookingAddon$addonArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BookingAddon$addonArgs<ExtArgs>>): Prisma.Prisma__AddonClient<runtime.Types.Result.GetResult<Prisma.$AddonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1212,6 +1260,7 @@ export interface Prisma__BookingAddonClient<T, Null = never, ExtArgs extends run
  */
 export interface BookingAddonFieldRefs {
   readonly id: Prisma.FieldRef<"BookingAddon", 'String'>
+  readonly tenantId: Prisma.FieldRef<"BookingAddon", 'String'>
   readonly bookingId: Prisma.FieldRef<"BookingAddon", 'String'>
   readonly addonId: Prisma.FieldRef<"BookingAddon", 'String'>
   readonly addonCodeSnapshot: Prisma.FieldRef<"BookingAddon", 'String'>
@@ -1617,6 +1666,25 @@ export type BookingAddonDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many BookingAddons to delete.
    */
   limit?: number
+}
+
+/**
+ * BookingAddon.addon
+ */
+export type BookingAddon$addonArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Addon
+   */
+  select?: Prisma.AddonSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Addon
+   */
+  omit?: Prisma.AddonOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AddonInclude<ExtArgs> | null
+  where?: Prisma.AddonWhereInput
 }
 
 /**

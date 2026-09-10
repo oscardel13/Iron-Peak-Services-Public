@@ -19,7 +19,7 @@ const tabs = [
 export default function DashboardScheduleWidget({
   bookings = [],
   inventory = [],
-  routeBase = "/client/bookings",
+  routeBase = "/dashboard/bookings",
 }) {
   const [activeTab, setActiveTab] = useState("schedule");
   const [selectedDumpsterId, setSelectedDumpsterId] = useState("ALL");

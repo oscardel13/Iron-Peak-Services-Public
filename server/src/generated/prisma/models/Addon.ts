@@ -36,6 +36,7 @@ export type AddonSumAggregateOutputType = {
 
 export type AddonMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   code: string | null
   name: string | null
   description: string | null
@@ -47,6 +48,7 @@ export type AddonMinAggregateOutputType = {
 
 export type AddonMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   code: string | null
   name: string | null
   description: string | null
@@ -58,6 +60,7 @@ export type AddonMaxAggregateOutputType = {
 
 export type AddonCountAggregateOutputType = {
   id: number
+  tenantId: number
   code: number
   name: number
   description: number
@@ -79,6 +82,7 @@ export type AddonSumAggregateInputType = {
 
 export type AddonMinAggregateInputType = {
   id?: true
+  tenantId?: true
   code?: true
   name?: true
   description?: true
@@ -90,6 +94,7 @@ export type AddonMinAggregateInputType = {
 
 export type AddonMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   code?: true
   name?: true
   description?: true
@@ -101,6 +106,7 @@ export type AddonMaxAggregateInputType = {
 
 export type AddonCountAggregateInputType = {
   id?: true
+  tenantId?: true
   code?: true
   name?: true
   description?: true
@@ -199,6 +205,7 @@ export type AddonGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type AddonGroupByOutputType = {
   id: string
+  tenantId: string
   code: string
   name: string
   description: string | null
@@ -233,6 +240,7 @@ export type AddonWhereInput = {
   OR?: Prisma.AddonWhereInput[]
   NOT?: Prisma.AddonWhereInput | Prisma.AddonWhereInput[]
   id?: Prisma.StringFilter<"Addon"> | string
+  tenantId?: Prisma.StringFilter<"Addon"> | string
   code?: Prisma.StringFilter<"Addon"> | string
   name?: Prisma.StringFilter<"Addon"> | string
   description?: Prisma.StringNullableFilter<"Addon"> | string | null
@@ -240,11 +248,13 @@ export type AddonWhereInput = {
   isActive?: Prisma.BoolFilter<"Addon"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Addon"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Addon"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   bookingAddons?: Prisma.BookingAddonListRelationFilter
 }
 
 export type AddonOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -252,26 +262,31 @@ export type AddonOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   bookingAddons?: Prisma.BookingAddonOrderByRelationAggregateInput
 }
 
 export type AddonWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  code?: string
+  tenantId_code?: Prisma.AddonTenantIdCodeCompoundUniqueInput
   AND?: Prisma.AddonWhereInput | Prisma.AddonWhereInput[]
   OR?: Prisma.AddonWhereInput[]
   NOT?: Prisma.AddonWhereInput | Prisma.AddonWhereInput[]
+  tenantId?: Prisma.StringFilter<"Addon"> | string
+  code?: Prisma.StringFilter<"Addon"> | string
   name?: Prisma.StringFilter<"Addon"> | string
   description?: Prisma.StringNullableFilter<"Addon"> | string | null
   price?: Prisma.DecimalFilter<"Addon"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFilter<"Addon"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Addon"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Addon"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   bookingAddons?: Prisma.BookingAddonListRelationFilter
-}, "id" | "code">
+}, "id" | "tenantId_code">
 
 export type AddonOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -291,6 +306,7 @@ export type AddonScalarWhereWithAggregatesInput = {
   OR?: Prisma.AddonScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AddonScalarWhereWithAggregatesInput | Prisma.AddonScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Addon"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"Addon"> | string
   code?: Prisma.StringWithAggregatesFilter<"Addon"> | string
   name?: Prisma.StringWithAggregatesFilter<"Addon"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Addon"> | string | null
@@ -309,11 +325,13 @@ export type AddonCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutAddonsInput
   bookingAddons?: Prisma.BookingAddonCreateNestedManyWithoutAddonInput
 }
 
 export type AddonUncheckedCreateInput = {
   id?: string
+  tenantId: string
   code: string
   name: string
   description?: string | null
@@ -333,11 +351,13 @@ export type AddonUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutAddonsNestedInput
   bookingAddons?: Prisma.BookingAddonUpdateManyWithoutAddonNestedInput
 }
 
 export type AddonUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -350,6 +370,7 @@ export type AddonUncheckedUpdateInput = {
 
 export type AddonCreateManyInput = {
   id?: string
+  tenantId: string
   code: string
   name: string
   description?: string | null
@@ -372,6 +393,7 @@ export type AddonUpdateManyMutationInput = {
 
 export type AddonUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -381,8 +403,14 @@ export type AddonUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type AddonTenantIdCodeCompoundUniqueInput = {
+  tenantId: string
+  code: string
+}
+
 export type AddonCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -398,6 +426,7 @@ export type AddonAvgOrderByAggregateInput = {
 
 export type AddonMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -409,6 +438,7 @@ export type AddonMaxOrderByAggregateInput = {
 
 export type AddonMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -422,9 +452,43 @@ export type AddonSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
 }
 
-export type AddonScalarRelationFilter = {
-  is?: Prisma.AddonWhereInput
-  isNot?: Prisma.AddonWhereInput
+export type AddonNullableScalarRelationFilter = {
+  is?: Prisma.AddonWhereInput | null
+  isNot?: Prisma.AddonWhereInput | null
+}
+
+export type AddonListRelationFilter = {
+  every?: Prisma.AddonWhereInput
+  some?: Prisma.AddonWhereInput
+  none?: Prisma.AddonWhereInput
+}
+
+export type AddonOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type StringFieldUpdateOperationsInput = {
+  set?: string
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
 }
 
 export type AddonCreateNestedOneWithoutBookingAddonsInput = {
@@ -433,12 +497,56 @@ export type AddonCreateNestedOneWithoutBookingAddonsInput = {
   connect?: Prisma.AddonWhereUniqueInput
 }
 
-export type AddonUpdateOneRequiredWithoutBookingAddonsNestedInput = {
+export type AddonUpdateOneWithoutBookingAddonsNestedInput = {
   create?: Prisma.XOR<Prisma.AddonCreateWithoutBookingAddonsInput, Prisma.AddonUncheckedCreateWithoutBookingAddonsInput>
   connectOrCreate?: Prisma.AddonCreateOrConnectWithoutBookingAddonsInput
   upsert?: Prisma.AddonUpsertWithoutBookingAddonsInput
+  disconnect?: Prisma.AddonWhereInput | boolean
+  delete?: Prisma.AddonWhereInput | boolean
   connect?: Prisma.AddonWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.AddonUpdateToOneWithWhereWithoutBookingAddonsInput, Prisma.AddonUpdateWithoutBookingAddonsInput>, Prisma.AddonUncheckedUpdateWithoutBookingAddonsInput>
+}
+
+export type AddonCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.AddonCreateWithoutTenantInput, Prisma.AddonUncheckedCreateWithoutTenantInput> | Prisma.AddonCreateWithoutTenantInput[] | Prisma.AddonUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.AddonCreateOrConnectWithoutTenantInput | Prisma.AddonCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.AddonCreateManyTenantInputEnvelope
+  connect?: Prisma.AddonWhereUniqueInput | Prisma.AddonWhereUniqueInput[]
+}
+
+export type AddonUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.AddonCreateWithoutTenantInput, Prisma.AddonUncheckedCreateWithoutTenantInput> | Prisma.AddonCreateWithoutTenantInput[] | Prisma.AddonUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.AddonCreateOrConnectWithoutTenantInput | Prisma.AddonCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.AddonCreateManyTenantInputEnvelope
+  connect?: Prisma.AddonWhereUniqueInput | Prisma.AddonWhereUniqueInput[]
+}
+
+export type AddonUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.AddonCreateWithoutTenantInput, Prisma.AddonUncheckedCreateWithoutTenantInput> | Prisma.AddonCreateWithoutTenantInput[] | Prisma.AddonUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.AddonCreateOrConnectWithoutTenantInput | Prisma.AddonCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.AddonUpsertWithWhereUniqueWithoutTenantInput | Prisma.AddonUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.AddonCreateManyTenantInputEnvelope
+  set?: Prisma.AddonWhereUniqueInput | Prisma.AddonWhereUniqueInput[]
+  disconnect?: Prisma.AddonWhereUniqueInput | Prisma.AddonWhereUniqueInput[]
+  delete?: Prisma.AddonWhereUniqueInput | Prisma.AddonWhereUniqueInput[]
+  connect?: Prisma.AddonWhereUniqueInput | Prisma.AddonWhereUniqueInput[]
+  update?: Prisma.AddonUpdateWithWhereUniqueWithoutTenantInput | Prisma.AddonUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.AddonUpdateManyWithWhereWithoutTenantInput | Prisma.AddonUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.AddonScalarWhereInput | Prisma.AddonScalarWhereInput[]
+}
+
+export type AddonUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.AddonCreateWithoutTenantInput, Prisma.AddonUncheckedCreateWithoutTenantInput> | Prisma.AddonCreateWithoutTenantInput[] | Prisma.AddonUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.AddonCreateOrConnectWithoutTenantInput | Prisma.AddonCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.AddonUpsertWithWhereUniqueWithoutTenantInput | Prisma.AddonUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.AddonCreateManyTenantInputEnvelope
+  set?: Prisma.AddonWhereUniqueInput | Prisma.AddonWhereUniqueInput[]
+  disconnect?: Prisma.AddonWhereUniqueInput | Prisma.AddonWhereUniqueInput[]
+  delete?: Prisma.AddonWhereUniqueInput | Prisma.AddonWhereUniqueInput[]
+  connect?: Prisma.AddonWhereUniqueInput | Prisma.AddonWhereUniqueInput[]
+  update?: Prisma.AddonUpdateWithWhereUniqueWithoutTenantInput | Prisma.AddonUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.AddonUpdateManyWithWhereWithoutTenantInput | Prisma.AddonUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.AddonScalarWhereInput | Prisma.AddonScalarWhereInput[]
 }
 
 export type AddonCreateWithoutBookingAddonsInput = {
@@ -450,10 +558,12 @@ export type AddonCreateWithoutBookingAddonsInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutAddonsInput
 }
 
 export type AddonUncheckedCreateWithoutBookingAddonsInput = {
   id?: string
+  tenantId: string
   code: string
   name: string
   description?: string | null
@@ -488,9 +598,122 @@ export type AddonUpdateWithoutBookingAddonsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutAddonsNestedInput
 }
 
 export type AddonUncheckedUpdateWithoutBookingAddonsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AddonCreateWithoutTenantInput = {
+  id?: string
+  code: string
+  name: string
+  description?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bookingAddons?: Prisma.BookingAddonCreateNestedManyWithoutAddonInput
+}
+
+export type AddonUncheckedCreateWithoutTenantInput = {
+  id?: string
+  code: string
+  name: string
+  description?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bookingAddons?: Prisma.BookingAddonUncheckedCreateNestedManyWithoutAddonInput
+}
+
+export type AddonCreateOrConnectWithoutTenantInput = {
+  where: Prisma.AddonWhereUniqueInput
+  create: Prisma.XOR<Prisma.AddonCreateWithoutTenantInput, Prisma.AddonUncheckedCreateWithoutTenantInput>
+}
+
+export type AddonCreateManyTenantInputEnvelope = {
+  data: Prisma.AddonCreateManyTenantInput | Prisma.AddonCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type AddonUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.AddonWhereUniqueInput
+  update: Prisma.XOR<Prisma.AddonUpdateWithoutTenantInput, Prisma.AddonUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.AddonCreateWithoutTenantInput, Prisma.AddonUncheckedCreateWithoutTenantInput>
+}
+
+export type AddonUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.AddonWhereUniqueInput
+  data: Prisma.XOR<Prisma.AddonUpdateWithoutTenantInput, Prisma.AddonUncheckedUpdateWithoutTenantInput>
+}
+
+export type AddonUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.AddonScalarWhereInput
+  data: Prisma.XOR<Prisma.AddonUpdateManyMutationInput, Prisma.AddonUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type AddonScalarWhereInput = {
+  AND?: Prisma.AddonScalarWhereInput | Prisma.AddonScalarWhereInput[]
+  OR?: Prisma.AddonScalarWhereInput[]
+  NOT?: Prisma.AddonScalarWhereInput | Prisma.AddonScalarWhereInput[]
+  id?: Prisma.StringFilter<"Addon"> | string
+  tenantId?: Prisma.StringFilter<"Addon"> | string
+  code?: Prisma.StringFilter<"Addon"> | string
+  name?: Prisma.StringFilter<"Addon"> | string
+  description?: Prisma.StringNullableFilter<"Addon"> | string | null
+  price?: Prisma.DecimalFilter<"Addon"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: Prisma.BoolFilter<"Addon"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Addon"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Addon"> | Date | string
+}
+
+export type AddonCreateManyTenantInput = {
+  id?: string
+  code: string
+  name: string
+  description?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AddonUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingAddons?: Prisma.BookingAddonUpdateManyWithoutAddonNestedInput
+}
+
+export type AddonUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingAddons?: Prisma.BookingAddonUncheckedUpdateManyWithoutAddonNestedInput
+}
+
+export type AddonUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -534,6 +757,7 @@ export type AddonCountOutputTypeCountBookingAddonsArgs<ExtArgs extends runtime.T
 
 export type AddonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   code?: boolean
   name?: boolean
   description?: boolean
@@ -541,12 +765,14 @@ export type AddonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   bookingAddons?: boolean | Prisma.Addon$bookingAddonsArgs<ExtArgs>
   _count?: boolean | Prisma.AddonCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["addon"]>
 
 export type AddonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   code?: boolean
   name?: boolean
   description?: boolean
@@ -554,10 +780,12 @@ export type AddonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["addon"]>
 
 export type AddonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   code?: boolean
   name?: boolean
   description?: boolean
@@ -565,10 +793,12 @@ export type AddonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["addon"]>
 
 export type AddonSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   code?: boolean
   name?: boolean
   description?: boolean
@@ -578,21 +808,28 @@ export type AddonSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AddonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "description" | "price" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["addon"]>
+export type AddonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "code" | "name" | "description" | "price" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["addon"]>
 export type AddonInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   bookingAddons?: boolean | Prisma.Addon$bookingAddonsArgs<ExtArgs>
   _count?: boolean | Prisma.AddonCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type AddonIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type AddonIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type AddonIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+}
+export type AddonIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+}
 
 export type $AddonPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Addon"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     bookingAddons: Prisma.$BookingAddonPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     code: string
     name: string
     description: string | null
@@ -994,6 +1231,7 @@ readonly fields: AddonFieldRefs;
  */
 export interface Prisma__AddonClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   bookingAddons<T extends Prisma.Addon$bookingAddonsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Addon$bookingAddonsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingAddonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1025,6 +1263,7 @@ export interface Prisma__AddonClient<T, Null = never, ExtArgs extends runtime.Ty
  */
 export interface AddonFieldRefs {
   readonly id: Prisma.FieldRef<"Addon", 'String'>
+  readonly tenantId: Prisma.FieldRef<"Addon", 'String'>
   readonly code: Prisma.FieldRef<"Addon", 'String'>
   readonly name: Prisma.FieldRef<"Addon", 'String'>
   readonly description: Prisma.FieldRef<"Addon", 'String'>
@@ -1286,6 +1525,10 @@ export type AddonCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    */
   data: Prisma.AddonCreateManyInput | Prisma.AddonCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AddonIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1356,6 +1599,10 @@ export type AddonUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many Addons to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AddonIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

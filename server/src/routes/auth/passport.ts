@@ -2,7 +2,7 @@
 import "dotenv/config";
 import { Passport } from "passport";
 import {
-  AccessLevel,
+  UserAccessLevel as AccessLevel,
   AuthProviderType,
 } from "../../generated/prisma/client.js";
 import { prisma } from "../../libs/prisma.js";

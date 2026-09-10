@@ -6,6 +6,13 @@ export const addonsData = [
     price: 29.99,
     isActive: true,
   },
+  {
+    code: "concreteSurcharge",
+    name: "Concrete Disposal Surcharge",
+    description: "Additional charge for concrete or heavy material disposal.",
+    price: 150,
+    isActive: true,
+  },
 
   //   {
   //     code: "priorityDelivery",

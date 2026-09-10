@@ -26,6 +26,7 @@ export type AggregateBookingNote = {
 
 export type BookingNoteMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   bookingId: string | null
   visibility: $Enums.NoteVisibility | null
   body: string | null
@@ -35,6 +36,7 @@ export type BookingNoteMinAggregateOutputType = {
 
 export type BookingNoteMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   bookingId: string | null
   visibility: $Enums.NoteVisibility | null
   body: string | null
@@ -44,6 +46,7 @@ export type BookingNoteMaxAggregateOutputType = {
 
 export type BookingNoteCountAggregateOutputType = {
   id: number
+  tenantId: number
   bookingId: number
   visibility: number
   body: number
@@ -55,6 +58,7 @@ export type BookingNoteCountAggregateOutputType = {
 
 export type BookingNoteMinAggregateInputType = {
   id?: true
+  tenantId?: true
   bookingId?: true
   visibility?: true
   body?: true
@@ -64,6 +68,7 @@ export type BookingNoteMinAggregateInputType = {
 
 export type BookingNoteMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   bookingId?: true
   visibility?: true
   body?: true
@@ -73,6 +78,7 @@ export type BookingNoteMaxAggregateInputType = {
 
 export type BookingNoteCountAggregateInputType = {
   id?: true
+  tenantId?: true
   bookingId?: true
   visibility?: true
   body?: true
@@ -155,6 +161,7 @@ export type BookingNoteGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type BookingNoteGroupByOutputType = {
   id: string
+  tenantId: string
   bookingId: string
   visibility: $Enums.NoteVisibility
   body: string
@@ -185,6 +192,7 @@ export type BookingNoteWhereInput = {
   OR?: Prisma.BookingNoteWhereInput[]
   NOT?: Prisma.BookingNoteWhereInput | Prisma.BookingNoteWhereInput[]
   id?: Prisma.StringFilter<"BookingNote"> | string
+  tenantId?: Prisma.StringFilter<"BookingNote"> | string
   bookingId?: Prisma.StringFilter<"BookingNote"> | string
   visibility?: Prisma.EnumNoteVisibilityFilter<"BookingNote"> | $Enums.NoteVisibility
   body?: Prisma.StringFilter<"BookingNote"> | string
@@ -195,6 +203,7 @@ export type BookingNoteWhereInput = {
 
 export type BookingNoteOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   bookingId?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
   body?: Prisma.SortOrder
@@ -208,6 +217,7 @@ export type BookingNoteWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.BookingNoteWhereInput | Prisma.BookingNoteWhereInput[]
   OR?: Prisma.BookingNoteWhereInput[]
   NOT?: Prisma.BookingNoteWhereInput | Prisma.BookingNoteWhereInput[]
+  tenantId?: Prisma.StringFilter<"BookingNote"> | string
   bookingId?: Prisma.StringFilter<"BookingNote"> | string
   visibility?: Prisma.EnumNoteVisibilityFilter<"BookingNote"> | $Enums.NoteVisibility
   body?: Prisma.StringFilter<"BookingNote"> | string
@@ -218,6 +228,7 @@ export type BookingNoteWhereUniqueInput = Prisma.AtLeast<{
 
 export type BookingNoteOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   bookingId?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
   body?: Prisma.SortOrder
@@ -233,6 +244,7 @@ export type BookingNoteScalarWhereWithAggregatesInput = {
   OR?: Prisma.BookingNoteScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BookingNoteScalarWhereWithAggregatesInput | Prisma.BookingNoteScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"BookingNote"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"BookingNote"> | string
   bookingId?: Prisma.StringWithAggregatesFilter<"BookingNote"> | string
   visibility?: Prisma.EnumNoteVisibilityWithAggregatesFilter<"BookingNote"> | $Enums.NoteVisibility
   body?: Prisma.StringWithAggregatesFilter<"BookingNote"> | string
@@ -242,6 +254,7 @@ export type BookingNoteScalarWhereWithAggregatesInput = {
 
 export type BookingNoteCreateInput = {
   id?: string
+  tenantId: string
   visibility?: $Enums.NoteVisibility
   body: string
   createdAt?: Date | string
@@ -251,6 +264,7 @@ export type BookingNoteCreateInput = {
 
 export type BookingNoteUncheckedCreateInput = {
   id?: string
+  tenantId: string
   bookingId: string
   visibility?: $Enums.NoteVisibility
   body: string
@@ -260,6 +274,7 @@ export type BookingNoteUncheckedCreateInput = {
 
 export type BookingNoteUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   visibility?: Prisma.EnumNoteVisibilityFieldUpdateOperationsInput | $Enums.NoteVisibility
   body?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -269,6 +284,7 @@ export type BookingNoteUpdateInput = {
 
 export type BookingNoteUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   bookingId?: Prisma.StringFieldUpdateOperationsInput | string
   visibility?: Prisma.EnumNoteVisibilityFieldUpdateOperationsInput | $Enums.NoteVisibility
   body?: Prisma.StringFieldUpdateOperationsInput | string
@@ -278,6 +294,7 @@ export type BookingNoteUncheckedUpdateInput = {
 
 export type BookingNoteCreateManyInput = {
   id?: string
+  tenantId: string
   bookingId: string
   visibility?: $Enums.NoteVisibility
   body: string
@@ -287,6 +304,7 @@ export type BookingNoteCreateManyInput = {
 
 export type BookingNoteUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   visibility?: Prisma.EnumNoteVisibilityFieldUpdateOperationsInput | $Enums.NoteVisibility
   body?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -295,11 +313,42 @@ export type BookingNoteUpdateManyMutationInput = {
 
 export type BookingNoteUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   bookingId?: Prisma.StringFieldUpdateOperationsInput | string
   visibility?: Prisma.EnumNoteVisibilityFieldUpdateOperationsInput | $Enums.NoteVisibility
   body?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type BookingNoteCountOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
+  visibility?: Prisma.SortOrder
+  body?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type BookingNoteMaxOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
+  visibility?: Prisma.SortOrder
+  body?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type BookingNoteMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
+  bookingId?: Prisma.SortOrder
+  visibility?: Prisma.SortOrder
+  body?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type BookingNoteListRelationFilter = {
@@ -312,31 +361,8 @@ export type BookingNoteOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type BookingNoteCountOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  bookingId?: Prisma.SortOrder
-  visibility?: Prisma.SortOrder
-  body?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-}
-
-export type BookingNoteMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  bookingId?: Prisma.SortOrder
-  visibility?: Prisma.SortOrder
-  body?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-}
-
-export type BookingNoteMinOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  bookingId?: Prisma.SortOrder
-  visibility?: Prisma.SortOrder
-  body?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+export type EnumNoteVisibilityFieldUpdateOperationsInput = {
+  set?: $Enums.NoteVisibility
 }
 
 export type BookingNoteCreateNestedManyWithoutBookingInput = {
@@ -381,12 +407,9 @@ export type BookingNoteUncheckedUpdateManyWithoutBookingNestedInput = {
   deleteMany?: Prisma.BookingNoteScalarWhereInput | Prisma.BookingNoteScalarWhereInput[]
 }
 
-export type EnumNoteVisibilityFieldUpdateOperationsInput = {
-  set?: $Enums.NoteVisibility
-}
-
 export type BookingNoteCreateWithoutBookingInput = {
   id?: string
+  tenantId: string
   visibility?: $Enums.NoteVisibility
   body: string
   createdAt?: Date | string
@@ -395,6 +418,7 @@ export type BookingNoteCreateWithoutBookingInput = {
 
 export type BookingNoteUncheckedCreateWithoutBookingInput = {
   id?: string
+  tenantId: string
   visibility?: $Enums.NoteVisibility
   body: string
   createdAt?: Date | string
@@ -432,6 +456,7 @@ export type BookingNoteScalarWhereInput = {
   OR?: Prisma.BookingNoteScalarWhereInput[]
   NOT?: Prisma.BookingNoteScalarWhereInput | Prisma.BookingNoteScalarWhereInput[]
   id?: Prisma.StringFilter<"BookingNote"> | string
+  tenantId?: Prisma.StringFilter<"BookingNote"> | string
   bookingId?: Prisma.StringFilter<"BookingNote"> | string
   visibility?: Prisma.EnumNoteVisibilityFilter<"BookingNote"> | $Enums.NoteVisibility
   body?: Prisma.StringFilter<"BookingNote"> | string
@@ -441,6 +466,7 @@ export type BookingNoteScalarWhereInput = {
 
 export type BookingNoteCreateManyBookingInput = {
   id?: string
+  tenantId: string
   visibility?: $Enums.NoteVisibility
   body: string
   createdAt?: Date | string
@@ -449,6 +475,7 @@ export type BookingNoteCreateManyBookingInput = {
 
 export type BookingNoteUpdateWithoutBookingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   visibility?: Prisma.EnumNoteVisibilityFieldUpdateOperationsInput | $Enums.NoteVisibility
   body?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -457,6 +484,7 @@ export type BookingNoteUpdateWithoutBookingInput = {
 
 export type BookingNoteUncheckedUpdateWithoutBookingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   visibility?: Prisma.EnumNoteVisibilityFieldUpdateOperationsInput | $Enums.NoteVisibility
   body?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -465,6 +493,7 @@ export type BookingNoteUncheckedUpdateWithoutBookingInput = {
 
 export type BookingNoteUncheckedUpdateManyWithoutBookingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   visibility?: Prisma.EnumNoteVisibilityFieldUpdateOperationsInput | $Enums.NoteVisibility
   body?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -475,6 +504,7 @@ export type BookingNoteUncheckedUpdateManyWithoutBookingInput = {
 
 export type BookingNoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   bookingId?: boolean
   visibility?: boolean
   body?: boolean
@@ -485,6 +515,7 @@ export type BookingNoteSelect<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type BookingNoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   bookingId?: boolean
   visibility?: boolean
   body?: boolean
@@ -495,6 +526,7 @@ export type BookingNoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
 
 export type BookingNoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   bookingId?: boolean
   visibility?: boolean
   body?: boolean
@@ -505,6 +537,7 @@ export type BookingNoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 
 export type BookingNoteSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   bookingId?: boolean
   visibility?: boolean
   body?: boolean
@@ -512,7 +545,7 @@ export type BookingNoteSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BookingNoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bookingId" | "visibility" | "body" | "createdAt" | "updatedAt", ExtArgs["result"]["bookingNote"]>
+export type BookingNoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "bookingId" | "visibility" | "body" | "createdAt" | "updatedAt", ExtArgs["result"]["bookingNote"]>
 export type BookingNoteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   booking?: boolean | Prisma.BookingDefaultArgs<ExtArgs>
 }
@@ -530,6 +563,7 @@ export type $BookingNotePayload<ExtArgs extends runtime.Types.Extensions.Interna
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     bookingId: string
     visibility: $Enums.NoteVisibility
     body: string
@@ -960,6 +994,7 @@ export interface Prisma__BookingNoteClient<T, Null = never, ExtArgs extends runt
  */
 export interface BookingNoteFieldRefs {
   readonly id: Prisma.FieldRef<"BookingNote", 'String'>
+  readonly tenantId: Prisma.FieldRef<"BookingNote", 'String'>
   readonly bookingId: Prisma.FieldRef<"BookingNote", 'String'>
   readonly visibility: Prisma.FieldRef<"BookingNote", 'NoteVisibility'>
   readonly body: Prisma.FieldRef<"BookingNote", 'String'>

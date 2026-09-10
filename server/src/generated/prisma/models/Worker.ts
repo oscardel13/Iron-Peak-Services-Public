@@ -26,21 +26,27 @@ export type AggregateWorker = {
 
 export type WorkerMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   userId: string | null
+  isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type WorkerMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   userId: string | null
+  isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type WorkerCountAggregateOutputType = {
   id: number
+  tenantId: number
   userId: number
+  isActive: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -49,21 +55,27 @@ export type WorkerCountAggregateOutputType = {
 
 export type WorkerMinAggregateInputType = {
   id?: true
+  tenantId?: true
   userId?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
 }
 
 export type WorkerMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   userId?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
 }
 
 export type WorkerCountAggregateInputType = {
   id?: true
+  tenantId?: true
   userId?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -143,7 +155,9 @@ export type WorkerGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type WorkerGroupByOutputType = {
   id: string
+  tenantId: string
   userId: string
+  isActive: boolean
   createdAt: Date
   updatedAt: Date
   _count: WorkerCountAggregateOutputType | null
@@ -171,34 +185,46 @@ export type WorkerWhereInput = {
   OR?: Prisma.WorkerWhereInput[]
   NOT?: Prisma.WorkerWhereInput | Prisma.WorkerWhereInput[]
   id?: Prisma.StringFilter<"Worker"> | string
+  tenantId?: Prisma.StringFilter<"Worker"> | string
   userId?: Prisma.StringFilter<"Worker"> | string
+  isActive?: Prisma.BoolFilter<"Worker"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Worker"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Worker"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type WorkerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type WorkerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  userId?: string
+  tenantId_userId?: Prisma.WorkerTenantIdUserIdCompoundUniqueInput
   AND?: Prisma.WorkerWhereInput | Prisma.WorkerWhereInput[]
   OR?: Prisma.WorkerWhereInput[]
   NOT?: Prisma.WorkerWhereInput | Prisma.WorkerWhereInput[]
+  tenantId?: Prisma.StringFilter<"Worker"> | string
+  userId?: Prisma.StringFilter<"Worker"> | string
+  isActive?: Prisma.BoolFilter<"Worker"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Worker"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Worker"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "userId">
+}, "id" | "tenantId_userId">
 
 export type WorkerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.WorkerCountOrderByAggregateInput
@@ -211,125 +237,266 @@ export type WorkerScalarWhereWithAggregatesInput = {
   OR?: Prisma.WorkerScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WorkerScalarWhereWithAggregatesInput | Prisma.WorkerScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Worker"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"Worker"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Worker"> | string
+  isActive?: Prisma.BoolWithAggregatesFilter<"Worker"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Worker"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Worker"> | Date | string
 }
 
 export type WorkerCreateInput = {
   id?: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutWorkerInput
+  tenant: Prisma.TenantCreateNestedOneWithoutWorkersInput
+  user: Prisma.UserCreateNestedOneWithoutWorkersInput
 }
 
 export type WorkerUncheckedCreateInput = {
   id?: string
+  tenantId: string
   userId: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type WorkerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutWorkerNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutWorkersNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutWorkersNestedInput
 }
 
 export type WorkerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WorkerCreateManyInput = {
   id?: string
+  tenantId: string
   userId: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type WorkerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WorkerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type WorkerNullableScalarRelationFilter = {
-  is?: Prisma.WorkerWhereInput | null
-  isNot?: Prisma.WorkerWhereInput | null
+export type WorkerTenantIdUserIdCompoundUniqueInput = {
+  tenantId: string
+  userId: string
 }
 
 export type WorkerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type WorkerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type WorkerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
-export type WorkerCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutUserInput
-  connect?: Prisma.WorkerWhereUniqueInput
+export type WorkerListRelationFilter = {
+  every?: Prisma.WorkerWhereInput
+  some?: Prisma.WorkerWhereInput
+  none?: Prisma.WorkerWhereInput
 }
 
-export type WorkerUncheckedCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutUserInput
-  connect?: Prisma.WorkerWhereUniqueInput
+export type WorkerOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
-export type WorkerUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutUserInput
-  upsert?: Prisma.WorkerUpsertWithoutUserInput
-  disconnect?: Prisma.WorkerWhereInput | boolean
-  delete?: Prisma.WorkerWhereInput | boolean
-  connect?: Prisma.WorkerWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkerUpdateToOneWithWhereWithoutUserInput, Prisma.WorkerUpdateWithoutUserInput>, Prisma.WorkerUncheckedUpdateWithoutUserInput>
+export type WorkerCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.WorkerCreateWithoutTenantInput, Prisma.WorkerUncheckedCreateWithoutTenantInput> | Prisma.WorkerCreateWithoutTenantInput[] | Prisma.WorkerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutTenantInput | Prisma.WorkerCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.WorkerCreateManyTenantInputEnvelope
+  connect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
 }
 
-export type WorkerUncheckedUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutUserInput
-  upsert?: Prisma.WorkerUpsertWithoutUserInput
-  disconnect?: Prisma.WorkerWhereInput | boolean
-  delete?: Prisma.WorkerWhereInput | boolean
-  connect?: Prisma.WorkerWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkerUpdateToOneWithWhereWithoutUserInput, Prisma.WorkerUpdateWithoutUserInput>, Prisma.WorkerUncheckedUpdateWithoutUserInput>
+export type WorkerUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.WorkerCreateWithoutTenantInput, Prisma.WorkerUncheckedCreateWithoutTenantInput> | Prisma.WorkerCreateWithoutTenantInput[] | Prisma.WorkerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutTenantInput | Prisma.WorkerCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.WorkerCreateManyTenantInputEnvelope
+  connect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
 }
 
-export type WorkerCreateWithoutUserInput = {
+export type WorkerUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkerCreateWithoutTenantInput, Prisma.WorkerUncheckedCreateWithoutTenantInput> | Prisma.WorkerCreateWithoutTenantInput[] | Prisma.WorkerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutTenantInput | Prisma.WorkerCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.WorkerUpsertWithWhereUniqueWithoutTenantInput | Prisma.WorkerUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.WorkerCreateManyTenantInputEnvelope
+  set?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  disconnect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  delete?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  connect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  update?: Prisma.WorkerUpdateWithWhereUniqueWithoutTenantInput | Prisma.WorkerUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.WorkerUpdateManyWithWhereWithoutTenantInput | Prisma.WorkerUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.WorkerScalarWhereInput | Prisma.WorkerScalarWhereInput[]
+}
+
+export type WorkerUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkerCreateWithoutTenantInput, Prisma.WorkerUncheckedCreateWithoutTenantInput> | Prisma.WorkerCreateWithoutTenantInput[] | Prisma.WorkerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutTenantInput | Prisma.WorkerCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.WorkerUpsertWithWhereUniqueWithoutTenantInput | Prisma.WorkerUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.WorkerCreateManyTenantInputEnvelope
+  set?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  disconnect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  delete?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  connect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  update?: Prisma.WorkerUpdateWithWhereUniqueWithoutTenantInput | Prisma.WorkerUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.WorkerUpdateManyWithWhereWithoutTenantInput | Prisma.WorkerUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.WorkerScalarWhereInput | Prisma.WorkerScalarWhereInput[]
+}
+
+export type WorkerCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput> | Prisma.WorkerCreateWithoutUserInput[] | Prisma.WorkerUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutUserInput | Prisma.WorkerCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.WorkerCreateManyUserInputEnvelope
+  connect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+}
+
+export type WorkerUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput> | Prisma.WorkerCreateWithoutUserInput[] | Prisma.WorkerUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutUserInput | Prisma.WorkerCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.WorkerCreateManyUserInputEnvelope
+  connect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+}
+
+export type WorkerUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput> | Prisma.WorkerCreateWithoutUserInput[] | Prisma.WorkerUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutUserInput | Prisma.WorkerCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.WorkerUpsertWithWhereUniqueWithoutUserInput | Prisma.WorkerUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.WorkerCreateManyUserInputEnvelope
+  set?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  disconnect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  delete?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  connect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  update?: Prisma.WorkerUpdateWithWhereUniqueWithoutUserInput | Prisma.WorkerUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.WorkerUpdateManyWithWhereWithoutUserInput | Prisma.WorkerUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.WorkerScalarWhereInput | Prisma.WorkerScalarWhereInput[]
+}
+
+export type WorkerUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput> | Prisma.WorkerCreateWithoutUserInput[] | Prisma.WorkerUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.WorkerCreateOrConnectWithoutUserInput | Prisma.WorkerCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.WorkerUpsertWithWhereUniqueWithoutUserInput | Prisma.WorkerUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.WorkerCreateManyUserInputEnvelope
+  set?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  disconnect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  delete?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  connect?: Prisma.WorkerWhereUniqueInput | Prisma.WorkerWhereUniqueInput[]
+  update?: Prisma.WorkerUpdateWithWhereUniqueWithoutUserInput | Prisma.WorkerUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.WorkerUpdateManyWithWhereWithoutUserInput | Prisma.WorkerUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.WorkerScalarWhereInput | Prisma.WorkerScalarWhereInput[]
+}
+
+export type WorkerCreateWithoutTenantInput = {
   id?: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutWorkersInput
+}
+
+export type WorkerUncheckedCreateWithoutTenantInput = {
+  id?: string
+  userId: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
+export type WorkerCreateOrConnectWithoutTenantInput = {
+  where: Prisma.WorkerWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkerCreateWithoutTenantInput, Prisma.WorkerUncheckedCreateWithoutTenantInput>
+}
+
+export type WorkerCreateManyTenantInputEnvelope = {
+  data: Prisma.WorkerCreateManyTenantInput | Prisma.WorkerCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type WorkerUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.WorkerWhereUniqueInput
+  update: Prisma.XOR<Prisma.WorkerUpdateWithoutTenantInput, Prisma.WorkerUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.WorkerCreateWithoutTenantInput, Prisma.WorkerUncheckedCreateWithoutTenantInput>
+}
+
+export type WorkerUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.WorkerWhereUniqueInput
+  data: Prisma.XOR<Prisma.WorkerUpdateWithoutTenantInput, Prisma.WorkerUncheckedUpdateWithoutTenantInput>
+}
+
+export type WorkerUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.WorkerScalarWhereInput
+  data: Prisma.XOR<Prisma.WorkerUpdateManyMutationInput, Prisma.WorkerUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type WorkerScalarWhereInput = {
+  AND?: Prisma.WorkerScalarWhereInput | Prisma.WorkerScalarWhereInput[]
+  OR?: Prisma.WorkerScalarWhereInput[]
+  NOT?: Prisma.WorkerScalarWhereInput | Prisma.WorkerScalarWhereInput[]
+  id?: Prisma.StringFilter<"Worker"> | string
+  tenantId?: Prisma.StringFilter<"Worker"> | string
+  userId?: Prisma.StringFilter<"Worker"> | string
+  isActive?: Prisma.BoolFilter<"Worker"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Worker"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Worker"> | Date | string
+}
+
+export type WorkerCreateWithoutUserInput = {
+  id?: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutWorkersInput
+}
+
 export type WorkerUncheckedCreateWithoutUserInput = {
   id?: string
+  tenantId: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -339,25 +506,87 @@ export type WorkerCreateOrConnectWithoutUserInput = {
   create: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput>
 }
 
-export type WorkerUpsertWithoutUserInput = {
-  update: Prisma.XOR<Prisma.WorkerUpdateWithoutUserInput, Prisma.WorkerUncheckedUpdateWithoutUserInput>
-  create: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput>
-  where?: Prisma.WorkerWhereInput
+export type WorkerCreateManyUserInputEnvelope = {
+  data: Prisma.WorkerCreateManyUserInput | Prisma.WorkerCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
-export type WorkerUpdateToOneWithWhereWithoutUserInput = {
-  where?: Prisma.WorkerWhereInput
+export type WorkerUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.WorkerWhereUniqueInput
+  update: Prisma.XOR<Prisma.WorkerUpdateWithoutUserInput, Prisma.WorkerUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.WorkerCreateWithoutUserInput, Prisma.WorkerUncheckedCreateWithoutUserInput>
+}
+
+export type WorkerUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.WorkerWhereUniqueInput
   data: Prisma.XOR<Prisma.WorkerUpdateWithoutUserInput, Prisma.WorkerUncheckedUpdateWithoutUserInput>
 }
 
-export type WorkerUpdateWithoutUserInput = {
+export type WorkerUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.WorkerScalarWhereInput
+  data: Prisma.XOR<Prisma.WorkerUpdateManyMutationInput, Prisma.WorkerUncheckedUpdateManyWithoutUserInput>
+}
+
+export type WorkerCreateManyTenantInput = {
+  id?: string
+  userId: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WorkerUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutWorkersNestedInput
+}
+
+export type WorkerUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type WorkerUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type WorkerCreateManyUserInput = {
+  id?: string
+  tenantId: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WorkerUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutWorkersNestedInput
+}
+
 export type WorkerUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type WorkerUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -366,54 +595,71 @@ export type WorkerUncheckedUpdateWithoutUserInput = {
 
 export type WorkerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   userId?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["worker"]>
 
 export type WorkerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   userId?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["worker"]>
 
 export type WorkerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   userId?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["worker"]>
 
 export type WorkerSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   userId?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type WorkerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["worker"]>
+export type WorkerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "userId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["worker"]>
 export type WorkerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type WorkerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type WorkerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $WorkerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Worker"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     userId: string
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["worker"]>
@@ -810,6 +1056,7 @@ readonly fields: WorkerFieldRefs;
  */
 export interface Prisma__WorkerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -841,7 +1088,9 @@ export interface Prisma__WorkerClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface WorkerFieldRefs {
   readonly id: Prisma.FieldRef<"Worker", 'String'>
+  readonly tenantId: Prisma.FieldRef<"Worker", 'String'>
   readonly userId: Prisma.FieldRef<"Worker", 'String'>
+  readonly isActive: Prisma.FieldRef<"Worker", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Worker", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Worker", 'DateTime'>
 }

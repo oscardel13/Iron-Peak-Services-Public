@@ -26,21 +26,27 @@ export type AggregateDriver = {
 
 export type DriverMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   userId: string | null
+  isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type DriverMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   userId: string | null
+  isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type DriverCountAggregateOutputType = {
   id: number
+  tenantId: number
   userId: number
+  isActive: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -49,21 +55,27 @@ export type DriverCountAggregateOutputType = {
 
 export type DriverMinAggregateInputType = {
   id?: true
+  tenantId?: true
   userId?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
 }
 
 export type DriverMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   userId?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
 }
 
 export type DriverCountAggregateInputType = {
   id?: true
+  tenantId?: true
   userId?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -143,7 +155,9 @@ export type DriverGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type DriverGroupByOutputType = {
   id: string
+  tenantId: string
   userId: string
+  isActive: boolean
   createdAt: Date
   updatedAt: Date
   _count: DriverCountAggregateOutputType | null
@@ -171,34 +185,46 @@ export type DriverWhereInput = {
   OR?: Prisma.DriverWhereInput[]
   NOT?: Prisma.DriverWhereInput | Prisma.DriverWhereInput[]
   id?: Prisma.StringFilter<"Driver"> | string
+  tenantId?: Prisma.StringFilter<"Driver"> | string
   userId?: Prisma.StringFilter<"Driver"> | string
+  isActive?: Prisma.BoolFilter<"Driver"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type DriverOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type DriverWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  userId?: string
+  tenantId_userId?: Prisma.DriverTenantIdUserIdCompoundUniqueInput
   AND?: Prisma.DriverWhereInput | Prisma.DriverWhereInput[]
   OR?: Prisma.DriverWhereInput[]
   NOT?: Prisma.DriverWhereInput | Prisma.DriverWhereInput[]
+  tenantId?: Prisma.StringFilter<"Driver"> | string
+  userId?: Prisma.StringFilter<"Driver"> | string
+  isActive?: Prisma.BoolFilter<"Driver"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "userId">
+}, "id" | "tenantId_userId">
 
 export type DriverOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.DriverCountOrderByAggregateInput
@@ -211,125 +237,266 @@ export type DriverScalarWhereWithAggregatesInput = {
   OR?: Prisma.DriverScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DriverScalarWhereWithAggregatesInput | Prisma.DriverScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Driver"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"Driver"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Driver"> | string
+  isActive?: Prisma.BoolWithAggregatesFilter<"Driver"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Driver"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Driver"> | Date | string
 }
 
 export type DriverCreateInput = {
   id?: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutDriverInput
+  tenant: Prisma.TenantCreateNestedOneWithoutDriversInput
+  user: Prisma.UserCreateNestedOneWithoutDriversInput
 }
 
 export type DriverUncheckedCreateInput = {
   id?: string
+  tenantId: string
   userId: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type DriverUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutDriverNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDriversNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutDriversNestedInput
 }
 
 export type DriverUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DriverCreateManyInput = {
   id?: string
+  tenantId: string
   userId: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type DriverUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DriverUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type DriverNullableScalarRelationFilter = {
-  is?: Prisma.DriverWhereInput | null
-  isNot?: Prisma.DriverWhereInput | null
+export type DriverTenantIdUserIdCompoundUniqueInput = {
+  tenantId: string
+  userId: string
 }
 
 export type DriverCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type DriverMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type DriverMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
-export type DriverCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutUserInput
-  connect?: Prisma.DriverWhereUniqueInput
+export type DriverListRelationFilter = {
+  every?: Prisma.DriverWhereInput
+  some?: Prisma.DriverWhereInput
+  none?: Prisma.DriverWhereInput
 }
 
-export type DriverUncheckedCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutUserInput
-  connect?: Prisma.DriverWhereUniqueInput
+export type DriverOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
-export type DriverUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutUserInput
-  upsert?: Prisma.DriverUpsertWithoutUserInput
-  disconnect?: Prisma.DriverWhereInput | boolean
-  delete?: Prisma.DriverWhereInput | boolean
-  connect?: Prisma.DriverWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.DriverUpdateToOneWithWhereWithoutUserInput, Prisma.DriverUpdateWithoutUserInput>, Prisma.DriverUncheckedUpdateWithoutUserInput>
+export type DriverCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.DriverCreateWithoutTenantInput, Prisma.DriverUncheckedCreateWithoutTenantInput> | Prisma.DriverCreateWithoutTenantInput[] | Prisma.DriverUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutTenantInput | Prisma.DriverCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.DriverCreateManyTenantInputEnvelope
+  connect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
 }
 
-export type DriverUncheckedUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutUserInput
-  upsert?: Prisma.DriverUpsertWithoutUserInput
-  disconnect?: Prisma.DriverWhereInput | boolean
-  delete?: Prisma.DriverWhereInput | boolean
-  connect?: Prisma.DriverWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.DriverUpdateToOneWithWhereWithoutUserInput, Prisma.DriverUpdateWithoutUserInput>, Prisma.DriverUncheckedUpdateWithoutUserInput>
+export type DriverUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.DriverCreateWithoutTenantInput, Prisma.DriverUncheckedCreateWithoutTenantInput> | Prisma.DriverCreateWithoutTenantInput[] | Prisma.DriverUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutTenantInput | Prisma.DriverCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.DriverCreateManyTenantInputEnvelope
+  connect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
 }
 
-export type DriverCreateWithoutUserInput = {
+export type DriverUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.DriverCreateWithoutTenantInput, Prisma.DriverUncheckedCreateWithoutTenantInput> | Prisma.DriverCreateWithoutTenantInput[] | Prisma.DriverUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutTenantInput | Prisma.DriverCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.DriverUpsertWithWhereUniqueWithoutTenantInput | Prisma.DriverUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.DriverCreateManyTenantInputEnvelope
+  set?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  disconnect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  delete?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  connect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  update?: Prisma.DriverUpdateWithWhereUniqueWithoutTenantInput | Prisma.DriverUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.DriverUpdateManyWithWhereWithoutTenantInput | Prisma.DriverUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.DriverScalarWhereInput | Prisma.DriverScalarWhereInput[]
+}
+
+export type DriverUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.DriverCreateWithoutTenantInput, Prisma.DriverUncheckedCreateWithoutTenantInput> | Prisma.DriverCreateWithoutTenantInput[] | Prisma.DriverUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutTenantInput | Prisma.DriverCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.DriverUpsertWithWhereUniqueWithoutTenantInput | Prisma.DriverUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.DriverCreateManyTenantInputEnvelope
+  set?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  disconnect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  delete?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  connect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  update?: Prisma.DriverUpdateWithWhereUniqueWithoutTenantInput | Prisma.DriverUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.DriverUpdateManyWithWhereWithoutTenantInput | Prisma.DriverUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.DriverScalarWhereInput | Prisma.DriverScalarWhereInput[]
+}
+
+export type DriverCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput> | Prisma.DriverCreateWithoutUserInput[] | Prisma.DriverUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutUserInput | Prisma.DriverCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.DriverCreateManyUserInputEnvelope
+  connect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+}
+
+export type DriverUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput> | Prisma.DriverCreateWithoutUserInput[] | Prisma.DriverUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutUserInput | Prisma.DriverCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.DriverCreateManyUserInputEnvelope
+  connect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+}
+
+export type DriverUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput> | Prisma.DriverCreateWithoutUserInput[] | Prisma.DriverUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutUserInput | Prisma.DriverCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.DriverUpsertWithWhereUniqueWithoutUserInput | Prisma.DriverUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.DriverCreateManyUserInputEnvelope
+  set?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  disconnect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  delete?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  connect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  update?: Prisma.DriverUpdateWithWhereUniqueWithoutUserInput | Prisma.DriverUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.DriverUpdateManyWithWhereWithoutUserInput | Prisma.DriverUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.DriverScalarWhereInput | Prisma.DriverScalarWhereInput[]
+}
+
+export type DriverUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput> | Prisma.DriverCreateWithoutUserInput[] | Prisma.DriverUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutUserInput | Prisma.DriverCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.DriverUpsertWithWhereUniqueWithoutUserInput | Prisma.DriverUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.DriverCreateManyUserInputEnvelope
+  set?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  disconnect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  delete?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  connect?: Prisma.DriverWhereUniqueInput | Prisma.DriverWhereUniqueInput[]
+  update?: Prisma.DriverUpdateWithWhereUniqueWithoutUserInput | Prisma.DriverUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.DriverUpdateManyWithWhereWithoutUserInput | Prisma.DriverUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.DriverScalarWhereInput | Prisma.DriverScalarWhereInput[]
+}
+
+export type DriverCreateWithoutTenantInput = {
   id?: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutDriversInput
+}
+
+export type DriverUncheckedCreateWithoutTenantInput = {
+  id?: string
+  userId: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
+export type DriverCreateOrConnectWithoutTenantInput = {
+  where: Prisma.DriverWhereUniqueInput
+  create: Prisma.XOR<Prisma.DriverCreateWithoutTenantInput, Prisma.DriverUncheckedCreateWithoutTenantInput>
+}
+
+export type DriverCreateManyTenantInputEnvelope = {
+  data: Prisma.DriverCreateManyTenantInput | Prisma.DriverCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type DriverUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.DriverWhereUniqueInput
+  update: Prisma.XOR<Prisma.DriverUpdateWithoutTenantInput, Prisma.DriverUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.DriverCreateWithoutTenantInput, Prisma.DriverUncheckedCreateWithoutTenantInput>
+}
+
+export type DriverUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.DriverWhereUniqueInput
+  data: Prisma.XOR<Prisma.DriverUpdateWithoutTenantInput, Prisma.DriverUncheckedUpdateWithoutTenantInput>
+}
+
+export type DriverUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.DriverScalarWhereInput
+  data: Prisma.XOR<Prisma.DriverUpdateManyMutationInput, Prisma.DriverUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type DriverScalarWhereInput = {
+  AND?: Prisma.DriverScalarWhereInput | Prisma.DriverScalarWhereInput[]
+  OR?: Prisma.DriverScalarWhereInput[]
+  NOT?: Prisma.DriverScalarWhereInput | Prisma.DriverScalarWhereInput[]
+  id?: Prisma.StringFilter<"Driver"> | string
+  tenantId?: Prisma.StringFilter<"Driver"> | string
+  userId?: Prisma.StringFilter<"Driver"> | string
+  isActive?: Prisma.BoolFilter<"Driver"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
+}
+
+export type DriverCreateWithoutUserInput = {
+  id?: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDriversInput
+}
+
 export type DriverUncheckedCreateWithoutUserInput = {
   id?: string
+  tenantId: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -339,25 +506,87 @@ export type DriverCreateOrConnectWithoutUserInput = {
   create: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput>
 }
 
-export type DriverUpsertWithoutUserInput = {
-  update: Prisma.XOR<Prisma.DriverUpdateWithoutUserInput, Prisma.DriverUncheckedUpdateWithoutUserInput>
-  create: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput>
-  where?: Prisma.DriverWhereInput
+export type DriverCreateManyUserInputEnvelope = {
+  data: Prisma.DriverCreateManyUserInput | Prisma.DriverCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
-export type DriverUpdateToOneWithWhereWithoutUserInput = {
-  where?: Prisma.DriverWhereInput
+export type DriverUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.DriverWhereUniqueInput
+  update: Prisma.XOR<Prisma.DriverUpdateWithoutUserInput, Prisma.DriverUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.DriverCreateWithoutUserInput, Prisma.DriverUncheckedCreateWithoutUserInput>
+}
+
+export type DriverUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.DriverWhereUniqueInput
   data: Prisma.XOR<Prisma.DriverUpdateWithoutUserInput, Prisma.DriverUncheckedUpdateWithoutUserInput>
 }
 
-export type DriverUpdateWithoutUserInput = {
+export type DriverUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.DriverScalarWhereInput
+  data: Prisma.XOR<Prisma.DriverUpdateManyMutationInput, Prisma.DriverUncheckedUpdateManyWithoutUserInput>
+}
+
+export type DriverCreateManyTenantInput = {
+  id?: string
+  userId: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DriverUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutDriversNestedInput
+}
+
+export type DriverUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type DriverUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DriverCreateManyUserInput = {
+  id?: string
+  tenantId: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DriverUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDriversNestedInput
+}
+
 export type DriverUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DriverUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -366,54 +595,71 @@ export type DriverUncheckedUpdateWithoutUserInput = {
 
 export type DriverSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   userId?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["driver"]>
 
 export type DriverSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   userId?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["driver"]>
 
 export type DriverSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   userId?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["driver"]>
 
 export type DriverSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   userId?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DriverOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["driver"]>
+export type DriverOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "userId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["driver"]>
 export type DriverInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type DriverIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type DriverIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $DriverPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Driver"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     userId: string
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["driver"]>
@@ -810,6 +1056,7 @@ readonly fields: DriverFieldRefs;
  */
 export interface Prisma__DriverClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -841,7 +1088,9 @@ export interface Prisma__DriverClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface DriverFieldRefs {
   readonly id: Prisma.FieldRef<"Driver", 'String'>
+  readonly tenantId: Prisma.FieldRef<"Driver", 'String'>
   readonly userId: Prisma.FieldRef<"Driver", 'String'>
+  readonly isActive: Prisma.FieldRef<"Driver", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Driver", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Driver", 'DateTime'>
 }

@@ -1,52 +1,67 @@
 import type { PrismaClient } from "../../../src/generated/prisma/client.js";
 
+import { getIronPeakTenant } from "../tenants/tenants.helpers.js";
 import { dumpstersData } from "./dumpsters.data.js";
 
 export async function seedDumpsters(prisma: PrismaClient) {
-  console.log("🗑️ Seeding dumpsters...");
+  console.log("🗑️ Seeding inventory dumpsters...");
 
-  for (const dumpster of dumpstersData) {
-    await prisma.dumpster.upsert({
+  const tenant = await getIronPeakTenant(prisma);
+
+  for (const item of dumpstersData) {
+    await prisma.inventoryItem.upsert({
       where: {
-        id: dumpster.id,
+        id: item.id,
       },
-
       update: {
-        label: dumpster.label,
-        size: dumpster.size,
-        sizeLabel: dumpster.sizeLabel,
-        serialNumber: dumpster.serialNumber,
+        tenantId: tenant.id,
 
-        primaryColor: dumpster.primaryColor,
-        secondaryColor: dumpster.secondaryColor,
-        colorPattern: dumpster.colorPattern,
+        category: item.category,
+        label: item.label,
+        name: item.name,
+        description: item.description,
 
-        status: dumpster.status,
-        basePrice: dumpster.basePrice,
-        concretePrice: dumpster.concretePrice,
-        notes: dumpster.notes,
-        isActive: dumpster.isActive,
+        sizeValue: item.sizeValue,
+        sizeUnit: item.sizeUnit,
+
+        serialNumber: item.serialNumber,
+
+        primaryColor: item.primaryColor,
+        secondaryColor: item.secondaryColor,
+        colorPattern: item.colorPattern,
+
+        status: item.status,
+        basePrice: item.basePrice,
+        concretePrice: item.concretePrice,
+        notes: item.notes,
+        isActive: item.isActive,
       },
-
       create: {
-        id: dumpster.id,
-        label: dumpster.label,
-        size: dumpster.size,
-        sizeLabel: dumpster.sizeLabel,
-        serialNumber: dumpster.serialNumber,
+        id: item.id,
+        tenantId: tenant.id,
 
-        primaryColor: dumpster.primaryColor,
-        secondaryColor: dumpster.secondaryColor,
-        colorPattern: dumpster.colorPattern,
+        category: item.category,
+        label: item.label,
+        name: item.name,
+        description: item.description,
 
-        status: dumpster.status,
-        basePrice: dumpster.basePrice,
-        concretePrice: dumpster.concretePrice,
-        notes: dumpster.notes,
-        isActive: dumpster.isActive,
+        sizeValue: item.sizeValue,
+        sizeUnit: item.sizeUnit,
+
+        serialNumber: item.serialNumber,
+
+        primaryColor: item.primaryColor,
+        secondaryColor: item.secondaryColor,
+        colorPattern: item.colorPattern,
+
+        status: item.status,
+        basePrice: item.basePrice,
+        concretePrice: item.concretePrice,
+        notes: item.notes,
+        isActive: item.isActive,
       },
     });
   }
 
-  console.log(`   ✓ ${dumpstersData.length} dumpsters seeded`);
+  console.log(`   ✓ ${dumpstersData.length} inventory dumpsters seeded`);
 }

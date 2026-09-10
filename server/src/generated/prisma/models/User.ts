@@ -30,7 +30,6 @@ export type UserMinAggregateOutputType = {
   email: string | null
   phone: string | null
   picture: string | null
-  accessLevel: $Enums.AccessLevel | null
   isActive: boolean | null
   lastLoginAt: Date | null
   createdAt: Date | null
@@ -43,7 +42,6 @@ export type UserMaxAggregateOutputType = {
   email: string | null
   phone: string | null
   picture: string | null
-  accessLevel: $Enums.AccessLevel | null
   isActive: boolean | null
   lastLoginAt: Date | null
   createdAt: Date | null
@@ -56,7 +54,6 @@ export type UserCountAggregateOutputType = {
   email: number
   phone: number
   picture: number
-  accessLevel: number
   isActive: number
   lastLoginAt: number
   createdAt: number
@@ -71,7 +68,6 @@ export type UserMinAggregateInputType = {
   email?: true
   phone?: true
   picture?: true
-  accessLevel?: true
   isActive?: true
   lastLoginAt?: true
   createdAt?: true
@@ -84,7 +80,6 @@ export type UserMaxAggregateInputType = {
   email?: true
   phone?: true
   picture?: true
-  accessLevel?: true
   isActive?: true
   lastLoginAt?: true
   createdAt?: true
@@ -97,7 +92,6 @@ export type UserCountAggregateInputType = {
   email?: true
   phone?: true
   picture?: true
-  accessLevel?: true
   isActive?: true
   lastLoginAt?: true
   createdAt?: true
@@ -183,7 +177,6 @@ export type UserGroupByOutputType = {
   email: string | null
   phone: string | null
   picture: string | null
-  accessLevel: $Enums.AccessLevel
   isActive: boolean
   lastLoginAt: Date | null
   createdAt: Date
@@ -217,14 +210,14 @@ export type UserWhereInput = {
   email?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   picture?: Prisma.StringNullableFilter<"User"> | string | null
-  accessLevel?: Prisma.EnumAccessLevelFilter<"User"> | $Enums.AccessLevel
   isActive?: Prisma.BoolFilter<"User"> | boolean
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  client?: Prisma.XOR<Prisma.ClientNullableScalarRelationFilter, Prisma.ClientWhereInput> | null
-  driver?: Prisma.XOR<Prisma.DriverNullableScalarRelationFilter, Prisma.DriverWhereInput> | null
-  worker?: Prisma.XOR<Prisma.WorkerNullableScalarRelationFilter, Prisma.WorkerWhereInput> | null
+  memberships?: Prisma.TenantMembershipListRelationFilter
+  clients?: Prisma.ClientListRelationFilter
+  drivers?: Prisma.DriverListRelationFilter
+  workers?: Prisma.WorkerListRelationFilter
   authProviders?: Prisma.UserAuthProviderListRelationFilter
 }
 
@@ -234,14 +227,14 @@ export type UserOrderByWithRelationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   picture?: Prisma.SortOrderInput | Prisma.SortOrder
-  accessLevel?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  client?: Prisma.ClientOrderByWithRelationInput
-  driver?: Prisma.DriverOrderByWithRelationInput
-  worker?: Prisma.WorkerOrderByWithRelationInput
+  memberships?: Prisma.TenantMembershipOrderByRelationAggregateInput
+  clients?: Prisma.ClientOrderByRelationAggregateInput
+  drivers?: Prisma.DriverOrderByRelationAggregateInput
+  workers?: Prisma.WorkerOrderByRelationAggregateInput
   authProviders?: Prisma.UserAuthProviderOrderByRelationAggregateInput
 }
 
@@ -254,14 +247,14 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   picture?: Prisma.StringNullableFilter<"User"> | string | null
-  accessLevel?: Prisma.EnumAccessLevelFilter<"User"> | $Enums.AccessLevel
   isActive?: Prisma.BoolFilter<"User"> | boolean
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  client?: Prisma.XOR<Prisma.ClientNullableScalarRelationFilter, Prisma.ClientWhereInput> | null
-  driver?: Prisma.XOR<Prisma.DriverNullableScalarRelationFilter, Prisma.DriverWhereInput> | null
-  worker?: Prisma.XOR<Prisma.WorkerNullableScalarRelationFilter, Prisma.WorkerWhereInput> | null
+  memberships?: Prisma.TenantMembershipListRelationFilter
+  clients?: Prisma.ClientListRelationFilter
+  drivers?: Prisma.DriverListRelationFilter
+  workers?: Prisma.WorkerListRelationFilter
   authProviders?: Prisma.UserAuthProviderListRelationFilter
 }, "id" | "email">
 
@@ -271,7 +264,6 @@ export type UserOrderByWithAggregationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   picture?: Prisma.SortOrderInput | Prisma.SortOrder
-  accessLevel?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -290,7 +282,6 @@ export type UserScalarWhereWithAggregatesInput = {
   email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   picture?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  accessLevel?: Prisma.EnumAccessLevelWithAggregatesFilter<"User"> | $Enums.AccessLevel
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -303,14 +294,14 @@ export type UserCreateInput = {
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  client?: Prisma.ClientCreateNestedOneWithoutUserInput
-  driver?: Prisma.DriverCreateNestedOneWithoutUserInput
-  worker?: Prisma.WorkerCreateNestedOneWithoutUserInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
+  clients?: Prisma.ClientCreateNestedManyWithoutUserInput
+  drivers?: Prisma.DriverCreateNestedManyWithoutUserInput
+  workers?: Prisma.WorkerCreateNestedManyWithoutUserInput
   authProviders?: Prisma.UserAuthProviderCreateNestedManyWithoutUserInput
 }
 
@@ -320,14 +311,14 @@ export type UserUncheckedCreateInput = {
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  client?: Prisma.ClientUncheckedCreateNestedOneWithoutUserInput
-  driver?: Prisma.DriverUncheckedCreateNestedOneWithoutUserInput
-  worker?: Prisma.WorkerUncheckedCreateNestedOneWithoutUserInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
+  clients?: Prisma.ClientUncheckedCreateNestedManyWithoutUserInput
+  drivers?: Prisma.DriverUncheckedCreateNestedManyWithoutUserInput
+  workers?: Prisma.WorkerUncheckedCreateNestedManyWithoutUserInput
   authProviders?: Prisma.UserAuthProviderUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -337,14 +328,14 @@ export type UserUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUpdateOneWithoutUserNestedInput
-  driver?: Prisma.DriverUpdateOneWithoutUserNestedInput
-  worker?: Prisma.WorkerUpdateOneWithoutUserNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
+  clients?: Prisma.ClientUpdateManyWithoutUserNestedInput
+  drivers?: Prisma.DriverUpdateManyWithoutUserNestedInput
+  workers?: Prisma.WorkerUpdateManyWithoutUserNestedInput
   authProviders?: Prisma.UserAuthProviderUpdateManyWithoutUserNestedInput
 }
 
@@ -354,14 +345,14 @@ export type UserUncheckedUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUncheckedUpdateOneWithoutUserNestedInput
-  driver?: Prisma.DriverUncheckedUpdateOneWithoutUserNestedInput
-  worker?: Prisma.WorkerUncheckedUpdateOneWithoutUserNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
+  clients?: Prisma.ClientUncheckedUpdateManyWithoutUserNestedInput
+  drivers?: Prisma.DriverUncheckedUpdateManyWithoutUserNestedInput
+  workers?: Prisma.WorkerUncheckedUpdateManyWithoutUserNestedInput
   authProviders?: Prisma.UserAuthProviderUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -371,7 +362,6 @@ export type UserCreateManyInput = {
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -384,7 +374,6 @@ export type UserUpdateManyMutationInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -397,11 +386,20 @@ export type UserUncheckedUpdateManyInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -410,7 +408,6 @@ export type UserCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   picture?: Prisma.SortOrder
-  accessLevel?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -423,7 +420,6 @@ export type UserMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   picture?: Prisma.SortOrder
-  accessLevel?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -436,82 +432,68 @@ export type UserMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   picture?: Prisma.SortOrder
-  accessLevel?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
-export type UserScalarRelationFilter = {
-  is?: Prisma.UserWhereInput
-  isNot?: Prisma.UserWhereInput
-}
-
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type EnumAccessLevelFieldUpdateOperationsInput = {
-  set?: $Enums.AccessLevel
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
-export type UserCreateNestedOneWithoutClientInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutClientInput, Prisma.UserUncheckedCreateWithoutClientInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutClientInput
+export type UserCreateNestedOneWithoutClientsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutClientsInput, Prisma.UserUncheckedCreateWithoutClientsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutClientsInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutClientNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutClientInput, Prisma.UserUncheckedCreateWithoutClientInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutClientInput
-  upsert?: Prisma.UserUpsertWithoutClientInput
+export type UserUpdateOneWithoutClientsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutClientsInput, Prisma.UserUncheckedCreateWithoutClientsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutClientsInput
+  upsert?: Prisma.UserUpsertWithoutClientsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutClientInput, Prisma.UserUpdateWithoutClientInput>, Prisma.UserUncheckedUpdateWithoutClientInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutClientsInput, Prisma.UserUpdateWithoutClientsInput>, Prisma.UserUncheckedUpdateWithoutClientsInput>
 }
 
-export type UserCreateNestedOneWithoutDriverInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutDriverInput, Prisma.UserUncheckedCreateWithoutDriverInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDriverInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutDriverNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutDriverInput, Prisma.UserUncheckedCreateWithoutDriverInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDriverInput
-  upsert?: Prisma.UserUpsertWithoutDriverInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDriverInput, Prisma.UserUpdateWithoutDriverInput>, Prisma.UserUncheckedUpdateWithoutDriverInput>
-}
-
-export type UserCreateNestedOneWithoutWorkerInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkerInput, Prisma.UserUncheckedCreateWithoutWorkerInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkerInput
+export type UserCreateNestedOneWithoutDriversInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDriversInput, Prisma.UserUncheckedCreateWithoutDriversInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDriversInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutWorkerNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkerInput, Prisma.UserUncheckedCreateWithoutWorkerInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkerInput
-  upsert?: Prisma.UserUpsertWithoutWorkerInput
+export type UserUpdateOneRequiredWithoutDriversNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDriversInput, Prisma.UserUncheckedCreateWithoutDriversInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDriversInput
+  upsert?: Prisma.UserUpsertWithoutDriversInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWorkerInput, Prisma.UserUpdateWithoutWorkerInput>, Prisma.UserUncheckedUpdateWithoutWorkerInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDriversInput, Prisma.UserUpdateWithoutDriversInput>, Prisma.UserUncheckedUpdateWithoutDriversInput>
+}
+
+export type UserCreateNestedOneWithoutWorkersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkersInput, Prisma.UserUncheckedCreateWithoutWorkersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWorkersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkersInput, Prisma.UserUncheckedCreateWithoutWorkersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkersInput
+  upsert?: Prisma.UserUpsertWithoutWorkersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWorkersInput, Prisma.UserUpdateWithoutWorkersInput>, Prisma.UserUncheckedUpdateWithoutWorkersInput>
+}
+
+export type UserCreateNestedOneWithoutMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMembershipsInput, Prisma.UserUpdateWithoutMembershipsInput>, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
 }
 
 export type UserCreateNestedOneWithoutAuthProvidersInput = {
@@ -528,243 +510,323 @@ export type UserUpdateOneRequiredWithoutAuthProvidersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuthProvidersInput, Prisma.UserUpdateWithoutAuthProvidersInput>, Prisma.UserUncheckedUpdateWithoutAuthProvidersInput>
 }
 
-export type UserCreateWithoutClientInput = {
+export type UserCreateWithoutClientsInput = {
   id?: string
   name?: string | null
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  driver?: Prisma.DriverCreateNestedOneWithoutUserInput
-  worker?: Prisma.WorkerCreateNestedOneWithoutUserInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
+  drivers?: Prisma.DriverCreateNestedManyWithoutUserInput
+  workers?: Prisma.WorkerCreateNestedManyWithoutUserInput
   authProviders?: Prisma.UserAuthProviderCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutClientInput = {
+export type UserUncheckedCreateWithoutClientsInput = {
   id?: string
   name?: string | null
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  driver?: Prisma.DriverUncheckedCreateNestedOneWithoutUserInput
-  worker?: Prisma.WorkerUncheckedCreateNestedOneWithoutUserInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
+  drivers?: Prisma.DriverUncheckedCreateNestedManyWithoutUserInput
+  workers?: Prisma.WorkerUncheckedCreateNestedManyWithoutUserInput
   authProviders?: Prisma.UserAuthProviderUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutClientInput = {
+export type UserCreateOrConnectWithoutClientsInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutClientInput, Prisma.UserUncheckedCreateWithoutClientInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutClientsInput, Prisma.UserUncheckedCreateWithoutClientsInput>
 }
 
-export type UserUpsertWithoutClientInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutClientInput, Prisma.UserUncheckedUpdateWithoutClientInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutClientInput, Prisma.UserUncheckedCreateWithoutClientInput>
+export type UserUpsertWithoutClientsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutClientsInput, Prisma.UserUncheckedUpdateWithoutClientsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutClientsInput, Prisma.UserUncheckedCreateWithoutClientsInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutClientInput = {
+export type UserUpdateToOneWithWhereWithoutClientsInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutClientInput, Prisma.UserUncheckedUpdateWithoutClientInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutClientsInput, Prisma.UserUncheckedUpdateWithoutClientsInput>
 }
 
-export type UserUpdateWithoutClientInput = {
+export type UserUpdateWithoutClientsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  driver?: Prisma.DriverUpdateOneWithoutUserNestedInput
-  worker?: Prisma.WorkerUpdateOneWithoutUserNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
+  drivers?: Prisma.DriverUpdateManyWithoutUserNestedInput
+  workers?: Prisma.WorkerUpdateManyWithoutUserNestedInput
   authProviders?: Prisma.UserAuthProviderUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutClientInput = {
+export type UserUncheckedUpdateWithoutClientsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  driver?: Prisma.DriverUncheckedUpdateOneWithoutUserNestedInput
-  worker?: Prisma.WorkerUncheckedUpdateOneWithoutUserNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
+  drivers?: Prisma.DriverUncheckedUpdateManyWithoutUserNestedInput
+  workers?: Prisma.WorkerUncheckedUpdateManyWithoutUserNestedInput
   authProviders?: Prisma.UserAuthProviderUncheckedUpdateManyWithoutUserNestedInput
 }
 
-export type UserCreateWithoutDriverInput = {
+export type UserCreateWithoutDriversInput = {
   id?: string
   name?: string | null
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  client?: Prisma.ClientCreateNestedOneWithoutUserInput
-  worker?: Prisma.WorkerCreateNestedOneWithoutUserInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
+  clients?: Prisma.ClientCreateNestedManyWithoutUserInput
+  workers?: Prisma.WorkerCreateNestedManyWithoutUserInput
   authProviders?: Prisma.UserAuthProviderCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutDriverInput = {
+export type UserUncheckedCreateWithoutDriversInput = {
   id?: string
   name?: string | null
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  client?: Prisma.ClientUncheckedCreateNestedOneWithoutUserInput
-  worker?: Prisma.WorkerUncheckedCreateNestedOneWithoutUserInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
+  clients?: Prisma.ClientUncheckedCreateNestedManyWithoutUserInput
+  workers?: Prisma.WorkerUncheckedCreateNestedManyWithoutUserInput
   authProviders?: Prisma.UserAuthProviderUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutDriverInput = {
+export type UserCreateOrConnectWithoutDriversInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutDriverInput, Prisma.UserUncheckedCreateWithoutDriverInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDriversInput, Prisma.UserUncheckedCreateWithoutDriversInput>
 }
 
-export type UserUpsertWithoutDriverInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutDriverInput, Prisma.UserUncheckedUpdateWithoutDriverInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutDriverInput, Prisma.UserUncheckedCreateWithoutDriverInput>
+export type UserUpsertWithoutDriversInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDriversInput, Prisma.UserUncheckedUpdateWithoutDriversInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDriversInput, Prisma.UserUncheckedCreateWithoutDriversInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutDriverInput = {
+export type UserUpdateToOneWithWhereWithoutDriversInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutDriverInput, Prisma.UserUncheckedUpdateWithoutDriverInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDriversInput, Prisma.UserUncheckedUpdateWithoutDriversInput>
 }
 
-export type UserUpdateWithoutDriverInput = {
+export type UserUpdateWithoutDriversInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUpdateOneWithoutUserNestedInput
-  worker?: Prisma.WorkerUpdateOneWithoutUserNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
+  clients?: Prisma.ClientUpdateManyWithoutUserNestedInput
+  workers?: Prisma.WorkerUpdateManyWithoutUserNestedInput
   authProviders?: Prisma.UserAuthProviderUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutDriverInput = {
+export type UserUncheckedUpdateWithoutDriversInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUncheckedUpdateOneWithoutUserNestedInput
-  worker?: Prisma.WorkerUncheckedUpdateOneWithoutUserNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
+  clients?: Prisma.ClientUncheckedUpdateManyWithoutUserNestedInput
+  workers?: Prisma.WorkerUncheckedUpdateManyWithoutUserNestedInput
   authProviders?: Prisma.UserAuthProviderUncheckedUpdateManyWithoutUserNestedInput
 }
 
-export type UserCreateWithoutWorkerInput = {
+export type UserCreateWithoutWorkersInput = {
   id?: string
   name?: string | null
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  client?: Prisma.ClientCreateNestedOneWithoutUserInput
-  driver?: Prisma.DriverCreateNestedOneWithoutUserInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
+  clients?: Prisma.ClientCreateNestedManyWithoutUserInput
+  drivers?: Prisma.DriverCreateNestedManyWithoutUserInput
   authProviders?: Prisma.UserAuthProviderCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutWorkerInput = {
+export type UserUncheckedCreateWithoutWorkersInput = {
   id?: string
   name?: string | null
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  client?: Prisma.ClientUncheckedCreateNestedOneWithoutUserInput
-  driver?: Prisma.DriverUncheckedCreateNestedOneWithoutUserInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
+  clients?: Prisma.ClientUncheckedCreateNestedManyWithoutUserInput
+  drivers?: Prisma.DriverUncheckedCreateNestedManyWithoutUserInput
   authProviders?: Prisma.UserAuthProviderUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutWorkerInput = {
+export type UserCreateOrConnectWithoutWorkersInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutWorkerInput, Prisma.UserUncheckedCreateWithoutWorkerInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWorkersInput, Prisma.UserUncheckedCreateWithoutWorkersInput>
 }
 
-export type UserUpsertWithoutWorkerInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutWorkerInput, Prisma.UserUncheckedUpdateWithoutWorkerInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutWorkerInput, Prisma.UserUncheckedCreateWithoutWorkerInput>
+export type UserUpsertWithoutWorkersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWorkersInput, Prisma.UserUncheckedUpdateWithoutWorkersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWorkersInput, Prisma.UserUncheckedCreateWithoutWorkersInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutWorkerInput = {
+export type UserUpdateToOneWithWhereWithoutWorkersInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutWorkerInput, Prisma.UserUncheckedUpdateWithoutWorkerInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWorkersInput, Prisma.UserUncheckedUpdateWithoutWorkersInput>
 }
 
-export type UserUpdateWithoutWorkerInput = {
+export type UserUpdateWithoutWorkersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUpdateOneWithoutUserNestedInput
-  driver?: Prisma.DriverUpdateOneWithoutUserNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
+  clients?: Prisma.ClientUpdateManyWithoutUserNestedInput
+  drivers?: Prisma.DriverUpdateManyWithoutUserNestedInput
   authProviders?: Prisma.UserAuthProviderUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutWorkerInput = {
+export type UserUncheckedUpdateWithoutWorkersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUncheckedUpdateOneWithoutUserNestedInput
-  driver?: Prisma.DriverUncheckedUpdateOneWithoutUserNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
+  clients?: Prisma.ClientUncheckedUpdateManyWithoutUserNestedInput
+  drivers?: Prisma.DriverUncheckedUpdateManyWithoutUserNestedInput
+  authProviders?: Prisma.UserAuthProviderUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMembershipsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  phone?: string | null
+  picture?: string | null
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clients?: Prisma.ClientCreateNestedManyWithoutUserInput
+  drivers?: Prisma.DriverCreateNestedManyWithoutUserInput
+  workers?: Prisma.WorkerCreateNestedManyWithoutUserInput
+  authProviders?: Prisma.UserAuthProviderCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMembershipsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  phone?: string | null
+  picture?: string | null
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clients?: Prisma.ClientUncheckedCreateNestedManyWithoutUserInput
+  drivers?: Prisma.DriverUncheckedCreateNestedManyWithoutUserInput
+  workers?: Prisma.WorkerUncheckedCreateNestedManyWithoutUserInput
+  authProviders?: Prisma.UserAuthProviderUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMembershipsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+}
+
+export type UserUpsertWithoutMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMembershipsInput, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMembershipsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMembershipsInput, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
+}
+
+export type UserUpdateWithoutMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clients?: Prisma.ClientUpdateManyWithoutUserNestedInput
+  drivers?: Prisma.DriverUpdateManyWithoutUserNestedInput
+  workers?: Prisma.WorkerUpdateManyWithoutUserNestedInput
+  authProviders?: Prisma.UserAuthProviderUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clients?: Prisma.ClientUncheckedUpdateManyWithoutUserNestedInput
+  drivers?: Prisma.DriverUncheckedUpdateManyWithoutUserNestedInput
+  workers?: Prisma.WorkerUncheckedUpdateManyWithoutUserNestedInput
   authProviders?: Prisma.UserAuthProviderUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -774,14 +836,14 @@ export type UserCreateWithoutAuthProvidersInput = {
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  client?: Prisma.ClientCreateNestedOneWithoutUserInput
-  driver?: Prisma.DriverCreateNestedOneWithoutUserInput
-  worker?: Prisma.WorkerCreateNestedOneWithoutUserInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
+  clients?: Prisma.ClientCreateNestedManyWithoutUserInput
+  drivers?: Prisma.DriverCreateNestedManyWithoutUserInput
+  workers?: Prisma.WorkerCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuthProvidersInput = {
@@ -790,14 +852,14 @@ export type UserUncheckedCreateWithoutAuthProvidersInput = {
   email?: string | null
   phone?: string | null
   picture?: string | null
-  accessLevel?: $Enums.AccessLevel
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  client?: Prisma.ClientUncheckedCreateNestedOneWithoutUserInput
-  driver?: Prisma.DriverUncheckedCreateNestedOneWithoutUserInput
-  worker?: Prisma.WorkerUncheckedCreateNestedOneWithoutUserInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
+  clients?: Prisma.ClientUncheckedCreateNestedManyWithoutUserInput
+  drivers?: Prisma.DriverUncheckedCreateNestedManyWithoutUserInput
+  workers?: Prisma.WorkerUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuthProvidersInput = {
@@ -822,14 +884,14 @@ export type UserUpdateWithoutAuthProvidersInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUpdateOneWithoutUserNestedInput
-  driver?: Prisma.DriverUpdateOneWithoutUserNestedInput
-  worker?: Prisma.WorkerUpdateOneWithoutUserNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
+  clients?: Prisma.ClientUpdateManyWithoutUserNestedInput
+  drivers?: Prisma.DriverUpdateManyWithoutUserNestedInput
+  workers?: Prisma.WorkerUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthProvidersInput = {
@@ -838,14 +900,14 @@ export type UserUncheckedUpdateWithoutAuthProvidersInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   picture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUncheckedUpdateOneWithoutUserNestedInput
-  driver?: Prisma.DriverUncheckedUpdateOneWithoutUserNestedInput
-  worker?: Prisma.WorkerUncheckedUpdateOneWithoutUserNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
+  clients?: Prisma.ClientUncheckedUpdateManyWithoutUserNestedInput
+  drivers?: Prisma.DriverUncheckedUpdateManyWithoutUserNestedInput
+  workers?: Prisma.WorkerUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -854,10 +916,18 @@ export type UserUncheckedUpdateWithoutAuthProvidersInput = {
  */
 
 export type UserCountOutputType = {
+  memberships: number
+  clients: number
+  drivers: number
+  workers: number
   authProviders: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  memberships?: boolean | UserCountOutputTypeCountMembershipsArgs
+  clients?: boolean | UserCountOutputTypeCountClientsArgs
+  drivers?: boolean | UserCountOutputTypeCountDriversArgs
+  workers?: boolean | UserCountOutputTypeCountWorkersArgs
   authProviders?: boolean | UserCountOutputTypeCountAuthProvidersArgs
 }
 
@@ -874,6 +944,34 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantMembershipWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountClientsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClientWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDriversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DriverWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWorkersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkerWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountAuthProvidersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.UserAuthProviderWhereInput
 }
@@ -885,14 +983,14 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean
   phone?: boolean
   picture?: boolean
-  accessLevel?: boolean
   isActive?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  client?: boolean | Prisma.User$clientArgs<ExtArgs>
-  driver?: boolean | Prisma.User$driverArgs<ExtArgs>
-  worker?: boolean | Prisma.User$workerArgs<ExtArgs>
+  memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
+  clients?: boolean | Prisma.User$clientsArgs<ExtArgs>
+  drivers?: boolean | Prisma.User$driversArgs<ExtArgs>
+  workers?: boolean | Prisma.User$workersArgs<ExtArgs>
   authProviders?: boolean | Prisma.User$authProvidersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -903,7 +1001,6 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   phone?: boolean
   picture?: boolean
-  accessLevel?: boolean
   isActive?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
@@ -916,7 +1013,6 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   phone?: boolean
   picture?: boolean
-  accessLevel?: boolean
   isActive?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
@@ -929,18 +1025,18 @@ export type UserSelectScalar = {
   email?: boolean
   phone?: boolean
   picture?: boolean
-  accessLevel?: boolean
   isActive?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "picture" | "accessLevel" | "isActive" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "picture" | "isActive" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  client?: boolean | Prisma.User$clientArgs<ExtArgs>
-  driver?: boolean | Prisma.User$driverArgs<ExtArgs>
-  worker?: boolean | Prisma.User$workerArgs<ExtArgs>
+  memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
+  clients?: boolean | Prisma.User$clientsArgs<ExtArgs>
+  drivers?: boolean | Prisma.User$driversArgs<ExtArgs>
+  workers?: boolean | Prisma.User$workersArgs<ExtArgs>
   authProviders?: boolean | Prisma.User$authProvidersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -950,9 +1046,10 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    client: Prisma.$ClientPayload<ExtArgs> | null
-    driver: Prisma.$DriverPayload<ExtArgs> | null
-    worker: Prisma.$WorkerPayload<ExtArgs> | null
+    memberships: Prisma.$TenantMembershipPayload<ExtArgs>[]
+    clients: Prisma.$ClientPayload<ExtArgs>[]
+    drivers: Prisma.$DriverPayload<ExtArgs>[]
+    workers: Prisma.$WorkerPayload<ExtArgs>[]
     authProviders: Prisma.$UserAuthProviderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -961,7 +1058,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     email: string | null
     phone: string | null
     picture: string | null
-    accessLevel: $Enums.AccessLevel
     isActive: boolean
     lastLoginAt: Date | null
     createdAt: Date
@@ -1360,9 +1456,10 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  client<T extends Prisma.User$clientArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$clientArgs<ExtArgs>>): Prisma.Prisma__ClientClient<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  driver<T extends Prisma.User$driverArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$driverArgs<ExtArgs>>): Prisma.Prisma__DriverClient<runtime.Types.Result.GetResult<Prisma.$DriverPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  worker<T extends Prisma.User$workerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workerArgs<ExtArgs>>): Prisma.Prisma__WorkerClient<runtime.Types.Result.GetResult<Prisma.$WorkerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  memberships<T extends Prisma.User$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  clients<T extends Prisma.User$clientsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  drivers<T extends Prisma.User$driversArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$driversArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DriverPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  workers<T extends Prisma.User$workersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   authProviders<T extends Prisma.User$authProvidersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$authProvidersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAuthProviderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1398,7 +1495,6 @@ export interface UserFieldRefs {
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly phone: Prisma.FieldRef<"User", 'String'>
   readonly picture: Prisma.FieldRef<"User", 'String'>
-  readonly accessLevel: Prisma.FieldRef<"User", 'AccessLevel'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
   readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -1796,9 +1892,33 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.client
+ * User.memberships
  */
-export type User$clientArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$membershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantMembership
+   */
+  select?: Prisma.TenantMembershipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantMembership
+   */
+  omit?: Prisma.TenantMembershipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantMembershipInclude<ExtArgs> | null
+  where?: Prisma.TenantMembershipWhereInput
+  orderBy?: Prisma.TenantMembershipOrderByWithRelationInput | Prisma.TenantMembershipOrderByWithRelationInput[]
+  cursor?: Prisma.TenantMembershipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TenantMembershipScalarFieldEnum | Prisma.TenantMembershipScalarFieldEnum[]
+}
+
+/**
+ * User.clients
+ */
+export type User$clientsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Client
    */
@@ -1812,12 +1932,17 @@ export type User$clientArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.ClientInclude<ExtArgs> | null
   where?: Prisma.ClientWhereInput
+  orderBy?: Prisma.ClientOrderByWithRelationInput | Prisma.ClientOrderByWithRelationInput[]
+  cursor?: Prisma.ClientWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClientScalarFieldEnum | Prisma.ClientScalarFieldEnum[]
 }
 
 /**
- * User.driver
+ * User.drivers
  */
-export type User$driverArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$driversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Driver
    */
@@ -1831,12 +1956,17 @@ export type User$driverArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.DriverInclude<ExtArgs> | null
   where?: Prisma.DriverWhereInput
+  orderBy?: Prisma.DriverOrderByWithRelationInput | Prisma.DriverOrderByWithRelationInput[]
+  cursor?: Prisma.DriverWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DriverScalarFieldEnum | Prisma.DriverScalarFieldEnum[]
 }
 
 /**
- * User.worker
+ * User.workers
  */
-export type User$workerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$workersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Worker
    */
@@ -1850,6 +1980,11 @@ export type User$workerArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.WorkerInclude<ExtArgs> | null
   where?: Prisma.WorkerWhereInput
+  orderBy?: Prisma.WorkerOrderByWithRelationInput | Prisma.WorkerOrderByWithRelationInput[]
+  cursor?: Prisma.WorkerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkerScalarFieldEnum | Prisma.WorkerScalarFieldEnum[]
 }
 
 /**

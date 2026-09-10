@@ -31,8 +31,8 @@ export * from "./enums.ts"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more Addons
+ * const addons = await prisma.addon.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -42,10 +42,35 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model User
+ * Model Addon
  * 
  */
-export type User = Prisma.UserModel
+export type Addon = Prisma.AddonModel
+/**
+ * Model BookingInventoryItem
+ * 
+ */
+export type BookingInventoryItem = Prisma.BookingInventoryItemModel
+/**
+ * Model BookingAddon
+ * 
+ */
+export type BookingAddon = Prisma.BookingAddonModel
+/**
+ * Model BookingNote
+ * 
+ */
+export type BookingNote = Prisma.BookingNoteModel
+/**
+ * Model BookingHistory
+ * 
+ */
+export type BookingHistory = Prisma.BookingHistoryModel
+/**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
 /**
  * Model Client
  * 
@@ -62,37 +87,27 @@ export type Driver = Prisma.DriverModel
  */
 export type Worker = Prisma.WorkerModel
 /**
+ * Model InventoryItem
+ * 
+ */
+export type InventoryItem = Prisma.InventoryItemModel
+/**
+ * Model Tenant
+ * 
+ */
+export type Tenant = Prisma.TenantModel
+/**
+ * Model TenantMembership
+ * 
+ */
+export type TenantMembership = Prisma.TenantMembershipModel
+/**
  * Model UserAuthProvider
  * 
  */
 export type UserAuthProvider = Prisma.UserAuthProviderModel
 /**
- * Model Dumpster
+ * Model User
  * 
  */
-export type Dumpster = Prisma.DumpsterModel
-/**
- * Model Booking
- * 
- */
-export type Booking = Prisma.BookingModel
-/**
- * Model Addon
- * 
- */
-export type Addon = Prisma.AddonModel
-/**
- * Model BookingAddon
- * 
- */
-export type BookingAddon = Prisma.BookingAddonModel
-/**
- * Model BookingNote
- * 
- */
-export type BookingNote = Prisma.BookingNoteModel
-/**
- * Model BookingHistory
- * 
- */
-export type BookingHistory = Prisma.BookingHistoryModel
+export type User = Prisma.UserModel

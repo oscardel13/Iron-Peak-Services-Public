@@ -51,17 +51,20 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User',
+  Addon: 'Addon',
+  BookingInventoryItem: 'BookingInventoryItem',
+  BookingAddon: 'BookingAddon',
+  BookingNote: 'BookingNote',
+  BookingHistory: 'BookingHistory',
+  Booking: 'Booking',
   Client: 'Client',
   Driver: 'Driver',
   Worker: 'Worker',
+  InventoryItem: 'InventoryItem',
+  Tenant: 'Tenant',
+  TenantMembership: 'TenantMembership',
   UserAuthProvider: 'UserAuthProvider',
-  Dumpster: 'Dumpster',
-  Booking: 'Booking',
-  Addon: 'Addon',
-  BookingAddon: 'BookingAddon',
-  BookingNote: 'BookingNote',
-  BookingHistory: 'BookingHistory'
+  User: 'User'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -80,105 +83,98 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const UserScalarFieldEnum = {
+export const AddonScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
   name: 'name',
-  email: 'email',
-  phone: 'phone',
-  picture: 'picture',
-  accessLevel: 'accessLevel',
+  description: 'description',
+  price: 'price',
   isActive: 'isActive',
-  lastLoginAt: 'lastLoginAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+export type AddonScalarFieldEnum = (typeof AddonScalarFieldEnum)[keyof typeof AddonScalarFieldEnum]
 
 
-export const ClientScalarFieldEnum = {
+export const BookingInventoryItemScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  displayName: 'displayName',
-  email: 'email',
-  phone: 'phone',
+  tenantId: 'tenantId',
+  bookingId: 'bookingId',
+  inventoryItemId: 'inventoryItemId',
+  role: 'role',
+  itemCategorySnapshot: 'itemCategorySnapshot',
+  itemLabelSnapshot: 'itemLabelSnapshot',
+  itemSizeValueSnapshot: 'itemSizeValueSnapshot',
+  itemSizeUnitSnapshot: 'itemSizeUnitSnapshot',
+  itemSerialSnapshot: 'itemSerialSnapshot',
+  basePriceSnapshot: 'basePriceSnapshot',
+  concretePriceSnapshot: 'concretePriceSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
+export type BookingInventoryItemScalarFieldEnum = (typeof BookingInventoryItemScalarFieldEnum)[keyof typeof BookingInventoryItemScalarFieldEnum]
 
 
-export const DriverScalarFieldEnum = {
+export const BookingAddonScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  tenantId: 'tenantId',
+  bookingId: 'bookingId',
+  addonId: 'addonId',
+  addonCodeSnapshot: 'addonCodeSnapshot',
+  addonNameSnapshot: 'addonNameSnapshot',
+  addonPriceSnapshot: 'addonPriceSnapshot',
+  quantity: 'quantity',
+  createdAt: 'createdAt'
 } as const
 
-export type DriverScalarFieldEnum = (typeof DriverScalarFieldEnum)[keyof typeof DriverScalarFieldEnum]
+export type BookingAddonScalarFieldEnum = (typeof BookingAddonScalarFieldEnum)[keyof typeof BookingAddonScalarFieldEnum]
 
 
-export const WorkerScalarFieldEnum = {
+export const BookingNoteScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
+  tenantId: 'tenantId',
+  bookingId: 'bookingId',
+  visibility: 'visibility',
+  body: 'body',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type WorkerScalarFieldEnum = (typeof WorkerScalarFieldEnum)[keyof typeof WorkerScalarFieldEnum]
+export type BookingNoteScalarFieldEnum = (typeof BookingNoteScalarFieldEnum)[keyof typeof BookingNoteScalarFieldEnum]
 
 
-export const UserAuthProviderScalarFieldEnum = {
+export const BookingHistoryScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  provider: 'provider',
-  providerAccountId: 'providerAccountId',
-  email: 'email',
-  username: 'username',
-  name: 'name',
-  picture: 'picture',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  tenantId: 'tenantId',
+  bookingId: 'bookingId',
+  eventType: 'eventType',
+  actorType: 'actorType',
+  actorLabel: 'actorLabel',
+  summary: 'summary',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
 } as const
 
-export type UserAuthProviderScalarFieldEnum = (typeof UserAuthProviderScalarFieldEnum)[keyof typeof UserAuthProviderScalarFieldEnum]
-
-
-export const DumpsterScalarFieldEnum = {
-  id: 'id',
-  label: 'label',
-  size: 'size',
-  sizeLabel: 'sizeLabel',
-  serialNumber: 'serialNumber',
-  primaryColor: 'primaryColor',
-  secondaryColor: 'secondaryColor',
-  colorPattern: 'colorPattern',
-  status: 'status',
-  notes: 'notes',
-  isActive: 'isActive',
-  basePrice: 'basePrice',
-  concretePrice: 'concretePrice',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type DumpsterScalarFieldEnum = (typeof DumpsterScalarFieldEnum)[keyof typeof DumpsterScalarFieldEnum]
+export type BookingHistoryScalarFieldEnum = (typeof BookingHistoryScalarFieldEnum)[keyof typeof BookingHistoryScalarFieldEnum]
 
 
 export const BookingScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   bookingNumber: 'bookingNumber',
   clientId: 'clientId',
-  dumpsterId: 'dumpsterId',
-  dumpsterSize: 'dumpsterSize',
-  dumpsterLabel: 'dumpsterLabel',
-  material: 'material',
   serviceType: 'serviceType',
   projectType: 'projectType',
   customerName: 'customerName',
   customerPhone: 'customerPhone',
   customerEmail: 'customerEmail',
+  clientType: 'clientType',
+  businessName: 'businessName',
+  businessPhone: 'businessPhone',
+  businessEmail: 'businessEmail',
   address1: 'address1',
   address2: 'address2',
   city: 'city',
@@ -192,6 +188,7 @@ export const BookingScalarFieldEnum = {
   customerNotes: 'customerNotes',
   locationVerified: 'locationVerified',
   locationVerificationNote: 'locationVerificationNote',
+  timezone: 'timezone',
   deliveryDate: 'deliveryDate',
   pickupDate: 'pickupDate',
   pickupDateUnknown: 'pickupDateUnknown',
@@ -225,58 +222,151 @@ export const BookingScalarFieldEnum = {
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
 
 
-export const AddonScalarFieldEnum = {
+export const ClientScalarFieldEnum = {
   id: 'id',
-  code: 'code',
-  name: 'name',
-  description: 'description',
-  price: 'price',
+  tenantId: 'tenantId',
+  userId: 'userId',
+  clientType: 'clientType',
+  displayName: 'displayName',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  phone: 'phone',
+  businessName: 'businessName',
+  businessEmail: 'businessEmail',
+  businessPhone: 'businessPhone',
+  taxId: 'taxId',
+  address1: 'address1',
+  address2: 'address2',
+  city: 'city',
+  state: 'state',
+  zip: 'zip',
+  country: 'country',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
+
+
+export const DriverScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  userId: 'userId',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type AddonScalarFieldEnum = (typeof AddonScalarFieldEnum)[keyof typeof AddonScalarFieldEnum]
+export type DriverScalarFieldEnum = (typeof DriverScalarFieldEnum)[keyof typeof DriverScalarFieldEnum]
 
 
-export const BookingAddonScalarFieldEnum = {
+export const WorkerScalarFieldEnum = {
   id: 'id',
-  bookingId: 'bookingId',
-  addonId: 'addonId',
-  addonCodeSnapshot: 'addonCodeSnapshot',
-  addonNameSnapshot: 'addonNameSnapshot',
-  addonPriceSnapshot: 'addonPriceSnapshot',
-  quantity: 'quantity',
-  createdAt: 'createdAt'
-} as const
-
-export type BookingAddonScalarFieldEnum = (typeof BookingAddonScalarFieldEnum)[keyof typeof BookingAddonScalarFieldEnum]
-
-
-export const BookingNoteScalarFieldEnum = {
-  id: 'id',
-  bookingId: 'bookingId',
-  visibility: 'visibility',
-  body: 'body',
+  tenantId: 'tenantId',
+  userId: 'userId',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type BookingNoteScalarFieldEnum = (typeof BookingNoteScalarFieldEnum)[keyof typeof BookingNoteScalarFieldEnum]
+export type WorkerScalarFieldEnum = (typeof WorkerScalarFieldEnum)[keyof typeof WorkerScalarFieldEnum]
 
 
-export const BookingHistoryScalarFieldEnum = {
+export const InventoryItemScalarFieldEnum = {
   id: 'id',
-  bookingId: 'bookingId',
-  eventType: 'eventType',
-  actorType: 'actorType',
-  actorLabel: 'actorLabel',
-  summary: 'summary',
-  metadata: 'metadata',
-  createdAt: 'createdAt'
+  tenantId: 'tenantId',
+  category: 'category',
+  label: 'label',
+  name: 'name',
+  description: 'description',
+  sizeValue: 'sizeValue',
+  sizeUnit: 'sizeUnit',
+  serialNumber: 'serialNumber',
+  primaryColor: 'primaryColor',
+  secondaryColor: 'secondaryColor',
+  colorPattern: 'colorPattern',
+  status: 'status',
+  notes: 'notes',
+  isActive: 'isActive',
+  basePrice: 'basePrice',
+  concretePrice: 'concretePrice',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type BookingHistoryScalarFieldEnum = (typeof BookingHistoryScalarFieldEnum)[keyof typeof BookingHistoryScalarFieldEnum]
+export type InventoryItemScalarFieldEnum = (typeof InventoryItemScalarFieldEnum)[keyof typeof InventoryItemScalarFieldEnum]
+
+
+export const TenantScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  status: 'status',
+  timezone: 'timezone',
+  phone: 'phone',
+  email: 'email',
+  website: 'website',
+  address1: 'address1',
+  address2: 'address2',
+  city: 'city',
+  state: 'state',
+  zip: 'zip',
+  country: 'country',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  stripeCustomerId: 'stripeCustomerId',
+  stripeSubscriptionId: 'stripeSubscriptionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
+
+
+export const TenantMembershipScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tenantId: 'tenantId',
+  role: 'role',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantMembershipScalarFieldEnum = (typeof TenantMembershipScalarFieldEnum)[keyof typeof TenantMembershipScalarFieldEnum]
+
+
+export const UserAuthProviderScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  email: 'email',
+  username: 'username',
+  name: 'name',
+  picture: 'picture',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserAuthProviderScalarFieldEnum = (typeof UserAuthProviderScalarFieldEnum)[keyof typeof UserAuthProviderScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  picture: 'picture',
+  isActive: 'isActive',
+  lastLoginAt: 'lastLoginAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -3,8 +3,9 @@ import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-import { seedDumpsters } from "./seed/dumpsters/dumpsters.seed.js";
+import { seedTenants } from "./seed/tenants/tenants.seed.js";
 import { seedAddons } from "./seed/addons/addons.seed.js";
+import { seedDumpsters } from "./seed/dumpsters/dumpsters.seed.js";
 import { seedDumpsterBookings } from "./seed/dumpster-bookings/dumpster-bookings.seed.js";
 
 const prisma = new PrismaClient({
@@ -16,9 +17,13 @@ const prisma = new PrismaClient({
 async function main() {
   console.log("🌱 Starting database seed...\n");
 
-  // Order matters because bookings reference dumpsters.
-  await seedDumpsters(prisma);
+  // Order matters:
+  // 1. Tenant must exist before tenant-owned records.
+  // 2. Addons and inventory must exist before bookings.
+  // 3. Bookings create inventory assignments and addon snapshots.
+  await seedTenants(prisma);
   await seedAddons(prisma);
+  await seedDumpsters(prisma);
   await seedDumpsterBookings(prisma);
 
   console.log("\n✅ Database seed complete");

@@ -1,22 +1,30 @@
 import {
-  DumpsterColor,
-  DumpsterPattern,
-  DumpsterStatus,
+  InventoryCategory,
+  InventoryColor,
+  InventoryPattern,
+  InventoryStatus,
+  InventoryUnit,
 } from "../../../src/generated/prisma/client.js";
 
 export const dumpstersData = [
   {
     id: "dumpster-17-1",
+    category: InventoryCategory.DUMPSTER,
+
     label: "17 Yard Dumpster #1",
-    size: 17,
-    sizeLabel: "17 Yard",
+    name: "17 Yard Dumpster #1",
+    description: null,
+
+    sizeValue: 17,
+    sizeUnit: InventoryUnit.YARD,
+
     serialNumber: "DMP-17-001",
 
-    primaryColor: DumpsterColor.EMERALD,
+    primaryColor: InventoryColor.EMERALD,
     secondaryColor: null,
-    colorPattern: DumpsterPattern.SOLID,
+    colorPattern: InventoryPattern.SOLID,
 
-    status: DumpsterStatus.AVAILABLE,
+    status: InventoryStatus.AVAILABLE,
 
     basePrice: 375,
     concretePrice: 150,
@@ -27,16 +35,22 @@ export const dumpstersData = [
 
   {
     id: "dumpster-17-2",
+    category: InventoryCategory.DUMPSTER,
+
     label: "17 Yard Dumpster #2",
-    size: 17,
-    sizeLabel: "17 Yard",
+    name: "17 Yard Dumpster #2",
+    description: null,
+
+    sizeValue: 17,
+    sizeUnit: InventoryUnit.YARD,
+
     serialNumber: "DMP-17-002",
 
-    primaryColor: DumpsterColor.EMERALD,
-    secondaryColor: DumpsterColor.PINK,
-    colorPattern: DumpsterPattern.STRIPE,
+    primaryColor: InventoryColor.EMERALD,
+    secondaryColor: InventoryColor.PINK,
+    colorPattern: InventoryPattern.STRIPE,
 
-    status: DumpsterStatus.IN_USE,
+    status: InventoryStatus.IN_USE,
 
     basePrice: 375,
     concretePrice: 150,
@@ -47,16 +61,22 @@ export const dumpstersData = [
 
   {
     id: "dumpster-17-3",
+    category: InventoryCategory.DUMPSTER,
+
     label: "17 Yard Dumpster #3",
-    size: 17,
-    sizeLabel: "17 Yard",
+    name: "17 Yard Dumpster #3",
+    description: null,
+
+    sizeValue: 17,
+    sizeUnit: InventoryUnit.YARD,
+
     serialNumber: "DMP-17-003",
 
-    primaryColor: DumpsterColor.EMERALD,
-    secondaryColor: DumpsterColor.ORANGE,
-    colorPattern: DumpsterPattern.DOT,
+    primaryColor: InventoryColor.EMERALD,
+    secondaryColor: InventoryColor.ORANGE,
+    colorPattern: InventoryPattern.DOT,
 
-    status: DumpsterStatus.AVAILABLE,
+    status: InventoryStatus.AVAILABLE,
 
     basePrice: 375,
     concretePrice: 150,
@@ -67,16 +87,22 @@ export const dumpstersData = [
 
   {
     id: "dumpster-22-1",
+    category: InventoryCategory.DUMPSTER,
+
     label: "22 Yard Dumpster #1",
-    size: 22,
-    sizeLabel: "22 Yard",
+    name: "22 Yard Dumpster #1",
+    description: null,
+
+    sizeValue: 22,
+    sizeUnit: InventoryUnit.YARD,
+
     serialNumber: "DMP-22-001",
 
-    primaryColor: DumpsterColor.BLUE,
+    primaryColor: InventoryColor.BLUE,
     secondaryColor: null,
-    colorPattern: DumpsterPattern.SOLID,
+    colorPattern: InventoryPattern.SOLID,
 
-    status: DumpsterStatus.RESERVED,
+    status: InventoryStatus.RESERVED,
 
     basePrice: 450,
     concretePrice: 180,
@@ -87,16 +113,22 @@ export const dumpstersData = [
 
   {
     id: "dumpster-22-2",
+    category: InventoryCategory.DUMPSTER,
+
     label: "22 Yard Dumpster #2",
-    size: 22,
-    sizeLabel: "22 Yard",
+    name: "22 Yard Dumpster #2",
+    description: null,
+
+    sizeValue: 22,
+    sizeUnit: InventoryUnit.YARD,
+
     serialNumber: "DMP-22-002",
 
-    primaryColor: DumpsterColor.BLUE,
-    secondaryColor: DumpsterColor.ROSE,
-    colorPattern: DumpsterPattern.SPLIT,
+    primaryColor: InventoryColor.BLUE,
+    secondaryColor: InventoryColor.ROSE,
+    colorPattern: InventoryPattern.SPLIT,
 
-    status: DumpsterStatus.AVAILABLE,
+    status: InventoryStatus.AVAILABLE,
 
     basePrice: 450,
     concretePrice: 180,
