@@ -1,3 +1,8 @@
+enum PlatformRole {
+  USER
+  SUPER_ADMIN
+}
+
 enum TenantStatus {
   ACTIVE
   TRIALING

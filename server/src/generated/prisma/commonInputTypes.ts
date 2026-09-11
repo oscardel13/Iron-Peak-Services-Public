@@ -535,6 +535,23 @@ export type EnumAuthProviderTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumAuthProviderTypeFilter<$PrismaModel>
 }
 
+export type EnumPlatformRoleFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlatformRole | Prisma.EnumPlatformRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.PlatformRole[] | Prisma.ListEnumPlatformRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlatformRole[] | Prisma.ListEnumPlatformRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlatformRoleFilter<$PrismaModel> | $Enums.PlatformRole
+}
+
+export type EnumPlatformRoleWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlatformRole | Prisma.EnumPlatformRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.PlatformRole[] | Prisma.ListEnumPlatformRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlatformRole[] | Prisma.ListEnumPlatformRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlatformRoleWithAggregatesFilter<$PrismaModel> | $Enums.PlatformRole
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlatformRoleFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlatformRoleFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1040,6 +1057,23 @@ export type NestedEnumAuthProviderTypeWithAggregatesFilter<$PrismaModel = never>
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumAuthProviderTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumAuthProviderTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumPlatformRoleFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlatformRole | Prisma.EnumPlatformRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.PlatformRole[] | Prisma.ListEnumPlatformRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlatformRole[] | Prisma.ListEnumPlatformRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlatformRoleFilter<$PrismaModel> | $Enums.PlatformRole
+}
+
+export type NestedEnumPlatformRoleWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlatformRole | Prisma.EnumPlatformRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.PlatformRole[] | Prisma.ListEnumPlatformRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlatformRole[] | Prisma.ListEnumPlatformRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlatformRoleWithAggregatesFilter<$PrismaModel> | $Enums.PlatformRole
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlatformRoleFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlatformRoleFilter<$PrismaModel>
 }
 
 

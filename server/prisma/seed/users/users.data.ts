@@ -1,8 +1,13 @@
+import { PlatformRole } from "../../../src/generated/prisma/client.js";
+
 export const usersData = [
   {
-    email: "admin@example.com",
+    id: "user-oscar-super-admin",
     name: "Oscar",
-    accessLevel: "OWNER",
+    email: "oscardel413@gmail.com",
+    phone: null,
+    picture: null,
+    platformRole: PlatformRole.SUPER_ADMIN,
     isActive: true,
   },
 ];

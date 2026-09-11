@@ -1,53 +1,93 @@
 import express from "express";
+
 import {
-  HttpGetDumpsters,
-  HttpGetDumpsterById,
-  HttpCreateDumpster,
-  HttpUpdateDumpster,
-  HttpGetAvailableDumpstersByDates,
-  // HttpDeleteDumpster,
+  HttpGetInventoryItems,
+  HttpGetInventoryItemById,
+  HttpCreateInventoryItem,
+  HttpUpdateInventoryItem,
+  HttpDeleteInventoryItem,
+  HttpGetAvailableInventoryItemsByDates,
   HttpGetAddons,
-  // HttpGetAddonById,
-  // HttpCreateAddon,
-  // HttpUpdateAddon,
-  // HttpDeleteAddon,
 } from "./inventory.controller.js";
+
+import {
+  requireAdmin,
+  requireTenantDashboard,
+} from "../client/client.middleware.js";
 
 const InventoryRouter = express.Router();
 
-// Dumpster routes
-// GET /api/v1/admin/inventory/dumpsters
-InventoryRouter.get("/dumpsters", HttpGetDumpsters);
+/**
+ * Middleware plan:
+ *
+ * All inventory routes need a logged-in tenant user.
+ *
+ * Read routes:
+ * - OWNER
+ * - ADMIN
+ * - DISPATCHER
+ * - DRIVER
+ * - WORKER
+ *
+ * Write routes:
+ * - OWNER
+ * - ADMIN
+ *
+ * Later, public booking flow availability should probably use a separate
+ * public tenant resolver instead of req.user.tenantId.
+ */
 
-// POST /api/v1/admin/inventory/dumpsters
-InventoryRouter.post("/dumpsters", HttpCreateDumpster);
+// Inventory read routes
+InventoryRouter.get("/items", requireTenantDashboard, HttpGetInventoryItems);
 
-// GET /api/v1/admin/inventory/dumpsters/available?deliveryDate=2024-10-01&pickupDate=2024-10-05`
-InventoryRouter.get("/dumpsters/available", HttpGetAvailableDumpstersByDates);
+InventoryRouter.get(
+  "/items/available",
+  requireTenantDashboard,
+  HttpGetAvailableInventoryItemsByDates,
+);
 
-// GET /api/v1/admin/inventory/dumpsters/:id
-InventoryRouter.get("/dumpsters/:id", HttpGetDumpsterById);
+InventoryRouter.get(
+  "/items/:id",
+  requireTenantDashboard,
+  HttpGetInventoryItemById,
+);
 
-// PUT /api/v1/admin/inventory/dumpsters/:id
-InventoryRouter.put("/dumpsters/:id", HttpUpdateDumpster);
+// Inventory write routes
+InventoryRouter.post("/items", requireAdmin, HttpCreateInventoryItem);
 
-// // DELETE /api/v1/admin/inventory/dumpsters/:id
-// InventoryRouter.delete('/dumpsters/:id', HttpDeleteDumpster);
+InventoryRouter.put("/items/:id", requireAdmin, HttpUpdateInventoryItem);
 
-// // Addon routes
-// GET /api/v1/admin/inventory/addons
-InventoryRouter.get("/addons", HttpGetAddons);
+InventoryRouter.delete("/items/:id", requireAdmin, HttpDeleteInventoryItem);
 
-// // POST /api/v1/admin/inventory/addons
-// InventoryRouter.post('/addons', HttpCreateAddon);
+// Addon read route
+InventoryRouter.get("/addons", requireTenantDashboard, HttpGetAddons);
 
-// // GET /api/v1/admin/inventory/addons/:id
-// InventoryRouter.get('/addons/:id', HttpGetAddonById);
+/**
+ * Temporary old dumpster URLs.
+ * Keep these only while the frontend still calls /dumpsters.
+ */
+InventoryRouter.get(
+  "/dumpsters",
+  requireTenantDashboard,
+  HttpGetInventoryItems,
+);
 
-// // PUT /api/v1/admin/inventory/addons/:id
-// InventoryRouter.put('/addons/:id', HttpUpdateAddon);
+InventoryRouter.get(
+  "/dumpsters/available",
+  requireTenantDashboard,
+  HttpGetAvailableInventoryItemsByDates,
+);
 
-// // DELETE /api/v1/admin/inventory/addons/:id
-// InventoryRouter.delete('/addons/:id', HttpDeleteAddon);
+InventoryRouter.get(
+  "/dumpsters/:id",
+  requireTenantDashboard,
+  HttpGetInventoryItemById,
+);
+
+InventoryRouter.post("/dumpsters", requireAdmin, HttpCreateInventoryItem);
+
+InventoryRouter.put("/dumpsters/:id", requireAdmin, HttpUpdateInventoryItem);
+
+InventoryRouter.delete("/dumpsters/:id", requireAdmin, HttpDeleteInventoryItem);
 
 export default InventoryRouter;

@@ -1778,6 +1778,7 @@ export type UserAuthProviderScalarFieldEnum = (typeof UserAuthProviderScalarFiel
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  platformRole: 'platformRole',
   name: 'name',
   email: 'email',
   phone: 'phone',
@@ -2108,6 +2109,20 @@ export type EnumAuthProviderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'AuthProviderType[]'
  */
 export type ListEnumAuthProviderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthProviderType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PlatformRole'
+ */
+export type EnumPlatformRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformRole'>
+    
+
+
+/**
+ * Reference to a field of type 'PlatformRole[]'
+ */
+export type ListEnumPlatformRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformRole[]'>
     
 
 

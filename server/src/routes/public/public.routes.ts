@@ -1,23 +1,11 @@
-import express from 'express';
-import {
-  getAvailableDumpsters,
-  getAddons,
-  createQuote,
-  getQuoteById,
-} from './public.controller.js';
+import express from "express";
 
-const router = express.Router();
+import PublicInventoryRouter from "./public.inventory.router.ts";
+import PublicBookingRouter from "./public.booking.router.ts";
 
-// GET /api/v1/public/dumpsters
-router.get('/dumpsters', getAvailableDumpsters);
+const PublicRouter = express.Router();
 
-// GET /api/v1/public/addons
-router.get('/addons', getAddons);
+PublicRouter.use("/inventory", PublicInventoryRouter);
+PublicRouter.use("/bookings", PublicBookingRouter);
 
-// POST /api/v1/public/quotes
-router.post('/quotes', createQuote);
-
-// GET /api/v1/public/quotes/:id
-router.get('/quotes/:id', getQuoteById);
-
-export { router as publicRouter };
+export default PublicRouter;

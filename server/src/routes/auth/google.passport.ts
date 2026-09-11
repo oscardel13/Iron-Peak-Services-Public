@@ -47,6 +47,7 @@ function validateGoogleProfile(
     done(null, false, {
       message: "Missing Google account id",
     });
+
     return null;
   }
 
@@ -54,6 +55,7 @@ function validateGoogleProfile(
     done(null, false, {
       message: "Missing Google email",
     });
+
     return null;
   }
 
@@ -61,6 +63,7 @@ function validateGoogleProfile(
     done(null, false, {
       message: "Email not verified",
     });
+
     return null;
   }
 
@@ -85,8 +88,8 @@ const CLIENT_AUTH_OPTIONS = {
 };
 
 async function verifyGoogleAdminCallback(
-  accessToken: string,
-  refreshToken: string,
+  _accessToken: string,
+  _refreshToken: string,
   profile: Profile,
   done: VerifyCallback,
 ) {
@@ -105,15 +108,15 @@ async function verifyGoogleAdminCallback(
       picture: googleProfile.picture,
     });
 
-    return done(null, user);
+    return done(null, user as unknown as Express.User);
   } catch (err) {
     return done(err as Error);
   }
 }
 
 async function verifyGoogleClientCallback(
-  accessToken: string,
-  refreshToken: string,
+  _accessToken: string,
+  _refreshToken: string,
   profile: Profile,
   done: VerifyCallback,
 ) {
@@ -132,7 +135,7 @@ async function verifyGoogleClientCallback(
       picture: googleProfile.picture,
     });
 
-    return done(null, user);
+    return done(null, user as unknown as Express.User);
   } catch (err) {
     return done(err as Error);
   }

@@ -13,21 +13,21 @@ import METADATA from "@/data/data";
 import { getAPI } from "@/utils/api";
 
 function getDashboardPath(user) {
-  const accessLevel = user?.accessLevel;
+  const role = user?.role;
 
-  if (accessLevel === "ADMIN" || accessLevel === "OWNER") {
+  if (role === "ADMIN" || role === "OWNER") {
     return "/dashboard";
   }
 
-  if (accessLevel === "CLIENT") {
+  if (role === "CLIENT") {
     return "/client";
   }
 
-  if (accessLevel === "DRIVER") {
+  if (role === "DRIVER") {
     return "/driver";
   }
 
-  if (accessLevel === "WORKER") {
+  if (role === "WORKER") {
     return "/worker";
   }
 

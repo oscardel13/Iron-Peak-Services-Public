@@ -7,6 +7,7 @@ import { seedTenants } from "./seed/tenants/tenants.seed.js";
 import { seedAddons } from "./seed/addons/addons.seed.js";
 import { seedDumpsters } from "./seed/dumpsters/dumpsters.seed.js";
 import { seedDumpsterBookings } from "./seed/dumpster-bookings/dumpster-bookings.seed.js";
+import { seedUsers } from "./seed/users/users.seed.js";
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({
@@ -25,7 +26,7 @@ async function main() {
   await seedAddons(prisma);
   await seedDumpsters(prisma);
   await seedDumpsterBookings(prisma);
-
+  await seedUsers(prisma);
   console.log("\n✅ Database seed complete");
 }
 

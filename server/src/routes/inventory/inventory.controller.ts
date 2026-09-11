@@ -1,171 +1,193 @@
 import type { Request, Response } from "express";
 
 import {
-  getDumpsters,
-  getDumpsterById,
-  createDumpster,
-  updateDumpster,
-  getDumpstersFilteredByDates,
-  deleteDumpster,
+  getInventoryItems,
+  getInventoryItemById,
+  createInventoryItem,
+  updateInventoryItem,
+  getInventoryItemsFilteredByDates,
+  deleteInventoryItem,
   getAddons,
-  getAddonById,
-  createAddon,
-  updateAddon,
-  deleteAddon,
 } from "../../services/inventory.service.js";
 
-export const HttpGetDumpsters = async (req: Request, res: Response) => {
+function getTenantId(req: Request) {
+  const tenantId = req.user?.tenantId;
+
+  if (Array.isArray(tenantId)) {
+    return tenantId[0] ?? null;
+  }
+
+  return tenantId ?? null;
+}
+
+function getParamString(value: string | string[] | undefined) {
+  if (Array.isArray(value)) {
+    return value[0] ?? null;
+  }
+
+  return value ?? null;
+}
+
+export const HttpGetInventoryItems = async (req: Request, res: Response) => {
   try {
-    const dumpsters = await getDumpsters(req.query);
-    res.json(dumpsters);
+    const tenantId = getTenantId(req);
+
+    if (!tenantId) {
+      return res.status(403).json({ error: "Tenant access is required" });
+    }
+
+    const inventoryItems = await getInventoryItems(tenantId, req.query);
+
+    res.json(inventoryItems);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch dumpsters" });
+    console.error("Failed to fetch inventory items:", error);
+    res.status(500).json({ error: "Failed to fetch inventory items" });
   }
 };
 
-export const HttpGetAvailableDumpstersByDates = async (
+export const HttpGetAvailableInventoryItemsByDates = async (
   req: Request,
   res: Response,
 ) => {
   try {
-    const dumpsters = await getDumpstersFilteredByDates(req.query);
-    res.json(dumpsters);
+    const tenantId = getTenantId(req);
+
+    if (!tenantId) {
+      return res.status(403).json({ error: "Tenant access is required" });
+    }
+
+    const inventoryItems = await getInventoryItemsFilteredByDates(
+      tenantId,
+      req.query,
+    );
+
+    res.json(inventoryItems);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch available dumpsters" });
+    console.error("Failed to fetch available inventory items:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch available inventory items" });
   }
 };
 
-export const HttpGetDumpsterById = async (req: Request, res: Response) => {
+export const HttpGetInventoryItemById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const tenantId = getTenantId(req);
+    const id = getParamString(req.params.id);
+
+    if (!tenantId) {
+      return res.status(403).json({ error: "Tenant access is required" });
+    }
+
     if (!id) {
-      return res.status(400).json({ error: "Dumpster ID is required" });
+      return res.status(400).json({ error: "Inventory item ID is required" });
     }
 
-    const dumpster = await getDumpsterById(id as string);
-    if (!dumpster) {
-      return res.status(404).json({ error: "Dumpster not found" });
+    const inventoryItem = await getInventoryItemById(tenantId, id);
+
+    if (!inventoryItem) {
+      return res.status(404).json({ error: "Inventory item not found" });
     }
 
-    res.json(dumpster);
+    res.json(inventoryItem);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch dumpster" });
+    console.error("Failed to fetch inventory item:", error);
+    res.status(500).json({ error: "Failed to fetch inventory item" });
   }
 };
 
-export const HttpCreateDumpster = async (req: Request, res: Response) => {
+export const HttpCreateInventoryItem = async (req: Request, res: Response) => {
   try {
-    const dumpster = await createDumpster(req.body);
-    res.status(201).json(dumpster);
+    const tenantId = getTenantId(req);
+
+    if (!tenantId) {
+      return res.status(403).json({ error: "Tenant access is required" });
+    }
+
+    const inventoryItem = await createInventoryItem(tenantId, req.body);
+
+    res.status(201).json(inventoryItem);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create dumpster" });
+    console.error("Failed to create inventory item:", error);
+    res.status(500).json({ error: "Failed to create inventory item" });
   }
 };
 
-export const HttpUpdateDumpster = async (req: Request, res: Response) => {
+export const HttpUpdateInventoryItem = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const tenantId = getTenantId(req);
+    const id = getParamString(req.params.id);
+
+    if (!tenantId) {
+      return res.status(403).json({ error: "Tenant access is required" });
+    }
+
     if (!id) {
-      return res.status(400).json({ error: "Dumpster ID is required" });
+      return res.status(400).json({ error: "Inventory item ID is required" });
     }
 
-    const dumpster = await updateDumpster(id as string, req.body);
-    if (!dumpster) {
-      return res.status(404).json({ error: "Dumpster not found" });
+    const inventoryItem = await updateInventoryItem(tenantId, id, req.body);
+
+    if (!inventoryItem) {
+      return res.status(404).json({ error: "Inventory item not found" });
     }
 
-    res.json(dumpster);
+    res.json(inventoryItem);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update dumpster" });
+    console.error("Failed to update inventory item:", error);
+    res.status(500).json({ error: "Failed to update inventory item" });
   }
 };
 
-export const HttpDeleteDumpster = async (req: Request, res: Response) => {
+export const HttpDeleteInventoryItem = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({ error: "Dumpster ID is required" });
+    const tenantId = getTenantId(req);
+    const id = getParamString(req.params.id);
+
+    if (!tenantId) {
+      return res.status(403).json({ error: "Tenant access is required" });
     }
 
-    const success = await deleteDumpster(id as string);
+    if (!id) {
+      return res.status(400).json({ error: "Inventory item ID is required" });
+    }
+
+    const success = await deleteInventoryItem(tenantId, id);
+
     if (!success) {
-      return res.status(404).json({ error: "Dumpster not found" });
+      return res.status(404).json({ error: "Inventory item not found" });
     }
 
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete dumpster" });
+    console.error("Failed to delete inventory item:", error);
+    res.status(500).json({ error: "Failed to delete inventory item" });
   }
 };
 
 export const HttpGetAddons = async (req: Request, res: Response) => {
   try {
-    const addons = await getAddons(req.query);
+    const tenantId = getTenantId(req);
+
+    if (!tenantId) {
+      return res.status(403).json({ error: "Tenant access is required" });
+    }
+
+    const addons = await getAddons(tenantId, req.query);
+
     res.json(addons);
   } catch (error) {
+    console.error("Failed to fetch addons:", error);
     res.status(500).json({ error: "Failed to fetch addons" });
   }
 };
 
-export const HttpGetAddonById = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({ error: "Addon ID is required" });
-    }
-
-    const addon = await getAddonById(id as string);
-    if (!addon) {
-      return res.status(404).json({ error: "Addon not found" });
-    }
-
-    res.json(addon);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch addon" });
-  }
-};
-
-export const HttpCreateAddon = async (req: Request, res: Response) => {
-  try {
-    const addon = await createAddon(req.body);
-    res.status(201).json(addon);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to create addon" });
-  }
-};
-
-export const HttpUpdateAddon = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({ error: "Addon ID is required" });
-    }
-
-    const addon = await updateAddon(id as string, req.body);
-    if (!addon) {
-      return res.status(404).json({ error: "Addon not found" });
-    }
-
-    res.json(addon);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update addon" });
-  }
-};
-
-export const HttpDeleteAddon = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({ error: "Addon ID is required" });
-    }
-
-    const success = await deleteAddon(id as string);
-    if (!success) {
-      return res.status(404).json({ error: "Addon not found" });
-    }
-
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete addon" });
-  }
-};
+// Temporary backwards-compatible aliases.
+// Remove these after the frontend is fully moved from "dumpster" to "inventory".
+export const HttpGetDumpsters = HttpGetInventoryItems;
+export const HttpGetAvailableDumpstersByDates =
+  HttpGetAvailableInventoryItemsByDates;
+export const HttpGetDumpsterById = HttpGetInventoryItemById;
+export const HttpCreateDumpster = HttpCreateInventoryItem;
+export const HttpUpdateDumpster = HttpUpdateInventoryItem;
+export const HttpDeleteDumpster = HttpDeleteInventoryItem;

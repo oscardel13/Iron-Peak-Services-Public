@@ -26,6 +26,7 @@ export type AggregateUser = {
 
 export type UserMinAggregateOutputType = {
   id: string | null
+  platformRole: $Enums.PlatformRole | null
   name: string | null
   email: string | null
   phone: string | null
@@ -38,6 +39,7 @@ export type UserMinAggregateOutputType = {
 
 export type UserMaxAggregateOutputType = {
   id: string | null
+  platformRole: $Enums.PlatformRole | null
   name: string | null
   email: string | null
   phone: string | null
@@ -50,6 +52,7 @@ export type UserMaxAggregateOutputType = {
 
 export type UserCountAggregateOutputType = {
   id: number
+  platformRole: number
   name: number
   email: number
   phone: number
@@ -64,6 +67,7 @@ export type UserCountAggregateOutputType = {
 
 export type UserMinAggregateInputType = {
   id?: true
+  platformRole?: true
   name?: true
   email?: true
   phone?: true
@@ -76,6 +80,7 @@ export type UserMinAggregateInputType = {
 
 export type UserMaxAggregateInputType = {
   id?: true
+  platformRole?: true
   name?: true
   email?: true
   phone?: true
@@ -88,6 +93,7 @@ export type UserMaxAggregateInputType = {
 
 export type UserCountAggregateInputType = {
   id?: true
+  platformRole?: true
   name?: true
   email?: true
   phone?: true
@@ -173,6 +179,7 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type UserGroupByOutputType = {
   id: string
+  platformRole: $Enums.PlatformRole
   name: string | null
   email: string | null
   phone: string | null
@@ -206,6 +213,7 @@ export type UserWhereInput = {
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
+  platformRole?: Prisma.EnumPlatformRoleFilter<"User"> | $Enums.PlatformRole
   name?: Prisma.StringNullableFilter<"User"> | string | null
   email?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
@@ -223,6 +231,7 @@ export type UserWhereInput = {
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  platformRole?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -244,6 +253,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
+  platformRole?: Prisma.EnumPlatformRoleFilter<"User"> | $Enums.PlatformRole
   name?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   picture?: Prisma.StringNullableFilter<"User"> | string | null
@@ -260,6 +270,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  platformRole?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -278,6 +289,7 @@ export type UserScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
+  platformRole?: Prisma.EnumPlatformRoleWithAggregatesFilter<"User"> | $Enums.PlatformRole
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -290,6 +302,7 @@ export type UserScalarWhereWithAggregatesInput = {
 
 export type UserCreateInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -307,6 +320,7 @@ export type UserCreateInput = {
 
 export type UserUncheckedCreateInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -324,6 +338,7 @@ export type UserUncheckedCreateInput = {
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -341,6 +356,7 @@ export type UserUpdateInput = {
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -358,6 +374,7 @@ export type UserUncheckedUpdateInput = {
 
 export type UserCreateManyInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -370,6 +387,7 @@ export type UserCreateManyInput = {
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -382,6 +400,7 @@ export type UserUpdateManyMutationInput = {
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -404,6 +423,7 @@ export type UserScalarRelationFilter = {
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  platformRole?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
@@ -416,6 +436,7 @@ export type UserCountOrderByAggregateInput = {
 
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  platformRole?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
@@ -428,6 +449,7 @@ export type UserMaxOrderByAggregateInput = {
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  platformRole?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
@@ -510,8 +532,13 @@ export type UserUpdateOneRequiredWithoutAuthProvidersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuthProvidersInput, Prisma.UserUpdateWithoutAuthProvidersInput>, Prisma.UserUncheckedUpdateWithoutAuthProvidersInput>
 }
 
+export type EnumPlatformRoleFieldUpdateOperationsInput = {
+  set?: $Enums.PlatformRole
+}
+
 export type UserCreateWithoutClientsInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -528,6 +555,7 @@ export type UserCreateWithoutClientsInput = {
 
 export type UserUncheckedCreateWithoutClientsInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -560,6 +588,7 @@ export type UserUpdateToOneWithWhereWithoutClientsInput = {
 
 export type UserUpdateWithoutClientsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -576,6 +605,7 @@ export type UserUpdateWithoutClientsInput = {
 
 export type UserUncheckedUpdateWithoutClientsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -592,6 +622,7 @@ export type UserUncheckedUpdateWithoutClientsInput = {
 
 export type UserCreateWithoutDriversInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -608,6 +639,7 @@ export type UserCreateWithoutDriversInput = {
 
 export type UserUncheckedCreateWithoutDriversInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -640,6 +672,7 @@ export type UserUpdateToOneWithWhereWithoutDriversInput = {
 
 export type UserUpdateWithoutDriversInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -656,6 +689,7 @@ export type UserUpdateWithoutDriversInput = {
 
 export type UserUncheckedUpdateWithoutDriversInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -672,6 +706,7 @@ export type UserUncheckedUpdateWithoutDriversInput = {
 
 export type UserCreateWithoutWorkersInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -688,6 +723,7 @@ export type UserCreateWithoutWorkersInput = {
 
 export type UserUncheckedCreateWithoutWorkersInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -720,6 +756,7 @@ export type UserUpdateToOneWithWhereWithoutWorkersInput = {
 
 export type UserUpdateWithoutWorkersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -736,6 +773,7 @@ export type UserUpdateWithoutWorkersInput = {
 
 export type UserUncheckedUpdateWithoutWorkersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -752,6 +790,7 @@ export type UserUncheckedUpdateWithoutWorkersInput = {
 
 export type UserCreateWithoutMembershipsInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -768,6 +807,7 @@ export type UserCreateWithoutMembershipsInput = {
 
 export type UserUncheckedCreateWithoutMembershipsInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -800,6 +840,7 @@ export type UserUpdateToOneWithWhereWithoutMembershipsInput = {
 
 export type UserUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -816,6 +857,7 @@ export type UserUpdateWithoutMembershipsInput = {
 
 export type UserUncheckedUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -832,6 +874,7 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
 
 export type UserCreateWithoutAuthProvidersInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -848,6 +891,7 @@ export type UserCreateWithoutAuthProvidersInput = {
 
 export type UserUncheckedCreateWithoutAuthProvidersInput = {
   id?: string
+  platformRole?: $Enums.PlatformRole
   name?: string | null
   email?: string | null
   phone?: string | null
@@ -880,6 +924,7 @@ export type UserUpdateToOneWithWhereWithoutAuthProvidersInput = {
 
 export type UserUpdateWithoutAuthProvidersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -896,6 +941,7 @@ export type UserUpdateWithoutAuthProvidersInput = {
 
 export type UserUncheckedUpdateWithoutAuthProvidersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -979,6 +1025,7 @@ export type UserCountOutputTypeCountAuthProvidersArgs<ExtArgs extends runtime.Ty
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  platformRole?: boolean
   name?: boolean
   email?: boolean
   phone?: boolean
@@ -997,6 +1044,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  platformRole?: boolean
   name?: boolean
   email?: boolean
   phone?: boolean
@@ -1009,6 +1057,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  platformRole?: boolean
   name?: boolean
   email?: boolean
   phone?: boolean
@@ -1021,6 +1070,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type UserSelectScalar = {
   id?: boolean
+  platformRole?: boolean
   name?: boolean
   email?: boolean
   phone?: boolean
@@ -1031,7 +1081,7 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "picture" | "isActive" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "platformRole" | "name" | "email" | "phone" | "picture" | "isActive" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   clients?: boolean | Prisma.User$clientsArgs<ExtArgs>
@@ -1054,6 +1104,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    platformRole: $Enums.PlatformRole
     name: string | null
     email: string | null
     phone: string | null
@@ -1491,6 +1542,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
+  readonly platformRole: Prisma.FieldRef<"User", 'PlatformRole'>
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly phone: Prisma.FieldRef<"User", 'String'>

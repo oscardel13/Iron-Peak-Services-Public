@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const PlatformRole = {
+  USER: 'USER',
+  SUPER_ADMIN: 'SUPER_ADMIN'
+} as const
+
+export type PlatformRole = (typeof PlatformRole)[keyof typeof PlatformRole]
+
+
 export const TenantStatus = {
   ACTIVE: 'ACTIVE',
   TRIALING: 'TRIALING',

@@ -20,6 +20,7 @@ const ClientRouter = Router();
 
 ClientRouter.get("/me", requireClientDashboard, HttpGetClientMe);
 
+// Bookings Routes
 ClientRouter.get(
   "/bookings",
   requireClientDashboard,

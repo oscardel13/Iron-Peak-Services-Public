@@ -1,9 +1,7 @@
+// cron/status.cron.ts
 import cron from "node-cron";
-import {
-  DumpsterStatus,
-  BookingStatus,
-} from "../generated/prisma/client.js";
-import { prisma } from "../libs/prisma.ts";
+import { BookingStatus, InventoryStatus } from "../generated/prisma/client.js";
+import { prisma } from "../libs/prisma.js";
 
 function startOfDay(date: Date) {
   const next = new Date(date);
@@ -15,18 +13,21 @@ async function updateBookingStatuses() {
   console.log("Updating booking statuses...", new Date().toISOString());
 
   const today = startOfDay(new Date());
+  const now = new Date();
 
   try {
     await prisma.booking.updateMany({
       where: {
-        bookingStatus: BookingStatus.SCHEDULED,
+        bookingStatus: {
+          in: [BookingStatus.SCHEDULED, BookingStatus.CONFIRMED],
+        },
         deliveryDate: {
           lte: today,
         },
       },
       data: {
         bookingStatus: BookingStatus.ACTIVE,
-        deliveredAt: new Date(),
+        deliveredAt: now,
       },
     });
 
@@ -40,8 +41,8 @@ async function updateBookingStatuses() {
       },
       data: {
         bookingStatus: BookingStatus.COMPLETED,
-        completedAt: new Date(),
-        pickedUpAt: new Date(),
+        completedAt: now,
+        pickedUpAt: now,
       },
     });
 
@@ -51,74 +52,122 @@ async function updateBookingStatuses() {
   }
 }
 
-async function updateDumpsterStatus() {
-  console.log("Updating dumpster statuses...", new Date().toISOString());
+async function updateInventoryStatuses() {
+  console.log("Updating inventory statuses...", new Date().toISOString());
 
-  const now = new Date();
+  const today = startOfDay(new Date());
 
   try {
-    const dumpsters = await prisma.dumpster.findMany({
+    const inventoryItems = await prisma.inventoryItem.findMany({
       where: {
         isActive: true,
         status: {
-          notIn: [
-            DumpsterStatus.MAINTENANCE,
-            DumpsterStatus.OUT_OF_SERVICE,
-          ],
+          notIn: [InventoryStatus.MAINTENANCE, InventoryStatus.OUT_OF_SERVICE],
         },
       },
       include: {
-        bookings: {
+        bookingItems: {
+          include: {
+            booking: true,
+          },
           where: {
-            bookingStatus: {
-              in: [BookingStatus.SCHEDULED, BookingStatus.ACTIVE],
+            booking: {
+              bookingStatus: {
+                in: [
+                  BookingStatus.SCHEDULED,
+                  BookingStatus.CONFIRMED,
+                  BookingStatus.ACTIVE,
+                ],
+              },
             },
           },
         },
       },
     });
 
-    for (const dumpster of dumpsters) {
-      const hasActiveBooking = dumpster.bookings.some((booking) => {
-        const deliveryDate = new Date(booking.deliveryDate);
-        const pickupDate = booking.pickupDate
-          ? new Date(booking.pickupDate)
-          : null;
+    for (const inventoryItem of inventoryItems) {
+      const hasCurrentBooking = inventoryItem.bookingItems.some(
+        (bookingItem) => {
+          const booking = bookingItem.booking;
 
-        // deliveryDate <= now AND pickupDate >= now
-        if (pickupDate) {
-          return deliveryDate <= now && pickupDate >= now;
-        }
+          if (!booking) return false;
 
-        // unknown pickup = in use after delivery starts
-        return booking.pickupDateUnknown && deliveryDate <= now;
-      });
+          const deliveryDate = startOfDay(new Date(booking.deliveryDate));
+          const pickupDate = booking.pickupDate
+            ? startOfDay(new Date(booking.pickupDate))
+            : null;
 
-      const newStatus = hasActiveBooking
-        ? DumpsterStatus.IN_USE
-        : DumpsterStatus.AVAILABLE;
+          if (booking.bookingStatus === BookingStatus.ACTIVE) {
+            if (booking.pickupDateUnknown) {
+              return deliveryDate <= today;
+            }
 
-      if (dumpster.status !== newStatus) {
-        await prisma.dumpster.update({
-          where: { id: dumpster.id },
-          data: { status: newStatus },
+            if (pickupDate) {
+              return deliveryDate <= today && pickupDate >= today;
+            }
+
+            return deliveryDate <= today;
+          }
+
+          if (booking.pickupDateUnknown) {
+            return deliveryDate <= today;
+          }
+
+          if (pickupDate) {
+            return deliveryDate <= today && pickupDate >= today;
+          }
+
+          return false;
+        },
+      );
+
+      const hasFutureBooking = inventoryItem.bookingItems.some(
+        (bookingItem) => {
+          const booking = bookingItem.booking;
+
+          if (!booking) return false;
+
+          const deliveryDate = startOfDay(new Date(booking.deliveryDate));
+
+          return (
+            (booking.bookingStatus === BookingStatus.SCHEDULED ||
+              booking.bookingStatus === BookingStatus.CONFIRMED) &&
+            deliveryDate > today
+          );
+        },
+      );
+
+      const newStatus = hasCurrentBooking
+        ? InventoryStatus.IN_USE
+        : hasFutureBooking
+          ? InventoryStatus.RESERVED
+          : InventoryStatus.AVAILABLE;
+
+      if (inventoryItem.status !== newStatus) {
+        await prisma.inventoryItem.update({
+          where: {
+            id: inventoryItem.id,
+          },
+          data: {
+            status: newStatus,
+          },
         });
 
         console.log(
-          `Updated ${dumpster.label}: ${dumpster.status} -> ${newStatus}`
+          `Updated ${inventoryItem.label}: ${inventoryItem.status} -> ${newStatus}`,
         );
       }
     }
 
-    console.log("Dumpster status update complete.");
+    console.log("Inventory status update complete.");
   } catch (error) {
-    console.error("Failed to update dumpster statuses:", error);
+    console.error("Failed to update inventory statuses:", error);
   }
 }
 
 async function runDailyStatusUpdates() {
   await updateBookingStatuses();
-  await updateDumpsterStatus();
+  await updateInventoryStatuses();
 }
 
 export function startStatusCronJobs() {

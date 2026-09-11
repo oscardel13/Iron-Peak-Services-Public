@@ -356,6 +356,7 @@ export type UserAuthProviderScalarFieldEnum = (typeof UserAuthProviderScalarFiel
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  platformRole: 'platformRole',
   name: 'name',
   email: 'email',
   phone: 'phone',

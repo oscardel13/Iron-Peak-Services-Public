@@ -24,8 +24,7 @@ export default function AdminGuard({ children }) {
         const data = await res.data;
         const user = data.user;
 
-        const isAdmin =
-          user?.accessLevel === "ADMIN" || user?.accessLevel === "OWNER";
+        const isAdmin = user?.role === "ADMIN" || user?.role === "OWNER";
 
         if (!isAdmin) {
           setStatus("unauthorized");
