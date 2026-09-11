@@ -15,3 +15,17 @@ PATCH  /api/v1/admin/inventory/addons/:id
 DELETE /api/v1/admin/inventory/addons/:id
 
 */
+
+import express from "express";
+
+import AdminInventoryRouter from "./admin.inventory.router.js";
+import AdminBookingRouter from "./admin.booking.router.js";
+import AdminClientRouter from "./admin.client.router.js";
+
+const AdminRouter = express.Router();
+
+AdminRouter.use("/inventory", AdminInventoryRouter);
+AdminRouter.use("/bookings", AdminBookingRouter);
+AdminRouter.use("/clients", AdminClientRouter);
+
+export default AdminRouter;
